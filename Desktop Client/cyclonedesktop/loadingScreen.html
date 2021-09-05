@@ -24,11 +24,37 @@
             left: 50%;
             transform: translate(-50%, -50%);
         }
+        .container p{
+            color: rgb(230, 230, 230);
+            position: absolute;
+            font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+            font-size: 20px;
+            width: 100vw;
+            bottom:60px;
+            text-align: center;
+        }
     </style>
   </head>
   <body>
       <div class="container">
           <img src="src/images/cycloneloading.gif">
+          <p id="lmsg">Yükleniyor...</p>
       </div>
+
+      <script>
+          var loadingmessage = document.getElementById("lmsg");
+          var loadingmessages = [
+              "Bir hortum yaklaşıyor...",
+              "Fırtına başlıyor...",
+              "Kasırga kopuyor...",
+              "Şimşekler çakıyor...",
+              "Yıldırım düşüyor..."
+          ];
+
+          setInterval(()=>{
+            randomMessage = loadingmessages[Math.floor(Math.random() * loadingmessages.length)];
+            loadingmessage.innerHTML = randomMessage;
+          }, 2000);
+      </script>
   </body>
 </html>
