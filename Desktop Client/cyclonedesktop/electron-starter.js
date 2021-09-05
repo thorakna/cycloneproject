@@ -22,7 +22,7 @@ function createLoadingScreen(){
     setTimeout(()=>{
       loadingWindow.close();
       mainWindow.show();
-    }, 10000);
+    }, 4000);
   })
   
 }
