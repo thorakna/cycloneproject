@@ -1,38 +1,119 @@
+*{
+  -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Old versions of Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none;
+}
+
+body{
+  background-color: #171717;
+  overflow: hidden;
+}
+
+@keyframes animCircle1 {
+  0% {transform: scale(1);}
+  50% {transform: scale(1.2);}
+  100% {transform: scale(1);}
+}
+
+@keyframes animCircle2 {
+  0% {transform: scale(1);}
+  50% {transform: scale(1.4);}
+  100% {transform: scale(1);}
+}
+
 .App {
   text-align: center;
 }
 
+.madewl{
+  color: #616161;
+  font-size: 12px;
+}
+
 .App-logo {
-  height: 40vmin;
+  height: 160px;
   pointer-events: none;
 }
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.backRound{
+  position:absolute;
+  height: 160px;
+  width: 160px;
+  border:0px solid;
+  border-radius: 160px;
+  left: calc(50% - (160px / 2));
+  background-color: #0e0e0e;
 }
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.animCircle1{
+  animation: animCircle1 1800ms infinite;
+}
+.animCircle2{
+  animation: animCircle2 2100ms infinite;
+}
+.App-Auth {
   display: flex;
+  min-height: calc(100vh - 40px);
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+  justify-content: space-evenly;
+  font-size: 24px;
   color: white;
 }
+button{
+  cursor:pointer;
+}
+button:focus {outline:0;}
+.AuthButtons{
+  display: flex;
+  flex-direction: column;
+}
+.AuthButtons button{
+  margin-bottom: 20px;
+  padding: 2vmin 12vmin;
+  border:0px solid;
+  border-radius: 8px;
+  color:white;
+  font-weight: bold;
+}
+
+.primaryColor{ background-color: #007aff;}
+.primaryColor:hover{ background-color: #1f89fa;}
+.primaryColor:active{ background-color: #0367d3;}
+.secondaryColor{ background-color: #0c0c0c;}
+.secondaryColor:hover{ background-color: #131313;}
+.secondaryColor:active{ background-color: #000;}
 
 .App-link {
   color: #61dafb;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.page {
+  position: absolute;
+  height: 100%;
+  left: 0px;
+  right: 0px;
+}
+
+.page-enter {
+  opacity: 0;
+  transform: scale(1.1);
+}
+
+.page-enter-active {
+  opacity: 1;
+  transform: scale(1);
+  transition: opacity 300ms, transform 300ms;
+}
+
+.page-exit {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.page-exit-active {
+  opacity: 0;
+  transform: scale(0.9);
+  transition: opacity 300ms, transform 300ms;
 }
