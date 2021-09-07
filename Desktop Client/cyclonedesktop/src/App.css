@@ -24,6 +24,21 @@ body{
   100% {transform: scale(1);}
 }
 
+@keyframes slideIn {
+  0% {
+    transform: translateY(35px);
+    opacity: 0;
+  }
+  50% {
+    transform: translateY(-10px);
+    opacity: 0.5;
+  }
+  100% {
+    transform: translateY(0px);
+    opacity: 1;
+  }
+}
+
 .App {
   text-align: center;
 }
@@ -75,6 +90,7 @@ button:focus {outline:0;}
   border:0px solid;
   border-radius: 8px;
   color:white;
+  font-size: 14px;
   font-weight: bold;
 }
 
@@ -116,4 +132,55 @@ button:focus {outline:0;}
   opacity: 0;
   transform: scale(0.9);
   transition: opacity 300ms, transform 300ms;
+}
+
+*:focus{outline: none;}
+
+.inputplace{
+  width: 50vw;
+  max-width: 300px;
+}
+
+.inputplace input{
+  width: 100%;
+  background-color: rgb(14, 22, 37);
+  color:white;
+  border:0px solid;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  padding: 10px 15px 10px 40px;
+  font-size: 16px;
+  transition: all 1s;
+}
+
+.inputplace input:focus{
+  -webkit-box-shadow: 0px 0px 10px 1px #0066ff;
+  -moz-box-shadow: 0px 0px 10px 1px #0064ff;
+  box-shadow: 0px 0px 10px 1px #0064ff;
+}
+
+.inputplace button{
+  max-width: 150px;
+  margin-bottom: 20px;
+  padding: 8px 16px;
+  border:0px solid;
+  border-radius: 8px;
+  color:white;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.inputfield{
+  padding: 0;
+  display: flex;
+  animation: slideIn 1s;
+}
+
+.inputfield button{
+  flex: 1;
+}
+
+.inputfield svg{
+  position: absolute;
+  margin: 10px 10px;
 }
