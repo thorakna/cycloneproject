@@ -1,6 +1,14 @@
 import logo from '../images/icon.png';
+import React, { useState } from 'react';
+import {useHistory} from 'react-router-dom';
 import '../style/parallax-star.css';
+import {IoMail, IoKey} from "react-icons/io5";
+
 export default function SignIn() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  let history = useHistory();
+
   return (
     <div className="parallax-back">
       <div className="App">
@@ -11,9 +19,22 @@ export default function SignIn() {
             <img src={logo} className="App-logo" alt="logo" />
             <p>Cyclone™</p>
           </header>
-          <div className="AuthButtons">
-            <p> Giriş Yapma ekranındasın!</p>
-          </div>
+            <div className="row inputplace">
+              <div className="inputfield">
+                <IoMail/>
+                <input type="text" id="EmailInput" placeholder="Email" value={email} onChange={(e)=>{setEmail(e.value);}}></input>
+              </div>
+
+              <div className="inputfield">
+                <IoKey/>
+                <input type="password" id="PasswordInput" placeholder="Password" value={password} onChange={(e)=>{setPassword(e.value);}}></input>
+              </div>
+
+              <div className="inputfield">
+                <button onClick={()=>{}} className="primaryColor" style={{marginRight:20}}>Log in</button>
+                <button onClick={()=>{history.goBack();}} className="secondaryColor">Go back</button>
+              </div>
+            </div>
         </div>
       </div>
       <div id='stars'></div>

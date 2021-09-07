@@ -31,6 +31,8 @@ function createWindow () {
   mainWindow = new BrowserWindow({
     width: 1000,
     height: 700,
+    minHeight: 550,
+    minWidth: 480,
     autoHideMenuBar: true,
     show:false,
     icon: path.join(__dirname, 'public/favicon.ico'),
