@@ -1,14 +1,25 @@
 import logo from '../images/icon.png';
-import React, { useState } from 'react';
-import {useHistory} from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import {useHistory, useLocation} from 'react-router-dom';
 import '../style/parallax-star.css';
 import {IoMail, IoKey, IoPerson} from "react-icons/io5";
+
 export default function SignUp() {
+  let history = useHistory();
+  const {state} = useLocation();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [username, setUsername] = useState("");
   const [passwordr, setPasswordr] = useState("");
-  let history = useHistory();
+
+  useEffect(() => {
+    if(state){
+      setEmail(state.email);
+      setPassword(state.password);
+    }
+  }, [state]);
+  
   return (
     <div className="parallax-back">
       <div className="App">
@@ -22,27 +33,27 @@ export default function SignUp() {
           <div className="row inputplace">
               <div className="inputfield">
                 <IoPerson/>
-                <input type="text" id="UsernameInput" placeholder="Username" value={username} onChange={(e)=>{setUsername(e.value);}}></input>
+                <input type="text" id="UsernameInput" placeholder="Username" value={username} onChange={(e)=>{setUsername(e.target.value);}}></input>
               </div>
 
               <div className="inputfield">
                 <IoMail/>
-                <input type="text" id="EmailInput" placeholder="Email" value={email} onChange={(e)=>{setEmail(e.value);}}></input>
+                <input type="text" id="EmailInput" placeholder="Email" value={email} onChange={(e)=>{setEmail(e.target.value);}}></input>
               </div>
 
               <div className="inputfield">
                 <IoKey/>
-                <input type="password" id="PasswordInput" placeholder="Password" value={password} onChange={(e)=>{setPassword(e.value);}}></input>
+                <input type="password" id="PasswordInput" placeholder="Password" value={password} onChange={(e)=>{setPassword(e.target.value);}}></input>
               </div>
 
               <div className="inputfield">
                 <IoKey/>
-                <input type="password" id="PasswordInput" placeholder="Confirm Password" value={passwordr} onChange={(e)=>{setPasswordr(e.value);}}></input>
+                <input type="password" id="PasswordRInput" placeholder="Confirm Password" value={passwordr} onChange={(e)=>{setPasswordr(e.target.value);}}></input>
               </div>
 
               <div className="inputfield">
-                <button onClick={()=>{}} className="primaryColor" style={{marginRight:20}}>Register</button>
-                <button onClick={()=>{history.goBack();}} className="secondaryColor">Go back</button>
+                <button onClick={()=>{}} className="primaryColor" style={{marginRight:20}}>Sign Up</button>
+                <button onClick={()=>{history.goBack()}} className="secondaryColor">Back</button>
               </div>
             </div>
         </div>
