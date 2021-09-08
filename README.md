@@ -1,5 +1,5 @@
 ## CYCLONE PROJECT
-![Cyclone Gitad](https://github.com/[username]/[reponame]/blob/[branch]/gitad.png?raw=true)
+![Cyclone Gitad](https://github.com/thorakna/cycloneproject/blob/main/Design%20Images/gitad.png?raw=true)
  
 ### Katkıda bulunanlar
 #### Onur YAŞAR
