@@ -1,6 +1,11 @@
 ## CYCLONE PROJECT
 ![Cyclone Gitad](https://github.com/thorakna/cycloneproject/blob/main/Design%20Images/gitad.png?raw=true)
  
+ 
+
+### Kullanılan teknolojiler
+React, React Native, Electron.js, Express.js, Socket.io, MongoDB
+ 
 ### Katkıda bulunanlar
 #### Onur YAŞAR
 - Front-end tasarım ve kodlama
@@ -10,6 +15,3 @@
 - Back-end kodlama
 [\[Github\]](https://github.com/umuttrk)
   
-
-### Kullanılan teknolojiler:
-React, React Native, Electron.js, Express.js, Socket.io, MongoDB
