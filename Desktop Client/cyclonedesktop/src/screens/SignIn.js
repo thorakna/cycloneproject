@@ -22,17 +22,17 @@ export default function SignIn() {
             <div className="row inputplace">
               <div className="inputfield">
                 <IoMail/>
-                <input type="text" id="EmailInput" placeholder="Email" value={email} onChange={(e)=>{setEmail(e.value);}}></input>
+                <input type="text" id="EmailInput" placeholder="Email" value={email} onChange={(e)=>{setEmail(e.target.value);}}></input>
               </div>
 
               <div className="inputfield">
                 <IoKey/>
-                <input type="password" id="PasswordInput" placeholder="Password" value={password} onChange={(e)=>{setPassword(e.value);}}></input>
+                <input type="password" id="PasswordInput" placeholder="Password" value={password} onChange={(e)=>{setPassword(e.target.value);}}></input>
               </div>
 
               <div className="inputfield">
-                <button onClick={()=>{}} className="primaryColor" style={{marginRight:20}}>Log in</button>
-                <button onClick={()=>{history.goBack();}} className="secondaryColor">Go back</button>
+                <button onClick={()=>{}} className="primaryColor" style={{marginRight:20}}>Sign in</button>
+                <button onClick={()=>{history.push({pathname: "/kayitol", state: {email, password}});}} className="secondaryColor">Sign Up</button>
               </div>
             </div>
         </div>
