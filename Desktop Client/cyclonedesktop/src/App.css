@@ -12,6 +12,8 @@ body{
   overflow: hidden;
 }
 
+/* Css Animations */
+
 @keyframes animCircle1 {
   0% {transform: scale(1);}
   50% {transform: scale(1.2);}
@@ -36,6 +38,24 @@ body{
   100% {
     transform: translateY(0px);
     opacity: 1;
+  }
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
   }
 }
 
@@ -76,14 +96,18 @@ body{
   font-size: 24px;
   color: white;
 }
+
 button{
   cursor:pointer;
 }
+
 button:focus {outline:0;}
+
 .AuthButtons{
   display: flex;
   flex-direction: column;
 }
+
 .AuthButtons button{
   margin-bottom: 20px;
   padding: 2vmin 12vmin;
@@ -100,6 +124,15 @@ button:focus {outline:0;}
 .secondaryColor{ background-color: #0c0c0c;}
 .secondaryColor:hover{ background-color: #131313;}
 .secondaryColor:active{ background-color: #000;}
+
+.cycloButton{
+  display: block;
+  padding: 4px 20px;
+  border:0px solid;
+  border-radius: 5px;
+  color:white;
+  font-size: 14px;
+}
 
 .App-link {
   color: #61dafb;
@@ -183,4 +216,21 @@ button:focus {outline:0;}
 .inputfield svg{
   position: absolute;
   margin: 10px 10px;
+}
+
+.modal-container{
+  background: rgba( 0, 18, 41, 0.25 );
+  box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.3 );
+  backdrop-filter: blur( 5px );
+  -webkit-backdrop-filter: blur( 5px );
+  border-radius: 10px;
+  border: 1px solid rgba( 255, 255, 255, 0.25 );
+
+  position: absolute;
+  top:50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  padding: 20px 10vw;
+  color: white;
+  z-index: 25;
 }
