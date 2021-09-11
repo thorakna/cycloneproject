@@ -8,7 +8,7 @@ const dotenv = require('dotenv');
 dotenv.config({ path: './config.env' });
 
 const JWT_SECRET = process.env.JWT_SECRET
-
+//trim
 app.use(bodyParser.json())
 //app.use(bp.urlencoded({ extended: true }))
 
