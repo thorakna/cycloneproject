@@ -2,3 +2,5 @@
 /Backend/.env
 /Backend/*env
 /Backend/env*
+/Backend/node_modules
+.env

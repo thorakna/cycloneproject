@@ -12,6 +12,10 @@ const JWT_SECRET = process.env.JWT_SECRET
 app.use(bodyParser.json())
 //app.use(bp.urlencoded({ extended: true }))
 
+app.get('/', (req,res)=>{
+    res.send('Cyclone Api');
+});
+
 app.post('/login', async (req, res, next) => {
     const { username, password } = req.body
     const user = await User.findOne({ username }).lean();
@@ -24,7 +28,7 @@ app.post('/login', async (req, res, next) => {
             username: user.username
 
         }, JWT_SECRET)
-        return res.status(200).json({ status: 'success', data: token })
+        return res.status(200).json({ status: 'success', token })
     }
     return res.status(403).json({ status: 'fail', message: 'Invalid username or password' })
 })
@@ -49,9 +53,15 @@ app.post('/register', async (req, res, next) => {
             mail,
             hashedPassword,
             imageUrl
-        }).then(() => {
+        }).then((data) => {
             console.log("User has been registered succesfully");
-            return res.status(200).json({ status: 'success' })
+
+            const token = jwt.sign({
+                id: data._id,
+                username: data.username
+    
+            }, JWT_SECRET)
+            return res.status(200).json({ status: 'success', token })
         })
 
     } catch (error) {

@@ -1,0 +1,1 @@
+export const server_adress = 'https://cyclone-api.raas.onuryasar.online/';
