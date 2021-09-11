@@ -11,7 +11,7 @@
         }
 
         body {
-            background-color: #2f3136;
+            background: radial-gradient(ellipse at bottom, #001229 0%, #000000 100%);
             -webkit-app-region: drag;
         }
 
@@ -25,7 +25,7 @@
             50% {
                 -webkit-box-shadow: inset 0px 0px 20px 2px #0066ff;
                 -moz-box-shadow: inset 0px 0px 20px 2px #0064ff;
-                box-shadow: inset 0px 0px 20px 2px #0064ff;
+                box-shadow: inset 0px 0px 50px 2px rgba(0, 100, 255, 0);
             }
 
             100% {
@@ -34,20 +34,35 @@
                 box-shadow: inset 0px 0px 0px 2px #0064ff;
             }
         }
+        @keyframes donme {
+            0% {
+                transform: rotate(-300deg);
+            }
+
+            50% {
+                transform: rotate(300deg);
+            }
+
+            100% {
+                transform: rotate(-300deg);
+            }
+        }
 
         .container {
             width: 100vw;
             height: 100vh;
             position: relative;
-            animation: animShadow 3s infinite;
+            animation: animShadow 5s infinite;
         }
 
         .container img {
-            width: 150px;
+            width: 120px;
             position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
+            margin-top: -30px;
+            top: calc(50% - 60px);
+            left: calc(50% - 60px);
+            animation: donme 2s infinite;
+            
         }
 
         .container p {
@@ -59,12 +74,13 @@
             bottom: 60px;
             text-align: center;
         }
+
     </style>
 </head>
 
 <body>
     <div class="container">
-        <img src="src/images/cycloneloading.gif">
+        <img src="src/images/icon.png">
         <p id="lmsg">Yükleniyor...</p>
     </div>
 
