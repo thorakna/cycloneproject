@@ -22,12 +22,12 @@ export default function SignIn() {
             <div className="row inputplace">
               <div className="inputfield">
                 <IoMail/>
-                <input type="text" id="EmailInput" placeholder="Email" value={email} onChange={(e)=>{setEmail(e.target.value);}}></input>
+                <input type="text" id="EmailInput" placeholder="Email" value={email} autoComplete="off" onChange={(e)=>{setEmail(e.target.value);}}></input>
               </div>
 
               <div className="inputfield">
                 <IoKey/>
-                <input type="password" id="PasswordInput" placeholder="Password" value={password} onChange={(e)=>{setPassword(e.target.value);}}></input>
+                <input type="password" id="PasswordInput" placeholder="Password" value={password} autoComplete="off" onChange={(e)=>{setPassword(e.target.value);}}></input>
               </div>
 
               <div className="inputfield">

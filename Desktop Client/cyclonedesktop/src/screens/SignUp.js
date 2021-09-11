@@ -1,15 +1,15 @@
 import logo from '../images/icon.png';
 import React, { useEffect, useState } from 'react';
-import {useHistory, useLocation} from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import '../style/parallax-star.css';
-import {IoMail, IoKey, IoPerson} from "react-icons/io5";
+import { IoMail, IoKey, IoPerson } from "react-icons/io5";
 
 import {Register} from '../api/Authentication';
 import Modal from '../components/Modal';
 
 export default function SignUp() {
   let history = useHistory();
-  const {state} = useLocation();
+  const { state } = useLocation();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -22,12 +22,12 @@ export default function SignUp() {
   const [maintainers, setMaintainers] = useState([]);
 
   useEffect(() => {
-    if(state){
+    if (state) {
       setEmail(state.email);
       setPassword(state.password);
     }
   }, [state]);
-
+  
   const doSignUp = async () => {
     setLoading(true);
     const data = await Register(email,password,username);
@@ -57,32 +57,27 @@ export default function SignUp() {
       </Modal>
       <div className="App">
         <div className="App-Auth">
-          <header style={{zIndex: 20}}>
-            <div className="backRound" style={{backgroundColor:"#3b3b3b", zIndex: -1}}></div>
-            <div className="backRound" style={{backgroundColor:"#2a2a2a", zIndex: -2}}></div>
+          <header style={{ zIndex: 20 }}>
+            <div className="backRound" style={{ backgroundColor: "#3b3b3b", zIndex: -1 }}></div>
+            <div className="backRound" style={{ backgroundColor: "#2a2a2a", zIndex: -2 }}></div>
             <img src={logo} className="App-logo" alt="logo" />
             <p>Cyclone™</p>
           </header>
           <div className="row inputplace">
-          
               <div className="inputfield">
-                <IoPerson/>
-                <input type="text" id="UsernameInput" placeholder="Username" value={username} onChange={(e)=>{setUsername(e.target.value);}}></input>
+                <IoMail />
+                <input type="text" id="EmailInput" placeholder="Email" value={email} autoComplete="off" onChange={(e) => { setEmail(e.target.value); }}></input>
               </div>
 
               <div className="inputfield">
-                <IoMail/>
-                <input type="text" id="EmailInput" placeholder="Email" value={email} onChange={(e)=>{setEmail(e.target.value);}}></input>
+                <IoKey />
+                <input type="password" id="PasswordInput" placeholder="Password" value={password} autoComplete="off"  onChange={(e) => { setPassword(e.target.value); }}></input>
               </div>
 
               <div className="inputfield">
-                <IoKey/>
-                <input type="password" id="PasswordInput" placeholder="Password" value={password} onChange={(e)=>{setPassword(e.target.value);}}></input>
-              </div>
+                <IoKey />
+                <input type="password" id="PasswordRInput" placeholder="Confirm Password" value={passwordr} autoComplete="off" onChange={(e) => { setPasswordr(e.target.value); }}></input>
 
-              <div className="inputfield">
-                <IoKey/>
-                <input type="password" id="PasswordRInput" placeholder="Confirm Password" value={passwordr} onChange={(e)=>{setPasswordr(e.target.value);}}></input>
               </div>
 
               <div className="inputfield">
@@ -90,6 +85,7 @@ export default function SignUp() {
                 <button onClick={()=>{history.goBack()}} className="secondaryColor">Back</button>
               </div>
             </div>
+          </div>
         </div>
       </div>
       <div id='stars'></div>
