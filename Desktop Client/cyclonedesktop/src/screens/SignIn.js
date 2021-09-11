@@ -2,15 +2,45 @@ import logo from '../images/icon.png';
 import React, { useState } from 'react';
 import {useHistory} from 'react-router-dom';
 import '../style/parallax-star.css';
-import {IoMail, IoKey} from "react-icons/io5";
+import {IoPerson, IoKey} from "react-icons/io5";
+
+import Login from "../api/Authentication";
+import Modal from '../components/Modal';
 
 export default function SignIn() {
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+
+  const [loading, setLoading] = useState(false);
+  const [iShow, setiShow] = useState(false);
+  const [modalMessage, setModalMessage] = useState("");
+
   let history = useHistory();
+
+  const doSignIn = async () => {
+    setLoading(true);
+    const data = await Login(username, password);
+
+    if(data.status === "success"){
+      // Boş bırakalım
+      console.log(data.token);
+      history.push("/home");
+    }else{
+      setModalMessage(data.message);
+      setiShow(true);
+    }
+    setLoading(false);
+  }
 
   return (
     <div className="parallax-back">
+      <Modal mState={{iShow, setiShow}}>
+          {
+            loading ? <p>Loading</p>
+            :
+            modalMessage
+          }
+      </Modal>
       <div className="App">
         <div className="App-Auth">
           <header style={{zIndex: 20}}>
@@ -21,8 +51,8 @@ export default function SignIn() {
           </header>
             <div className="row inputplace">
               <div className="inputfield">
-                <IoMail/>
-                <input type="text" id="EmailInput" placeholder="Email" value={email} autoComplete="off" onChange={(e)=>{setEmail(e.target.value);}}></input>
+                <IoPerson/>
+                <input type="text" id="UsernameInput" placeholder="Username" value={username} autoComplete="off" onChange={(e)=>{setUsername(e.target.value);}}></input>
               </div>
 
               <div className="inputfield">
@@ -31,8 +61,8 @@ export default function SignIn() {
               </div>
 
               <div className="inputfield">
-                <button onClick={()=>{}} className="primaryColor" style={{marginRight:20}}>Sign in</button>
-                <button onClick={()=>{history.push({pathname: "/kayitol", state: {email, password}});}} className="secondaryColor">Sign Up</button>
+                <button onClick={doSignIn} className="primaryColor" style={{marginRight:20}}>Sign in</button>
+                <button onClick={()=>{history.push({pathname: "/kayitol", state: {username, password}});}} className="secondaryColor">Sign Up</button>
               </div>
             </div>
         </div>

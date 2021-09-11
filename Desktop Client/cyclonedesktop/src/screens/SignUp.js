@@ -19,11 +19,11 @@ export default function SignUp() {
   
   const [iShow, setiShow] = useState(false);
 
-  const [maintainers, setMaintainers] = useState([]);
+  const [modalMessage, setModalMessage] = useState("");
 
   useEffect(() => {
     if (state) {
-      setEmail(state.email);
+      setUsername(state.username);
       setPassword(state.password);
     }
   }, [state]);
@@ -32,10 +32,12 @@ export default function SignUp() {
     setLoading(true);
     const data = await Register(email,password,username);
 
-    if(data){
-      setMaintainers(data.results[0].package.maintainers);
+    if(data.status === "success"){
+      localStorage.setItem("accessToken", data.token);
+      setModalMessage("Başarıyla kayıt olundu.");
+      setTimeout(()=>{history.push("/home")}, 4000);
     }else{
-      setMaintainers([]);
+      setModalMessage(data.message);
     }
 
     setiShow(true);
@@ -48,11 +50,7 @@ export default function SignUp() {
           {
             loading ? <p>Loading</p>
             :
-            maintainers.map((i, key) =>
-              <li key={key}>
-                {i.username}
-              </li>
-            )
+            modalMessage
           }
       </Modal>
       <div className="App">
@@ -64,6 +62,11 @@ export default function SignUp() {
             <p>Cyclone™</p>
           </header>
           <div className="row inputplace">
+              <div className="inputfield">
+                <IoPerson/>
+                <input type="text" id="UsernameInput" placeholder="Username" value={username} autoComplete="off" onChange={(e)=>{setUsername(e.target.value);}}></input>
+              </div>
+
               <div className="inputfield">
                 <IoMail />
                 <input type="text" id="EmailInput" placeholder="Email" value={email} autoComplete="off" onChange={(e) => { setEmail(e.target.value); }}></input>

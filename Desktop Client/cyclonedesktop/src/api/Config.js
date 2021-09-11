@@ -1,1 +1,1 @@
-export const server_adress = 'https://api.npms.io/v2/search?q=react';
+export const server_adress = 'https://cyclone-api.raas.onuryasar.online/';
