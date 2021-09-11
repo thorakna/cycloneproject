@@ -1,0 +1,1 @@
+export const server_adress = 'https://api.npms.io/v2/search?q=react';
