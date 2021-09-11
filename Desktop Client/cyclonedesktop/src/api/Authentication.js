@@ -1,11 +1,29 @@
 import { server_adress } from "./Config";
 
-export default function Login(email, pass){
-    return {email, pass};
+export default async function Login(username, pass){
+    const rawResponse = await fetch(server_adress+"login", {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({username, password: pass})
+    });
+    const content = await rawResponse.json();
+    console.log(content);
+    return content;
 }
 
 export async function Register(email, pass, username){
-    const response = await fetch(server_adress);
-    const data = await response.json();
-    return data;
+    const rawResponse = await fetch(server_adress+"register", {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({username, mail: email, password: pass})
+    });
+    const content = await rawResponse.json();
+    console.log(content);
+    return content;
 }

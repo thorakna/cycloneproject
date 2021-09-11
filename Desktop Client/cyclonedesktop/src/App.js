@@ -2,6 +2,7 @@ import './App.css';
 
 import SignIn from './screens/SignIn';
 import SignUp from './screens/SignUp';
+import Home from './screens/Home';
 
 import {
   BrowserRouter as Router,
@@ -13,6 +14,7 @@ import { CSSTransition } from 'react-transition-group';
 
 const routes = [
   { path: '/', Component: SignIn },
+  { path: '/home', Component: Home},
   { path: '/kayitol', Component: SignUp },
 ]
 
