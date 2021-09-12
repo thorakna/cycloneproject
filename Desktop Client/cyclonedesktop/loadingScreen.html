@@ -11,7 +11,7 @@
         }
 
         body {
-            background: radial-gradient(ellipse at bottom, #001229 0%, #000000 100%);
+            background: #000a16;
             -webkit-app-region: drag;
         }
 
@@ -34,25 +34,12 @@
                 box-shadow: inset 0px 0px 0px 2px #0064ff;
             }
         }
-        @keyframes donme {
-            0% {
-                transform: rotate(-300deg);
-            }
-
-            50% {
-                transform: rotate(300deg);
-            }
-
-            100% {
-                transform: rotate(-300deg);
-            }
-        }
 
         .container {
             width: 100vw;
             height: 100vh;
             position: relative;
-            animation: animShadow 5s infinite;
+            animation: animShadow 4s infinite;
         }
 
         .container img {
@@ -61,8 +48,8 @@
             margin-top: -30px;
             top: calc(50% - 60px);
             left: calc(50% - 60px);
-            animation: donme 2s infinite;
-            
+            border:0px solid;
+            border-radius: 60px;
         }
 
         .container p {
@@ -80,7 +67,7 @@
 
 <body>
     <div class="container">
-        <img src="src/images/icon.png">
+        <img src="src/images/cycloneloading.gif">
         <p id="lmsg">Yükleniyor...</p>
     </div>
 
