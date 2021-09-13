@@ -3,5 +3,6 @@
 
 ## Front-end developer debug kiti:
 npm start
+
 npm run electron
 (Komutlar farklı konsollarda kullanılmalı)
