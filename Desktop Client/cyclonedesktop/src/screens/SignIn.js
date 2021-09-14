@@ -1,5 +1,5 @@
 import logo from '../images/icon.png';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {useHistory} from 'react-router-dom';
 import '../style/parallax-star.css';
 import {IoPerson, IoKey} from "react-icons/io5";
@@ -17,19 +17,32 @@ export default function SignIn() {
 
   let history = useHistory();
 
+  useEffect(()=>{
+    if(localStorage.getItem("accessToken")){
+      history.replace("/home");
+    }
+  }, [history]);
+
   const doSignIn = async () => {
     setLoading(true);
     const data = await Login(username, password);
+    setLoading(false);
 
     if(data.status === "success"){
-      // Boş bırakalım
-      console.log(data.token);
-      history.push("/home");
+      localStorage.setItem("accessToken", data.token);
+      history.replace("/home");
     }else{
       setModalMessage(data.message);
       setiShow(true);
     }
-    setLoading(false);
+  }
+
+  const onKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      e.stopPropagation();
+      doSignIn();
+    }
   }
 
   return (
@@ -44,8 +57,6 @@ export default function SignIn() {
       <div className="App">
         <div className="App-Auth">
           <header style={{zIndex: 20}}>
-            <div className="backRound" style={{backgroundColor:"#3b3b3b", zIndex: -1}}></div>
-            <div className="backRound" style={{backgroundColor:"#2a2a2a", zIndex: -2}}></div>
             <img src={logo} className="App-logo" alt="logo" />
             <p>Cyclone™</p>
           </header>
@@ -57,12 +68,12 @@ export default function SignIn() {
 
               <div className="inputfield">
                 <IoKey/>
-                <input type="password" id="PasswordInput" placeholder="Password" value={password} autoComplete="off" onChange={(e)=>{setPassword(e.target.value);}}></input>
+                <input type="password" id="PasswordInput" onKeyDown={onKeyDown} placeholder="Password" value={password} autoComplete="off" onChange={(e)=>{setPassword(e.target.value);}}></input>
               </div>
 
               <div className="inputfield">
-                <button onClick={doSignIn} className="primaryColor" style={{marginRight:20}}>Sign in</button>
-                <button onClick={()=>{history.push({pathname: "/kayitol", state: {username, password}});}} className="secondaryColor">Sign Up</button>
+                <button onClick={doSignIn} className="primaryColor" style={{marginRight:20}}>{loading ? "Processing" : "Sign in"}</button>
+                <button onClick={()=>{history.push({pathname: "/register", state: {username, password}});}} className="secondaryColor">Sign Up</button>
               </div>
             </div>
         </div>

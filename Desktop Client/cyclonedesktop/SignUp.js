@@ -26,11 +26,7 @@ export default function SignUp() {
       setUsername(state.username);
       setPassword(state.password);
     }
-
-    if(localStorage.getItem("accessToken")){
-      history.replace("/home");
-    }
-  }, [state, history]);
+  }, [state]);
   
   const doSignUp = async () => {
     setLoading(true);
@@ -40,7 +36,7 @@ export default function SignUp() {
     if(data.status === "success"){
       localStorage.setItem("accessToken", data.token);
       setModalMessage("Your registration is successful. Logging in...");
-      setTimeout(()=>{history.replace("/home")}, 4000);
+      setTimeout(()=>{history.push("/home")}, 4000);
     }else{
       setModalMessage(data.message);
     }
@@ -68,6 +64,8 @@ export default function SignUp() {
       <div className="App">
         <div className="App-Auth">
           <header style={{ zIndex: 20 }}>
+            <div className="backRound" style={{ backgroundColor: "#3b3b3b", zIndex: -1 }}></div>
+            <div className="backRound" style={{ backgroundColor: "#2a2a2a", zIndex: -2 }}></div>
             <img src={logo} className="App-logo" alt="logo" />
             <p>Cyclone™</p>
           </header>
