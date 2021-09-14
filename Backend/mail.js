@@ -3,7 +3,7 @@ const dotenv = require('dotenv');
 
 dotenv.config({ path: './config.env' });
 
-exports.sendMail=(email,uniqueString)=>{
+exports.sendMail=(email,uniqueString,condition)=>{
     var Transport=nodemailer.createTransport({
         service:"Gmail",
         auth:{
@@ -13,12 +13,23 @@ exports.sendMail=(email,uniqueString)=>{
     });
     var mailOptions;
     let sender="cyclone";
-    mailOptions={
-        from:sender,
-        to:email,
-        subject:"Email confirmation",
-        html:`Press <a href=http://localhost:3000/verify/${uniqueString} >here</a>  to verify your email.` 
-    };
+    if (condition=='verify') {
+        mailOptions={
+            from:sender,
+            to:email,
+            subject:"Email confirmation",
+            html:`<h1>Hello there</h1> <br> <h2>Press <a style='color:red' href=https://onuryasar.online/cyclone/verify/${uniqueString} >here</a> to verify your email.</h2><br><br>` 
+        };
+    
+    }else if(condition=='reset'){
+        mailOptions={
+                from:sender,
+                to:email,
+                subject:"Password reset",
+                html:`<h1>Hello there</h1> <br> <h2>Press <a style='color:red' href=http://localhost:3000/reset-password/${uniqueString} >here</a> to reset your password.</h2><br><br>` 
+            };
+    }
+   
     Transport.sendMail(mailOptions,function(err,res){
         if (err) {
             console.log("Mail couldn't send cause error");
