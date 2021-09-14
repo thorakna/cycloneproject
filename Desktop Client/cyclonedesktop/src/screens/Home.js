@@ -7,16 +7,22 @@ import '../style/parallax-star.css';
 import Modal from '../components/Modal';
 
 export default function Home() {
-//  let history = useHistory();
-  const { state } = useLocation();
+  const history = useHistory();
   const [loading, setLoading] = useState(false);
   const [iShow, setiShow] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
 
   useEffect(() => {
-    
-  });
+    if(!localStorage.getItem("accessToken")){
+      history.replace("/");
+    }
+  }, [history]);
   
+  const logout = () => {
+    localStorage.removeItem("accessToken");
+    history.replace("/");
+  }
+
   return (
     <div className="parallax-back">
       <Modal mState={{iShow, setiShow}}>
@@ -28,6 +34,8 @@ export default function Home() {
       </Modal>
       <div className="App">
         Burası home ekranımız!!!
+
+        <button onClick={logout} className="cycloButton primaryColor">Çıkış yap bakem</button>
       </div>
       <div id='stars'></div>
       <div id='stars2'></div>

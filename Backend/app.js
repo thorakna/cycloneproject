@@ -25,11 +25,11 @@ app.post('/login', async (req, res, next) => {
         password = password.trim();
         user = await User.findOne({ username }).lean();
     } catch (error) {
-        return res.status(403).json({ status: 'fail', message: error.message });
+        return res.status(401).json({ status: 'fail', message: error.message });
     }
 
     if (!user) {
-        return res.status(403).json({ status: 'fail', message: 'Wrong username or password' })
+        return res.status(401).json({ status: 'fail', message: 'Wrong username or password' })
     }
     if (await bcrypt.compare(password, user.hashedPassword)) {
         const token = jwt.sign({
@@ -38,7 +38,7 @@ app.post('/login', async (req, res, next) => {
         }, JWT_SECRET);
         return res.status(200).json({ status: 'success', token });
     }
-    return res.status(403).json({ status: 'fail', message: 'Wrong username or password' })
+    return res.status(401).json({ status: 'fail', message: 'Wrong username or password' })
 })
 function validateEmail(email) {
     const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -49,15 +49,15 @@ app.post('/register', async (req, res, next) => {
     let { username, password, mail, imageUrl } = req.body;
 
     if (!username || typeof username !== 'string') {
-        return res.status(400).json({ status: 'fail', message: 'Invalid username' })
+        return res.status(401).json({ status: 'fail', message: 'Invalid username' })
     }
     if (!password || typeof password !== 'string') {
-        return res.status(400).json({ status: 'fail', message: 'Invalid password' })
+        return res.status(401).json({ status: 'fail', message: 'Invalid password' })
     } if (password.length < 4) {
-        return res.status(400).json({ status: 'fail', message: 'Too small password.Should be greater than 6 character' })
+        return res.status(401).json({ status: 'fail', message: 'Too small password.Should be greater than 6 character' })
     }
     if (!validateEmail(mail)) {
-        return res.status(400).json({ status: 'fail', message: 'Please enter a valid mail' })
+        return res.status(401).json({ status: 'fail', message: 'Please enter a valid mail' })
     }
     const uniqueString = sendMail.randString();
     const isEnabled = false;
@@ -94,12 +94,12 @@ app.post('/register', async (req, res, next) => {
     } catch (error) {
 
         if (error.code === 11000 && Object.keys(error.keyPattern)[0] === 'mail') {
-            return res.status(403).json({ status: 'fail', message: 'This mail already exist. Please enter different one.' })
+            return res.status(401).json({ status: 'fail', message: 'This mail already exist. Please enter different one.' })
         }
         if (error.code === 11000 && Object.keys(error.keyPattern)[0] === 'username') {
-            return res.status(403).json({ status: 'fail', message: 'This username already exist. Please enter different one.' })
+            return res.status(401).json({ status: 'fail', message: 'This username already exist. Please enter different one.' })
         }
-        return res.status(403).json({ status: 'fail', message: error.message })
+        return res.status(401).json({ status: 'fail', message: error.message })
     }
 
 })
