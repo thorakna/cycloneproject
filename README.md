@@ -2,7 +2,7 @@
 ![Cyclone Gitad](https://github.com/thorakna/cycloneproject/blob/main/Design%20Images/gitad.png?raw=true)
  
 ## 📸 Screenshots
-<img src="./Design%20Images/loadingwindow.png"> <img src="./Design%20Images/signinscreen.png">
+<img width="29%" src="./Design%20Images/loadingwindow.png"> <img width="69%" src="./Design%20Images/signinscreen.png">
 
 
 ### 🚀 Technologies used in this project
