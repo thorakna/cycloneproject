@@ -13,16 +13,16 @@ React, React Native, Electron.js, Express.js, Socket.io, MongoDB
 #### Onur YAŞAR
 - Merging operations
 - Clientside operations
-- Animations & Graphics
+- Animations & Graphics <br>
 [\[Github\]](https://github.com/thorakna)
 
 #### Umut TÜRK
 - Serverside operations
-- Database setup
+- Database setup <br>
 [\[Github\]](https://github.com/umuttrk)
 
 #### Burak Can ALTUNOGLU
-- Design support
+- Design support <br>
 [\[Github\]](https://github.com/burakcaltun)
 
 
