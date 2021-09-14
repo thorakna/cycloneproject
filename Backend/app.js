@@ -1,23 +1,21 @@
 const express = require('express');
 const app = express();
-const bodyParser = require('body-parser')
 const User = require('./models/user');
 const bcrypt = require('bcryptjs');
-const sendMail = require('./sendmail');
+const sendMail = require('./mail');
 const jwt = require('jsonwebtoken');
+
 const dotenv = require('dotenv');
 dotenv.config({ path: './config.env' });
 const cors = require('cors');
+app.set('view engine', 'pug')
 const JWT_SECRET = process.env.JWT_SECRET
-
-app.use(bodyParser.json());
-//app.use(bp.urlencoded({ extended: true }))
+app.use(express.json());
 app.use(cors());
 app.get('/', (req, res) => {
     res.send('Cyclone Api');
 });
-
-app.post('/login', async (req, res, next) => {
+app.post('/login', async (req, res) => {
     let { username, password } = req.body;
     let user;
     try {
@@ -39,12 +37,9 @@ app.post('/login', async (req, res, next) => {
         return res.status(200).json({ status: 'success', token });
     }
     return res.status(403).json({ status: 'fail', message: 'Wrong username or password' })
-})
-function validateEmail(email) {
-    const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    return re.test(String(email).toLowerCase());
-}
-app.post('/register', async (req, res, next) => {
+});
+
+app.post('/register', async (req, res) => {
 
     let { username, password, mail, imageUrl } = req.body;
 
@@ -82,7 +77,7 @@ app.post('/register', async (req, res, next) => {
             isEnabled
         }).then((data) => {
             console.log("User has been registered succesfully");
-            sendMail.sendMail(data.mail, data.uniqueString);
+            sendMail.sendMail(data.mail, data.uniqueString, 'verify');
             const token = jwt.sign({
                 id: data._id,
                 username: data.username
@@ -102,9 +97,49 @@ app.post('/register', async (req, res, next) => {
         return res.status(403).json({ status: 'fail', message: error.message })
     }
 
-})
+});
+app.post('/reset-password/:uniqueString', async (req, res) => {
+    const uniqueString = req.body.uniqueString;
+    const newPass = "1561561";
+    console.log("selam");
+    await bcrypt.hash(newPass, 10).then( async (hashedPassword) => {
+        console.log("ben");
+        await User.findOneAndUpdate({uniqueString},{hashedPassword},{new:true}).then(()=>{
+            console.log("umut");
+            res.redirect('/');
+        });
+    });
+});
+app.post('/reset-password', async (req, res) => {
+    const { mail } = req.body;
+    const user = await User.findOne({ mail });
+    if (!user) {
+        res.status(400).json({ status: 'fail', message: 'Please enter a valid mail address' })
+    } else {
+        sendMail.sendMail(user.mail, user.uniqueString, 'reset')
+        res.status(200).json({ status: 'success', message: 'Reset mail has been sent.Please check your mailbox' })
+    }
+});
 
-app.get('/verify/:uniqueString', async (req, res, next) => {
+
+app.get('/reset-password/:uniqueString', async (req, res) => {
+    const { uniqueString } = req.params;
+    const user = await User.findOne({ uniqueString });
+    if (user) {
+        res.render('reset-password',
+            {
+                uniqueString: uniqueString
+
+            })
+
+    } else {
+        res.send('404')
+    }
+    res.send(newPass)
+
+})
+    
+app.get('/verify/:uniqueString', async (req, res) => {
     const { uniqueString } = req.params;
     const user = await User.findOne({ uniqueString })
     if (user) {
@@ -115,4 +150,12 @@ app.get('/verify/:uniqueString', async (req, res, next) => {
         res.send('user not found')
     }
 })
+app.use((req, res) => {
+    res.send('<h1>404 NOT FOUND</h1>')
+})
 module.exports = app;
+
+function validateEmail(email) {
+    const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(String(email).toLowerCase());
+}
