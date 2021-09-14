@@ -21,7 +21,8 @@ exports.sendMail=(email,uniqueString)=>{
     };
     Transport.sendMail(mailOptions,function(err,res){
         if (err) {
-            console.log(err);
+            console.log("Mail couldn't send cause error");
+            
         }else{
             console.log("verification mail sent.");
         }
