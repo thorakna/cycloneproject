@@ -1,5 +1,7 @@
 ## CYCLONE PROJECT
 ![Cyclone Gitad](https://github.com/thorakna/cycloneproject/blob/main/Design%20Images/gitad.png?raw=true)
+
+<center>Cross-platform chat and socializing app</center>
  
 ## 📸 Screenshots
 <img width="29%" src="./Design%20Images/loadingwindow.png"> <img width="69%" src="./Design%20Images/signinscreen.png">
