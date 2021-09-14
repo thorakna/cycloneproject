@@ -1,3 +1,4 @@
 # CYCLONE PROJECT
 
-Backend
+npm install
+npm start
