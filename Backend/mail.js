@@ -26,7 +26,7 @@ exports.sendMail=(email,uniqueString,condition)=>{
                 from:sender,
                 to:email,
                 subject:"Password reset",
-                html:`<h1>Hello there</h1> <br> <h2>Press <a style='color:red' href=http://localhost:3000/reset-password/${uniqueString} >here</a> to reset your password.</h2><br><br>` 
+                html:`<h1>Hello there</h1> <br> <h2>Press <a style='color:red' href=http://localhost:3000/forgotten-password/${uniqueString} >here</a> to reset your password.</h2><br><br>` 
             };
     }
    
