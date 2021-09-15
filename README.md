@@ -1,17 +1,33 @@
 ## CYCLONE PROJECT
 ![Cyclone Gitad](https://github.com/thorakna/cycloneproject/blob/main/Design%20Images/gitad.png?raw=true)
+
+<p align="center">Cross-platform chat and socializing app</p>
  
+## 📸 Screenshots
+<img width="29%" src="./Design%20Images/loadingwindow.png"> <img width="69%" src="./Design%20Images/signinscreen.png">
+
+
+## 🚀 Technologies used in this project
+Node.js, React, React Native, Electron.js, Express.js, Socket.io, MongoDB
  
 
-### Kullanılan teknolojiler
-React, React Native, Electron.js, Express.js, Socket.io, MongoDB
- 
-### Katkıda bulunanlar
+## ✨ Contributors
 #### Onur YAŞAR
-- Front-end tasarım ve kodlama
+- Merging operations
+- Clientside operations
+- Animations & Graphics <br>
 [\[Github\]](https://github.com/thorakna)
 
 #### Umut TÜRK
-- Back-end kodlama
+- Serverside operations
+- Database setup <br>
 [\[Github\]](https://github.com/umuttrk)
-  
+
+#### Burak Can ALTUNOGLU
+- Design support <br>
+[\[Github\]](https://github.com/burakcaltun)
+
+
+
+<br><br>
+Made with :heart: and JavaScript!

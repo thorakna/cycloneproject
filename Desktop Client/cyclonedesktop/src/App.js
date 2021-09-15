@@ -3,6 +3,7 @@ import './App.css';
 import SignIn from './screens/SignIn';
 import SignUp from './screens/SignUp';
 import Home from './screens/Home';
+import Auth from './screens/Auth';
 
 import {
   BrowserRouter as Router,
@@ -11,16 +12,16 @@ import {
 
 import { CSSTransition } from 'react-transition-group';
 
-
 const routes = [
-  { path: '/', Component: SignIn },
+  { path: '/', Component: Auth},
+  { path: '/login', Component: SignIn },
   { path: '/home', Component: Home},
-  { path: '/kayitol', Component: SignUp },
+  { path: '/register', Component: SignUp },
 ]
 
 function App() {
   return (
-    <Router>
+    <Router basename="/cyclone">
           {routes.map(({ path, Component }) => (
             <Route key={path} exact path={path}>
               {({ match }) => (
