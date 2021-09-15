@@ -4,7 +4,8 @@ const User = require('./models/user');
 const bcrypt = require('bcryptjs');
 const sendMail = require('./mail');
 const jwt = require('jsonwebtoken');
-
+app.use(express.urlencoded({extended: true})); 
+app.use(express.json());
 const dotenv = require('dotenv');
 dotenv.config({ path: './config.env' });
 const cors = require('cors');
@@ -98,19 +99,7 @@ app.post('/register', async (req, res) => {
     }
 
 });
-app.post('/reset-password/:uniqueString', async (req, res) => {
-    const uniqueString = req.body.uniqueString;
-    const newPass = "1561561";
-    console.log("selam");
-    await bcrypt.hash(newPass, 10).then( async (hashedPassword) => {
-        console.log("ben");
-        await User.findOneAndUpdate({uniqueString},{hashedPassword},{new:true}).then(()=>{
-            console.log("umut");
-            res.redirect('/');
-        });
-    });
-});
-app.post('/reset-password', async (req, res) => {
+app.post('/forgotten-password', async (req, res) => {
     const { mail } = req.body;
     const user = await User.findOne({ mail });
     if (!user) {
@@ -120,25 +109,34 @@ app.post('/reset-password', async (req, res) => {
         res.status(200).json({ status: 'success', message: 'Reset mail has been sent.Please check your mailbox' })
     }
 });
-
-
-app.get('/reset-password/:uniqueString', async (req, res) => {
+app.get('/forgotten-password/:uniqueString', async (req, res) => {
     const { uniqueString } = req.params;
     const user = await User.findOne({ uniqueString });
     if (user) {
         res.render('reset-password',
             {
                 uniqueString: uniqueString
+            });
+        }else {
+         res.send('404');
+        }
+    })
 
-            })
-
-    } else {
-        res.send('404')
+app.post('/reset-password', async (req, res) => {
+    const uniqueString = req.body.uniqueString;
+    const newPass = req.body.password;
+   
+    try {
+        await bcrypt.hash(newPass, 10).then( async (hashedPassword) => {
+            await User.findOneAndUpdate({uniqueString},{hashedPassword},{new:true}).then(()=>{
+                res.send('your password changed properly');
+            });
+        });
+    } catch (error) {
+        console.log(error);
     }
-    res.send(newPass)
-
-})
-    
+});
+   
 app.get('/verify/:uniqueString', async (req, res) => {
     const { uniqueString } = req.params;
     const user = await User.findOne({ uniqueString })
@@ -150,12 +148,13 @@ app.get('/verify/:uniqueString', async (req, res) => {
         res.send('user not found')
     }
 })
+
 app.use((req, res) => {
-    res.send('<h1>404 NOT FOUND</h1>')
+    res.send('<h1>404 NOT FOUND</h1>');
 })
-module.exports = app;
 
 function validateEmail(email) {
     const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(String(email).toLowerCase());
 }
+module.exports = app;
