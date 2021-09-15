@@ -18,7 +18,7 @@ exports.sendMail=(email,uniqueString,condition)=>{
             from:sender,
             to:email,
             subject:"Email confirmation",
-            html:`<h1>Hello there</h1> <br> <h2>Press <a style='color:red' href=https://onuryasar.online/cyclone/verify/${uniqueString} >here</a> to verify your email.</h2><br><br>` 
+            html:`<h1>Hello there</h1> <br> <h2>Press <a style='color:red' href='http://localhost:3000/api/users/verify/${uniqueString}' >here</a> to verify your email.</h2><br><br>` 
         };
     
     }else if(condition=='reset'){
@@ -26,7 +26,7 @@ exports.sendMail=(email,uniqueString,condition)=>{
                 from:sender,
                 to:email,
                 subject:"Password reset",
-                html:`<h1>Hello there</h1> <br> <h2>Press <a style='color:red' href=http://localhost:3000/forgotten-password/${uniqueString} >here</a> to reset your password.</h2><br><br>` 
+                html:`<h1>Hello there</h1> <br> <h2>Press <a style='color:red' href='http://localhost:3000/api/users/forgotten-password/${uniqueString}' >here</a> to reset your password.</h2><br><br>` 
             };
     }
    
