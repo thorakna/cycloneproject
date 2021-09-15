@@ -8,7 +8,7 @@
 
 
 ## 🚀 Technologies used in this project
-React, React Native, Electron.js, Express.js, Socket.io, MongoDB
+Node.js, React, React Native, Electron.js, Express.js, Socket.io, MongoDB
  
 
 ## ✨ Contributors
