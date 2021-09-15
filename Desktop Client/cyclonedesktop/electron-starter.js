@@ -10,21 +10,19 @@ let mainWindow;
 function createLoadingScreen(){
   loadingWindow = new BrowserWindow({width:300, height:400, frame:false, show:false, resizable:false, alwaysOnTop:true,icon: path.join(__dirname, 'public/favicon.ico'),
     webPreferences: {
-    nativeWindowOpen:false,
+      nativeWindowOpen:false,
   }});
   loadingWindow.loadFile('loadingScreen.html');
   createWindow();
+
   loadingWindow.once('ready-to-show', () => {
     loadingWindow.show();
   });
 
   mainWindow.once('ready-to-show', () => {
-    setTimeout(()=>{
-      loadingWindow.close();
-      mainWindow.show();
-    }, 4000);
+    loadingWindow.close();
+    mainWindow.show();
   })
-  
 }
 
 function createWindow () {
@@ -42,6 +40,7 @@ function createWindow () {
   })
 
   mainWindow.loadURL('http://localhost:3000')
+  mainWindow.webContents.openDevTools()
 }
 
 app.whenReady().then(() => {
