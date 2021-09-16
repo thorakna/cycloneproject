@@ -25,7 +25,7 @@ exports.postLogin= async (req, res) => {
             id: user._id,
             username: user.username
         }, JWT_SECRET);
-        return res.status(200).json({ status: 'success', token });
+        return res.status(200).json({ status: 'success', token ,data:user});
     }
     return res.status(403).json({ status: 'fail', message: 'Wrong username or password' })
 }
@@ -66,15 +66,15 @@ exports.postRegister= async (req, res) => {
             imageUrl,
             uniqueString,
             isEnabled
-        }).then((data) => {
+        }).then((user) => {
             console.log("User has been registered succesfully");
-            sendMail.sendMail(data.mail, data.uniqueString, 'verify');
+            sendMail.sendMail(user.mail, user.uniqueString, 'verify');
             const token = jwt.sign({
-                id: data._id,
-                username: data.username
+                id: user._id,
+                username: user.username
 
             }, JWT_SECRET)
-            return res.status(200).json({ status: 'success', token })
+            return res.status(200).json({ status: 'success', token ,data:user})
         })
 
     } catch (error) {
@@ -110,18 +110,22 @@ exports.getForgottenPassword=async (req, res) => {
                 uniqueString: uniqueString
             });
         }else {
-         res.send('404');
+         res.send('<h1>404 not found</h1><br><h2>Remember that you can use this url just one time.</h2>');
         }
 }
 
 exports.postResetPassword=async (req, res) => {
     const uniqueString = req.body.uniqueString;
     const newPass = req.body.password;
-   
+
     try {
         await bcrypt.hash(newPass, 10).then( async (hashedPassword) => {
-            await User.findOneAndUpdate({uniqueString},{hashedPassword},{new:true}).then(()=>{
-                res.send('your password changed properly');
+            await User.findOneAndUpdate({uniqueString},{hashedPassword},{new:true}).then(async ()=>{
+                const newUniqStr=sendMail.randString();
+                await User.findOneAndUpdate({uniqueString},{uniqueString:newUniqStr},{new:true}).then(()=>{
+                     res.send('your password changed properly');
+                })
+               
             });
         });
     } catch (error) {
@@ -140,6 +144,7 @@ exports.getVerify=async (req, res) => {
         res.send('user not found')
     }
 }
+
 function validateEmail(email) {
     const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(String(email).toLowerCase());
