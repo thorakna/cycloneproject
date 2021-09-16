@@ -8,4 +8,5 @@ router.post('/forgotten-password',authController.postForgottenPassword);
 router.get('/forgotten-password/:uniqueString',authController.getForgottenPassword);
 router.post('/reset-password',authController.postResetPassword);
 router.get('/verify/:uniqueString',authController.getVerify);
+
 module.exports=router;

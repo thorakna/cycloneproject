@@ -40,11 +40,15 @@ exports.sendMail=(email,uniqueString,condition)=>{
     })
 }
 exports.randString=()=>{
-    const len=9;
-    let randStr='';
-    for (let i = 0; i < len; i++) {
-       var ch=Math.floor((Math.random()*10)+1);
-       randStr+=ch;
-    }
-    return randStr;
+    // const len=9;
+    // let randStr='';
+    // for (let i = 0; i < len; i++) {
+    //    var ch=Math.floor((Math.random()*10)+1);
+    //    randStr+=ch;
+    // }
+    // return randStr;
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+        var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+        return v.toString(16);
+      });
 }
