@@ -30,4 +30,4 @@ Node.js, React, React Native, Electron.js, Express.js, Socket.io, MongoDB
 
 
 <br><br>
-Made with :heart: and JavaScript!
+<p align="right">Made with :heart: and JavaScript!</p>
