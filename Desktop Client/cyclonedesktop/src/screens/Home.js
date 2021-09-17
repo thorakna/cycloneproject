@@ -1,8 +1,9 @@
-//import logo from '../images/icon.png';
+import logo from '../images/icon_small.png';
 import React, { useEffect, useState } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import '../style/parallax-star.css';
-//import { IoMail, IoKey, IoPerson } from "react-icons/io5";
+import '../style/Home.css';
+import { IoExit } from "react-icons/io5";
 
 import Modal from '../components/Modal';
 
@@ -24,22 +25,35 @@ export default function Home() {
   }
 
   return (
-    <div className="parallax-back">
-      <Modal mState={{iShow, setiShow}}>
-          {
-            loading ? <p>Loading</p>
-            :
-            modalMessage
-          }
-      </Modal>
-      <div className="App">
-        Burası home ekranımız!!!
+      <div className="App-Home">
+        <Modal mState={{iShow, setiShow}}>
+            {
+              loading ? <p>Loading</p>
+              :
+              modalMessage
+            }
+        </Modal>
+        <div className="Navigator">
+          <img src={logo} className="App-H-Logo" alt="App Logo" />
+        </div>
+        <div className="ChannelContainer">
+            <h3>Chat Channels</h3>
+            <button style={{bottom:20, position:"absolute"}} onClick={logout} className="cycloButton primaryColor"><IoExit/> Log out</button>
+        </div>
+        <div className="ChatContainer">
+          <div className="ChatHeader">
+            <div className="UserPP">
+              <img src={logo}></img>
+            </div>
+            <div className="UserDetails">
+              Onur YAŞAR
+              <p>Full Stack Developer</p>
+            </div>
+          </div>
+        </div>
+        <div className="DetailContainer">
 
-        <button onClick={logout} className="cycloButton primaryColor">Çıkış yap bakem</button>
+        </div>
       </div>
-      <div id='stars'></div>
-      <div id='stars2'></div>
-      <div id='stars3'></div>
-    </div>
   );
 }
