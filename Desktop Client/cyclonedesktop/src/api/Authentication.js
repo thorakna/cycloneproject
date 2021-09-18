@@ -1,7 +1,7 @@
 import { server_adress } from "./Config";
 
 export default async function Login(username, pass){
-    const rawResponse = await fetch(server_adress+"login", {
+    const rawResponse = await fetch(server_adress+"api/users/login", {
         method: 'POST',
         headers: {
             'Accept': 'application/json',
@@ -15,7 +15,7 @@ export default async function Login(username, pass){
 }
 
 export async function Register(email, pass, username){
-    const rawResponse = await fetch(server_adress+"register", {
+    const rawResponse = await fetch(server_adress+"api/users/register", {
         method: 'POST',
         headers: {
             'Accept': 'application/json',
