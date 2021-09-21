@@ -12,6 +12,28 @@ body{
   overflow: hidden;
 }
 
+/* ===== Scrollbar CSS ===== */
+  /* Firefox */
+  * {
+    scrollbar-width: auto;
+    scrollbar-color: #0066ffb0 transparent;
+  }
+
+  /* Chrome, Edge, and Safari */
+  *::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  *::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  *::-webkit-scrollbar-thumb {
+    background-color: #0066ffb0;
+    border:0px solid;
+    border-radius: 10px;
+  }
+
 /* Css Animations */
 @keyframes slideIn {
   0% {
@@ -99,6 +121,18 @@ button:focus {outline:0;}
 .secondaryColor:hover{ background-color: #131313;}
 .secondaryColor:active{ background-color: #000;}
 
+.Online{
+  -webkit-box-shadow: 0px 0px 10px 0px rgba(0,255,0,0.5);
+  -moz-box-shadow: 0px 0px 10px 0px rgba(0,255,0,0.5);
+  box-shadow: 0px 0px 10px 0px rgba(0,255,0,0.5);
+}
+
+.Offline{
+  -webkit-box-shadow: 0px 0px 10px 0px rgba(134, 134, 134,0.5);
+  -moz-box-shadow: 0px 0px 10px 0px rgba(134, 134, 134,0.5);
+  box-shadow: 0px 0px 10px 0px rgba(134, 134, 134,0.5);
+}
+
 .cycloButton{
   display: block;
   padding: 4px 20px;
@@ -185,6 +219,10 @@ button:focus {outline:0;}
 
 .inputfield button{
   flex: 1;
+}
+
+svg{
+  margin: 5px;
 }
 
 .inputfield svg{
