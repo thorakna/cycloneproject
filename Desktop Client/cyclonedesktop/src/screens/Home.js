@@ -40,6 +40,113 @@ export default function Home() {
         <div className="ChannelContainer">
             <h4>Chat Channels</h4>
             <p className="descGray">Stay in touch with your contacts!</p>
+            <ul className="Channels">
+              <li>
+                <img src={logo}></img>
+                <div className="ChCon">
+                  <b>Onur Yaşar</b>
+                  <aside className="descGray">Selam kanka</aside>
+                </div>
+              </li>
+              <li>
+                <img src={logo}></img>
+                <div className="ChCon">
+                  <b>Umut Türk</b>
+                  <aside className="descGray">Öyle mi?</aside>
+                </div>
+              </li>
+              <li>
+                <img src={logo}></img>
+                <div className="ChCon">
+                  <b>Burak Can Altunoğlu</b>
+                  <aside className="descGray">Geliyorum şimdi</aside>
+                </div>
+              </li>
+              <li>
+                <img src={logo}></img>
+                <div className="ChCon">
+                  <b>Onur Yaşar</b>
+                  <aside className="descGray">Selam kanka</aside>
+                </div>
+              </li>
+              <li>
+                <img src={logo}></img>
+                <div className="ChCon">
+                  <b>Umut Türk</b>
+                  <aside className="descGray">Öyle mi?</aside>
+                </div>
+              </li>
+              <li>
+                <img src={logo}></img>
+                <div className="ChCon">
+                  <b>Burak Can Altunoğlu</b>
+                  <aside className="descGray">Geliyorum şimdi</aside>
+                </div>
+              </li>
+              <li>
+                <img src={logo}></img>
+                <div className="ChCon">
+                  <b>Onur Yaşar</b>
+                  <aside className="descGray">Selam kanka</aside>
+                </div>
+              </li>
+              <li>
+                <img src={logo}></img>
+                <div className="ChCon">
+                  <b>Umut Türk</b>
+                  <aside className="descGray">Öyle mi?</aside>
+                </div>
+              </li>
+              <li>
+                <img src={logo}></img>
+                <div className="ChCon">
+                  <b>Burak Can Altunoğlu</b>
+                  <aside className="descGray">Geliyorum şimdi</aside>
+                </div>
+              </li>
+              <li>
+                <img src={logo}></img>
+                <div className="ChCon">
+                  <b>Onur Yaşar</b>
+                  <aside className="descGray">Selam kanka</aside>
+                </div>
+              </li>
+              <li>
+                <img src={logo}></img>
+                <div className="ChCon">
+                  <b>Umut Türk</b>
+                  <aside className="descGray">Öyle mi?</aside>
+                </div>
+              </li>
+              <li>
+                <img src={logo}></img>
+                <div className="ChCon">
+                  <b>Burak Can Altunoğlu</b>
+                  <aside className="descGray">Geliyorum şimdi</aside>
+                </div>
+              </li>
+              <li>
+                <img src={logo}></img>
+                <div className="ChCon">
+                  <b>Onur Yaşar</b>
+                  <aside className="descGray">Selam kanka</aside>
+                </div>
+              </li>
+              <li>
+                <img src={logo}></img>
+                <div className="ChCon">
+                  <b>Umut Türk</b>
+                  <aside className="descGray">Öyle mi?</aside>
+                </div>
+              </li>
+              <li>
+                <img src={logo}></img>
+                <div className="ChCon">
+                  <b>Burak Can Altunoğlu</b>
+                  <aside className="descGray">Geliyorum şimdi</aside>
+                </div>
+              </li>
+            </ul>
             <button style={{bottom:20, position:"absolute"}} onClick={logout} className="cycloButton primaryColor"><IoExit/> Log out</button>
         </div>
         <div className="ChatContainer">
@@ -49,7 +156,7 @@ export default function Home() {
             </div>
             <div className="UserDetails">
               Onur YAŞAR
-              <p className="descGray">Full Stack Developer</p>
+              <aside className="descGray">Full Stack Developer</aside>
             </div>
           </div>
           <div className="Chat">
@@ -74,6 +181,7 @@ export default function Home() {
               </div>
             </div>
           </div>
+
           <div className="ChatInput">
             <input type="text" placeholder="Send message!" value={message} autoComplete="off"  onChange={(e) => { setMessage(e.target.value); }}></input>
             <button onClick={()=>{}} className="SendButton primaryColor"><IoSend/></button>

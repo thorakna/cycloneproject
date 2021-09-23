@@ -20,9 +20,33 @@
 }
 
 .ChannelContainer{
-    padding: 16px 30px;
+    padding: 16px 20px;
     background: #0012297c;
     border-right: 2px solid #001B3D;
+}
+
+.Channels{
+    padding: 0;
+    height: calc(100% - 120px);
+    overflow-y: scroll;
+}
+
+.Channels li{
+    display: flex;
+    align-items: center;
+    background: #0012297c;
+    padding: 0px;
+    border:0px solid;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    list-style:none;
+    text-decoration: none;
+    cursor:pointer;
+    font-size: 14px;
+}
+
+.Channels img{
+    margin-right: 5px;
 }
 
 .ChatContainer{
@@ -35,14 +59,13 @@
     padding: 10px 20px;
     background: #0012297c;
     display: flex;
+    align-items: center;
     border-bottom: 2px solid #001B3D;
 }
 
 .Chat{
     flex: 1;
     overflow-y: scroll;
-
-    
 }
 
 .ChatInput{
@@ -102,8 +125,8 @@
 
 .MessageBox{
     background: #0012297c;
-    border: 2px solid #001B3D;
-    border-radius: 20px;
+    border: 0px solid #001B3D;
+    border-radius: 8px;
     padding: 5px 20px;
     flex: 1;
 }
