@@ -40,7 +40,6 @@ export default function Home() {
         <div className="ChannelContainer">
             <h4>Chat Channels</h4>
             <p className="descGray">Stay in touch with your contacts!</p>
-
             <ul className="Channels">
               <li>
                 <img src={logo}></img>
@@ -182,6 +181,7 @@ export default function Home() {
               </div>
             </div>
           </div>
+
           <div className="ChatInput">
             <input type="text" placeholder="Send message!" value={message} autoComplete="off"  onChange={(e) => { setMessage(e.target.value); }}></input>
             <button onClick={()=>{}} className="SendButton primaryColor"><IoSend/></button>
