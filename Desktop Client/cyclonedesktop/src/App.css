@@ -122,15 +122,15 @@ button:focus {outline:0;}
 .secondaryColor:active{ background-color: #000;}
 
 .Online{
-  -webkit-box-shadow: 0px 0px 10px 0px rgba(0,255,0,0.5);
-  -moz-box-shadow: 0px 0px 10px 0px rgba(0,255,0,0.5);
-  box-shadow: 0px 0px 10px 0px rgba(0,255,0,0.5);
+  -webkit-box-shadow: 0px 0px 5px 0px rgba(0,255,0);
+  -moz-box-shadow: 0px 0px 5px 0px rgba(0,255,0);
+  box-shadow: 0px 0px 5px 0px rgba(0,255,0);
 }
 
 .Offline{
-  -webkit-box-shadow: 0px 0px 10px 0px rgba(134, 134, 134,0.5);
-  -moz-box-shadow: 0px 0px 10px 0px rgba(134, 134, 134,0.5);
-  box-shadow: 0px 0px 10px 0px rgba(134, 134, 134,0.5);
+  -webkit-box-shadow: 0px 0px 5px 0px rgba(134, 134, 134);
+  -moz-box-shadow: 0px 0px 5px 0px rgba(134, 134, 134);
+  box-shadow: 0px 0px 5px 0px rgba(134, 134, 134);
 }
 
 .cycloButton{
