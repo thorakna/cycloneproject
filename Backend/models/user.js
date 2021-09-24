@@ -5,7 +5,10 @@ const userSchema=mongoose.Schema({
     hashedPassword:{type:String,required:true},
     imageUrl:{type:String},
     isEnabled:{type:Boolean},
-    uniqueString:{type:String,unique:true}
+    uniqueString:{type:String,unique:true},
+    friends:{type:Array},
+    sendFriendReqs:{type:Array},
+    incomingFriendReqs:{type:Array}
 },{collection:'users'})
 
 const model=mongoose.model('UserSchema',userSchema);
