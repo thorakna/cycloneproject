@@ -19,6 +19,24 @@
     border-right: 2px solid #001B3D;
 }
 
+.NaviButton{
+    border:0px solid;
+    border-radius: 16px;
+    background: transparent;
+    width: 56px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    margin-top: 10px;
+    transition: all 1s;
+}
+
+.NaviButton:hover{
+    background: #001B3D;
+}
+
 .ChannelContainer{
     padding: 16px 20px;
     background: #0012297c;

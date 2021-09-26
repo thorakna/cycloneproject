@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import '../style/parallax-star.css';
 import '../style/Home.css';
-import { IoExit, IoSend } from "react-icons/io5";
+import { IoExit, IoSend, IoSettings } from "react-icons/io5";
 
 import Modal from '../components/Modal';
 
@@ -36,6 +36,13 @@ export default function Home() {
         </Modal>
         <div className="Navigator">
           <img src={logo} className="App-H-Logo" alt="App Logo" />
+
+          <button className="NaviButton"><IoSettings/></button>
+          <button className="NaviButton"><IoSettings/></button>
+          <button className="NaviButton"><IoSettings/></button>
+          <button className="NaviButton"><IoSettings/></button>
+          
+          <button onClick={logout} className="NaviButton"><IoExit/></button>
         </div>
         <div className="ChannelContainer">
             <h4>Chat Channels</h4>
@@ -147,7 +154,6 @@ export default function Home() {
                 </div>
               </li>
             </ul>
-            <button style={{bottom:20, position:"absolute"}} onClick={logout} className="cycloButton primaryColor"><IoExit/> Log out</button>
         </div>
         <div className="ChatContainer">
           <div className="ChatHeader">
