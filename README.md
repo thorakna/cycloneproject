@@ -13,8 +13,12 @@ Node.js, React, React Native, Electron.js, Express.js, Socket.io, MongoDB
 
 ## ✨ Contributors
 #### Onur YAŞAR
-- Merging operations
+- Merging operations & Conflict resolving
 - Clientside operations
+  - API Connection
+  - Page design & styling
+  - Navigation operations
+  - Clientside security
 - Animations & Graphics <br>
 [\[Github\]](https://github.com/thorakna)
 
