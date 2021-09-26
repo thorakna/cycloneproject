@@ -6,15 +6,26 @@
 }
 
 .App-H-Logo{
-    width: 56px;
+    width: 48px;
+    height: 48px;
     background: #001B3D;
     padding: 10px;
     border:0px solid;
     border-radius: 16px;
+    cursor:pointer;
+    transition: all 0.5s ease;
+}
+
+.App-H-Logo:hover{
+    background: #001B3D;
 }
 
 .Navigator{
-    padding: 10px;
+    display: flex;
+    min-width: 72px;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
     background: #0012297c;
     border-right: 2px solid #001B3D;
 }
@@ -23,14 +34,20 @@
     border:0px solid;
     border-radius: 16px;
     background: transparent;
-    width: 56px;
-    height: 56px;
+    width: 48px;
+    height: 48px;
     display: flex;
     align-items: center;
     justify-content: center;
     color: white;
-    margin-top: 10px;
-    transition: all 1s;
+    margin-top: 20px;
+    transition: all 0.5s ease;
+}
+
+.NaviActive{
+    width: 56px;
+    height: 56px;
+    background: #001B3D;
 }
 
 .NaviButton:hover{
@@ -89,7 +106,7 @@
 .ChatInput{
     background: #0012297c;
     border-bottom: 2px solid #001B3D;
-    border-radius: 20px;
+    border-radius: 8px;
     margin: 10px;
     display: flex;
 }

@@ -30,7 +30,7 @@ function createWindow () {
     width: 1000,
     height: 700,
     minHeight: 550,
-    minWidth: 480,
+    minWidth: 600,
     autoHideMenuBar: true,
     show:false,
     icon: path.join(__dirname, 'public/favicon.ico'),
