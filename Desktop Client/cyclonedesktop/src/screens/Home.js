@@ -37,11 +37,10 @@ export default function Home() {
             }
         </Modal>
         <div className="Navigator">
-          <img onClick={()=>{setActivePage("home")}} src={logo} className={pageActive == "home" ? "App-H-Logo NaviActive" : "App-H-Logo"} alt="App Logo" />
-
-          <button className="NaviButton"><IoPeople/></button>
-          <button className="NaviButton"><IoSearch/></button>
-          <button onClick={()=>{setActivePage("settings")}} className={pageActive == "settings" ? "NaviButton NaviActive" : "NaviButton"}><IoSettings/></button>
+          <img onClick={()=>{setActivePage("home")}} src={logo} className={pageActive === "home" ? "App-H-Logo NaviActive" : "App-H-Logo"} alt="App Logo" />
+          <button onClick={()=>{setActivePage("people")}} className={pageActive === "people" ? "NaviButton NaviActive" : "NaviButton"}><IoPeople/></button>
+          <button onClick={()=>{setActivePage("search")}} className={pageActive === "search" ? "NaviButton NaviActive" : "NaviButton"}><IoSearch/></button>
+          <button onClick={()=>{setActivePage("settings")}} className={pageActive === "settings" ? "NaviButton NaviActive" : "NaviButton"}><IoSettings/></button>
           
           <button onClick={logout} className="NaviButton"><IoExit/></button>
         </div>
