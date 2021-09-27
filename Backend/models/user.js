@@ -6,9 +6,12 @@ const userSchema=mongoose.Schema({
     imageUrl:{type:String},
     isEnabled:{type:Boolean},
     uniqueString:{type:String,unique:true},
-    friends:{type:Array},
-    sendFriendReqs:{type:Array},
-    incomingFriendReqs:{type:Array}
+    // friends:{type:Array},
+    // sentFriendReqs:{type:Array},
+    // incomingFriendReqs:{type:Array},
+     friends:[String],
+    incomingFriendReqs:[String] ,
+    sentFriendReqs:[String]
 },{collection:'users'})
 
 const model=mongoose.model('UserSchema',userSchema);
