@@ -92,6 +92,14 @@ exports.postIgnoreFriendReq = async (req, res) => {
     }
 };
 
+exports.postSearchFriend =async (req, res) => {
+    const {entry}=req.body;
+    var regex=new RegExp(entry,'i');
+    await User.find({username:regex}).then((result)=>{
+        res.status(200).json({status:'success',data:result});
+    })
+};
+
 exports.postBlock = (req, res) => {
 
 
