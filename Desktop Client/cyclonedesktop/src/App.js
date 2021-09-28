@@ -13,17 +13,17 @@ import {
 import { CSSTransition } from 'react-transition-group';
 
 const routes = [
-  { path: '/', Component: Auth},
-  { path: '/login', Component: SignIn },
+  { path: '/', exact:true, Component: Auth},
   { path: '/home', Component: Home},
-  { path: '/register', Component: SignUp },
+  { path: '/login', Component: SignIn},
+  { path: '/register', Component: SignUp},
 ]
 
 function App() {
   return (
     <Router basename="/cyclone">
-          {routes.map(({ path, Component }) => (
-            <Route key={path} exact path={path}>
+          {routes.map(({ path, Component,exact }) => (
+            <Route exact={exact} key={path} path={path}>
               {({ match }) => (
                 <CSSTransition
                   in={match != null}
