@@ -91,13 +91,41 @@ exports.postIgnoreFriendReq = async (req, res) => {
         return res.json({status:'fail',msg:"database error"})
     }
 };
+exports.postRemoveFriend=async (req,res)=>{
+    const {removingUserId,removedUserId}=req.body;
+    try {
+        const removingUser=await User.findOne({_id:removingUserId});
+        var isValid=false;
+        removingUser.forEach(element => {
+            if (element===removedUserId) {
+                return isValid=true;
+            }
+        });
+        if (isValid) {
+            await User.findOneAndUpdate({_id:removingUserId},{$pull:{friends:removedUserId}}).then(async()=>{
+                await User.findOneAndUpdate({_id:removedUserId},{$pull:{friends:removingUserId}}).then(()=>{
+                    res.status(200).json({status:'success',msg:'friend removed'})
+                })
+            })
+        } else {
+            return res.status(400).json({status:'fail',msg:'sth is wrong'})
+        }
 
+    } catch (error) {
+        res.status(404).json({status:'fail',msg:'database error'})
+    }
+}
 exports.postSearchFriend =async (req, res) => {
     const {entry}=req.body;
     var regex=new RegExp(entry,'i');
+    try {
     await User.find({username:regex}).then((result)=>{
+
         res.status(200).json({status:'success',data:result});
-    })
+    });   
+    } catch (error) {
+        res.json({status:'fail',msg:error})
+    }
 };
 
 exports.postBlock = (req, res) => {
