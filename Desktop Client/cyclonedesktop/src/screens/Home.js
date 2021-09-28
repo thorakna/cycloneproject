@@ -5,22 +5,33 @@ import '../style/parallax-star.css';
 import '../style/Home.css';
 import { IoExit, IoSend, IoSettings, IoPeople, IoSearch } from "react-icons/io5";
 
-import Modal from '../components/Modal';
+import {
+  BrowserRouter as Router,
+  Route,
+  Link
+} from "react-router-dom";
 
-export default function Home() {
+import Modal from '../components/Modal';
+import Chat from "../pages/Chat";
+import Friends from "../pages/Friends";
+import Search from "../pages/Search";
+import Settings from '../pages/Settings';
+
+export default function Home({children}) {
   const history = useHistory();
   const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState("");
   const [iShow, setiShow] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
 
-  const [pageActive, setActivePage] = useState("home");
+  const [pageActive, setActivePage] = useState("/home/");
+  let location = useLocation();
 
   useEffect(() => {
     if(!localStorage.getItem("accessToken")){
       history.replace("/");
     }
-  }, [history]);
+    setActivePage(location.pathname);
+  }, [history, location]);
   
   const logout = () => {
     localStorage.removeItem("accessToken");
@@ -37,165 +48,16 @@ export default function Home() {
             }
         </Modal>
         <div className="Navigator">
-          <img onClick={()=>{setActivePage("home")}} src={logo} className={pageActive === "home" ? "App-H-Logo NaviActive" : "App-H-Logo"} alt="App Logo" />
-          <button onClick={()=>{setActivePage("people")}} className={pageActive === "people" ? "NaviButton NaviActive" : "NaviButton"}><IoPeople/></button>
-          <button onClick={()=>{setActivePage("search")}} className={pageActive === "search" ? "NaviButton NaviActive" : "NaviButton"}><IoSearch/></button>
-          <button onClick={()=>{setActivePage("settings")}} className={pageActive === "settings" ? "NaviButton NaviActive" : "NaviButton"}><IoSettings/></button>
-          
+          <img onClick={()=>{history.push("/home/");}} src={logo} className={pageActive === "/home/" ? "App-H-Logo NaviActive" : "App-H-Logo"} alt="App Logo" />
+          <button onClick={()=>{history.push("/home/friends");}} className={pageActive === "/home/friends" ? "NaviButton NaviActive" : "NaviButton"}><IoPeople/></button>
+          <button onClick={()=>{history.push("/home/search");}} className={pageActive === "/home/search" ? "NaviButton NaviActive" : "NaviButton"}><IoSearch/></button>
+          <button onClick={()=>{history.push("/home/settings");}} className={pageActive === "/home/settings" ? "NaviButton NaviActive" : "NaviButton"}><IoSettings/></button>
           <button onClick={logout} className="NaviButton"><IoExit/></button>
         </div>
-        <div className="ChannelContainer">
-            <h4>Chat Channels</h4>
-            <p className="descGray">Stay in touch with your contacts!</p>
-            <ul className="Channels">
-              <li>
-                <img src={logo}></img>
-                <div className="ChCon">
-                  <b>Onur Yaşar</b>
-                  <aside className="descGray">Selam kanka</aside>
-                </div>
-              </li>
-              <li>
-                <img src={logo}></img>
-                <div className="ChCon">
-                  <b>Umut Türk</b>
-                  <aside className="descGray">Öyle mi?</aside>
-                </div>
-              </li>
-              <li>
-                <img src={logo}></img>
-                <div className="ChCon">
-                  <b>Burak Can Altunoğlu</b>
-                  <aside className="descGray">Geliyorum şimdi</aside>
-                </div>
-              </li>
-              <li>
-                <img src={logo}></img>
-                <div className="ChCon">
-                  <b>Onur Yaşar</b>
-                  <aside className="descGray">Selam kanka</aside>
-                </div>
-              </li>
-              <li>
-                <img src={logo}></img>
-                <div className="ChCon">
-                  <b>Umut Türk</b>
-                  <aside className="descGray">Öyle mi?</aside>
-                </div>
-              </li>
-              <li>
-                <img src={logo}></img>
-                <div className="ChCon">
-                  <b>Burak Can Altunoğlu</b>
-                  <aside className="descGray">Geliyorum şimdi</aside>
-                </div>
-              </li>
-              <li>
-                <img src={logo}></img>
-                <div className="ChCon">
-                  <b>Onur Yaşar</b>
-                  <aside className="descGray">Selam kanka</aside>
-                </div>
-              </li>
-              <li>
-                <img src={logo}></img>
-                <div className="ChCon">
-                  <b>Umut Türk</b>
-                  <aside className="descGray">Öyle mi?</aside>
-                </div>
-              </li>
-              <li>
-                <img src={logo}></img>
-                <div className="ChCon">
-                  <b>Burak Can Altunoğlu</b>
-                  <aside className="descGray">Geliyorum şimdi</aside>
-                </div>
-              </li>
-              <li>
-                <img src={logo}></img>
-                <div className="ChCon">
-                  <b>Onur Yaşar</b>
-                  <aside className="descGray">Selam kanka</aside>
-                </div>
-              </li>
-              <li>
-                <img src={logo}></img>
-                <div className="ChCon">
-                  <b>Umut Türk</b>
-                  <aside className="descGray">Öyle mi?</aside>
-                </div>
-              </li>
-              <li>
-                <img src={logo}></img>
-                <div className="ChCon">
-                  <b>Burak Can Altunoğlu</b>
-                  <aside className="descGray">Geliyorum şimdi</aside>
-                </div>
-              </li>
-              <li>
-                <img src={logo}></img>
-                <div className="ChCon">
-                  <b>Onur Yaşar</b>
-                  <aside className="descGray">Selam kanka</aside>
-                </div>
-              </li>
-              <li>
-                <img src={logo}></img>
-                <div className="ChCon">
-                  <b>Umut Türk</b>
-                  <aside className="descGray">Öyle mi?</aside>
-                </div>
-              </li>
-              <li>
-                <img src={logo}></img>
-                <div className="ChCon">
-                  <b>Burak Can Altunoğlu</b>
-                  <aside className="descGray">Geliyorum şimdi</aside>
-                </div>
-              </li>
-            </ul>
-        </div>
-        <div className="ChatContainer">
-          <div className="ChatHeader">
-            <div className="UserPP">
-              <img src={logo} className="Online"></img>
-            </div>
-            <div className="UserDetails">
-              Onur YAŞAR
-              <aside className="descGray">Full Stack Developer</aside>
-            </div>
-          </div>
-          <div className="Chat">
-            <div className="MessageContainer">
-              <div className="MessagerPP">
-                <img src={logo}></img>
-              </div>
-              <div className="MessageBox">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer malesuada tincidunt odio a elementum. Nunc a erat consequat, vulputate nunc sit amet, molestie arcu. Etiam vel magna elit. Suspendisse sed eleifend mi, a porttitor ante. Fusce in placerat orci. Suspendisse erat tortor, laoreet ut mattis quis, interdum sed lorem. Ut venenatis placerat diam, vel volutpat massa malesuada in. Sed pulvinar odio ac tincidunt volutpat. Aenean vitae mi nisl. Sed sodales efficitur nibh, in ultricies est volutpat at. Sed sed lectus auctor, egestas nunc at, commodo tortor. Nunc dictum dolor non pharetra euismod. Morbi purus est, sodales id libero sit amet, maximus facilisis elit. In varius, turpis ac interdum luctus, eros metus mollis tortor, in malesuada elit ligula vitae leo. Vestibulum dictum orci ut nibh imperdiet, in pretium justo venenatis. Sed id pretium sapien.</div>
-            </div>
-
-            <div className="MessageContainer">
-              <div className="MessageBox">Lorem ipsum dolor sit amet consetectur mora la far!</div>
-              <div className="MessagerPP">
-                <img src={logo}></img>
-              </div>
-            </div>
-
-            <div className="MessageContainer">
-              <div className="MessageBox">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer malesuada tincidunt odio a elementum. Nunc a erat consequat, vulputate nunc sit amet, molestie arcu. Etiam vel magna elit. Suspendisse sed eleifend mi, a porttitor ante. Fusce in placerat orci. Suspendisse erat tortor, laoreet ut mattis quis, interdum sed lorem. Ut venenatis placerat diam, vel volutpat massa malesuada in. Sed pulvinar odio ac tincidunt volutpat. Aenean vitae mi nisl. Sed sodales efficitur nibh, in ultricies est volutpat at. Sed sed lectus auctor, egestas nunc at, commodo tortor. Nunc dictum dolor non pharetra euismod. Morbi purus est, sodales id libero sit amet, maximus facilisis elit. In varius, turpis ac interdum luctus, eros metus mollis tortor, in malesuada elit ligula vitae leo. Vestibulum dictum orci ut nibh imperdiet, in pretium justo venenatis. Sed id pretium sapien.</div>
-              <div className="MessagerPP">
-                <img src={logo}></img>
-              </div>
-            </div>
-          </div>
-
-          <div className="ChatInput">
-            <input type="text" placeholder="Send message!" value={message} autoComplete="off"  onChange={(e) => { setMessage(e.target.value); }}></input>
-            <button onClick={()=>{}} className="SendButton primaryColor"><IoSend/></button>
-          </div>
-        </div>
-        <div className="DetailContainer">
-
-        </div>
+        <Route exact path={"/home/"} component={Chat} />
+        <Route path={"/home/friends"} component={Friends} />
+        <Route path={"/home/search"} component={Search} />
+        <Route path={"/home/settings"} component={Settings} />
       </div>
   );
 }

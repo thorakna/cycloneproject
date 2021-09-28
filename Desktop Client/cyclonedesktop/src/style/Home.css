@@ -2,13 +2,12 @@
     background: radial-gradient(ellipse at bottom, #001229 0%, #000000 100%);
     color:white;
     display: flex;
-    height: 100%;
+    height: 100vh;
 }
 
 .App-H-Logo{
     width: 48px;
     height: 48px;
-    background: #001B3D;
     padding: 10px;
     border:0px solid;
     border-radius: 16px;
