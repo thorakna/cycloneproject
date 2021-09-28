@@ -14,7 +14,6 @@ exports.postSendFriendReq = async (req, res) => {
         });
         return a
     }
-
     try {
         senderUser = await User.findOne({ _id: senderUserId });
         receiverUser = await User.findOne({ _id: receiverUserId });
@@ -35,7 +34,6 @@ exports.postSendFriendReq = async (req, res) => {
             });
         });
     } catch (error) {
-        console.log('işte burası');
         return res.json({ status: 'fail', msg: 'database error.Try again later. Maybe you are trying to send request to non-exist someone.' })
     }
 
@@ -44,25 +42,54 @@ exports.postAddFriend = async (req, res) => {
     //this route for approving requests
     const { confirmingUserId, pendingUserId } = req.body;
     try {
-        //add if statement !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-        //
-        //
-        var updateForConfirmer = { $push: { friends: pendingUserId }, $pull: { incomingFriendReqs: pendingUserId } };
-        var updateForPending = { $pull: { sentFriendReqs: confirmingUserId }, $push: { friends: confirmingUserId } };
-        await User.findByIdAndUpdate({ _id: confirmingUserId }, updateForConfirmer).then(async () => {
-            await User.findByIdAndUpdate({ _id: pendingUserId }, updateForPending).then(() => {
-                return res.status(200).json({ status: 'success', msg: 'Request approved.' })
+        let confirmingUser = await User.findOne({ _id: confirmingUserId });
+        let isValid = false;
+        for (let i = 0; i < confirmingUser.incomingFriendReqs.length; i++) {
+            if (confirmingUser.incomingFriendReqs[i] === pendingUserId) {
+                isValid = true;
+            }
+        }
+        if (isValid) {
+            let updateForConfirmer = { $push: { friends: pendingUserId }, $pull: { incomingFriendReqs: pendingUserId } };
+            let updateForPending = { $pull: { sentFriendReqs: confirmingUserId }, $push: { friends: confirmingUserId } };
+            await User.findByIdAndUpdate({ _id: confirmingUserId }, updateForConfirmer).then(async () => {
+                await User.findByIdAndUpdate({ _id: pendingUserId }, updateForPending).then(() => {
+                    return res.status(200).json({ status: 'success', msg: 'Request approved.' })
+                })
             })
-        })
-
+        } else {
+            return res.status(400).json({ status: 'fail', msg: 'Something is wrong' })
+        }
     } catch (error) {
         return res.json({ status: 'fail', msg: 'database error.' })
     }
-
 };
-exports.postIgnoreFriendReq = (req, res) => {
+exports.postIgnoreFriendReq = async (req, res) => {
+    const {ignoringUserId,pendingUserId}=req.body;
+    try {
+        const ignoringUser=await User.findOne({_id:ignoringUserId});
+        let isValid=false;
+        ignoringUser.incomingFriendReqs.forEach(element => {
+            if (element===pendingUserId) {
+               return isValid=true;
+            }
+        });
 
+        if (isValid) {
+            const updateForIgnoring={$pull:{incomingFriendReqs:pendingUserId}}
+            const updateForPending={$pull:{sentFriendReqs:ignoringUserId}}
+            await User.findOneAndUpdate({_id:ignoringUserId},updateForIgnoring).then(async ()=>{
+                await User.findOneAndUpdate({_id:pendingUserId},updateForPending).then(()=>{
+                    return res.status(200).json({status:'success',msg:'Request ignored.'})
+                })
+            })
+        }else{
+            return res.json({status:'fail',msg:'Sth is wrong'})
+        }
+    } catch (error) {
+        console.log(error);
+        return res.json({status:'fail',msg:"database error"})
+    }
 };
 
 exports.postBlock = (req, res) => {
