@@ -1,7 +1,8 @@
 const User = require('../models/user');
-
+const tokenDecoder=require('../utils/decodeToken');
 exports.postSendFriendReq = async (req, res) => {
-    const { senderUserId, receiverUserId } = req.body;
+    const { senderUserToken, receiverUserId } = req.body;
+    const senderUserId=tokenDecoder.decodingJWT(senderUserToken)["id"];
     let senderUser;
     let receiverUser;
     function checkSendable(array) {
@@ -40,7 +41,8 @@ exports.postSendFriendReq = async (req, res) => {
 };
 exports.postAddFriend = async (req, res) => {
     //this route for approving requests
-    const { confirmingUserId, pendingUserId } = req.body;
+    const { confirmingUserToken, pendingUserId } = req.body;
+    const confirmingUserId=tokenDecoder.decodingJWT(confirmingUserToken)["id"];
     try {
         let confirmingUser = await User.findOne({ _id: confirmingUserId });
         let isValid = false;
@@ -65,7 +67,8 @@ exports.postAddFriend = async (req, res) => {
     }
 };
 exports.postIgnoreFriendReq = async (req, res) => {
-    const {ignoringUserId,pendingUserId}=req.body;
+    const {ignoringUserToken,pendingUserId}=req.body;
+    const ignoringUserId=tokenDecoder.decodingJWT(ignoringUserToken)["id"];
     try {
         const ignoringUser=await User.findOne({_id:ignoringUserId});
         let isValid=false;
@@ -91,13 +94,45 @@ exports.postIgnoreFriendReq = async (req, res) => {
         return res.json({status:'fail',msg:"database error"})
     }
 };
+exports.postRemoveFriend=async (req,res)=>{
+    const {removingUserToken,removedUserId}=req.body;
 
+    var removingUserId = tokenDecoder.decodingJWT(removingUserToken)["id"];
+
+    try {
+        const removingUser=await User.findOne({_id:removingUserId});
+        var isValid=false;
+        removingUser.forEach(element => {
+            if (element===removedUserId) {
+                return isValid=true;
+            }
+        });
+        if (isValid) {
+            await User.findOneAndUpdate({_id:removingUserId},{$pull:{friends:removedUserId}}).then(async()=>{
+                await User.findOneAndUpdate({_id:removedUserId},{$pull:{friends:removingUserId}}).then(()=>{
+                    res.status(200).json({status:'success',msg:'friend removed'})
+                })
+            })
+        } else {
+            return res.status(400).json({status:'fail',msg:'sth is wrong'})
+        }
+
+    } catch (error) {
+        res.status(404).json({status:'fail',msg:'database error'})
+    }
+}
 exports.postSearchFriend =async (req, res) => {
-    const {entry}=req.body;
+    const {searchingUserToken,entry}=req.body;
+    const searchingUserId=tokenDecoder.decodingJWT(searchingUserToken)["id"];
     var regex=new RegExp(entry,'i');
-    await User.find({username:regex}).then((result)=>{
+    try {
+    await User.find({username:regex,_id:{$ne:searchingUserId}}).select('username').then((result)=>{
+
         res.status(200).json({status:'success',data:result});
-    })
+    });   
+    } catch (error) {
+        res.json({status:'fail',msg:error})
+    }
 };
 
 exports.postBlock = (req, res) => {
