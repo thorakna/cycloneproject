@@ -12,7 +12,7 @@ const userSchema=mongoose.Schema({
      friends:[String],
     incomingFriendReqs:[String] ,
     sentFriendReqs:[String]
-},{collection:'users'})
+},{collection:'users',timestamps:true})
 
 const model=mongoose.model('UserSchema',userSchema);
 module.exports=model
