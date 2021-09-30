@@ -1,5 +1,5 @@
 .App-Home{
-    background: radial-gradient(ellipse at bottom, #001229 0%, #000000 100%);
+    background: radial-gradient(ellipse at bottom, #001229 0%, #000 100%);
     color:white;
     display: flex;
     height: 100vh;
@@ -163,4 +163,25 @@
     border-radius: 8px;
     padding: 5px 20px;
     flex: 1;
+}
+
+.PageContainer{
+    flex:1;
+    display: flex;
+    flex-direction: column;
+}
+
+.PageHeader{
+    padding: 10px 20px;
+    background: #0012297c;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border-bottom: 2px solid #001B3D;
+}
+
+.Page{
+    flex: 1;
+    border:0px solid;
+    overflow-y: scroll;
 }
