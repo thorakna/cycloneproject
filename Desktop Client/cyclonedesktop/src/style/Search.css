@@ -1,0 +1,22 @@
+.SearchInput{
+    width: 50%;
+    min-width: 300px;
+    background: rgb(241, 241, 241);
+    border-radius: 8px;
+    margin: 10px;
+    margin-left: 50%;
+    transform: translate(-50%, -34px);
+}
+
+.SearchBack{
+    background: #00132c;
+    height: 80px;
+}
+
+.SearchInput input{
+    width: calc(100% - 80px);
+    background: transparent;
+    padding: 10px 10px;
+    border:0px solid;
+    border-radius: 12px;
+}

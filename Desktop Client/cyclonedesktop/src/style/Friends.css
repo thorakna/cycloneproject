@@ -1,0 +1,17 @@
+.FriendList{
+    padding:0px;
+}
+
+.FriendList li{
+    list-style: none;
+    text-decoration: none;
+    border:0px solid;
+    border-radius: 8px;
+    background: #001B3D;
+    margin:10px;
+    width: 120px;
+    text-align: center;
+    display: inline-block;
+    padding:5px 20px;
+    cursor:pointer;
+}

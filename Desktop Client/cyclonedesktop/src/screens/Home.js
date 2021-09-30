@@ -6,9 +6,7 @@ import '../style/Home.css';
 import { IoExit, IoSend, IoSettings, IoPeople, IoSearch } from "react-icons/io5";
 
 import {
-  BrowserRouter as Router,
-  Route,
-  Link
+  Route
 } from "react-router-dom";
 
 import Modal from '../components/Modal';

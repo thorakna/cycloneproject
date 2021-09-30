@@ -14,7 +14,7 @@ export default function Chat() {
     <>
         <div className="ChannelContainer">
             <h4>Chat Channels</h4>
-            <p className="descGray">Stay in touch with your contacts!</p>
+            <p className="descGray">Stay in touch with your friends!</p>
             <ul className="Channels">
               <li>
                 <img src={logo}></img>

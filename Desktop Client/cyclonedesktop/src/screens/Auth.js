@@ -6,11 +6,13 @@ export default function Auth() {
   let history = useHistory();
 
   useEffect(()=>{
-    if(localStorage.getItem("accessToken")){
-      history.replace("/home");
-    }else{
-      history.replace("/login");
-    }
+    setTimeout(()=>{
+      if(localStorage.getItem("accessToken")){
+        history.replace("/home");
+      }else{
+        history.replace("/login");
+      }
+    }, 500);
   }, [history]);
 
   return (
