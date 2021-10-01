@@ -143,6 +143,13 @@
     font-size: 14px;
 }
 
+.AddButton{
+    margin:5px 10px;
+    border:0px solid;
+    border-radius: 16px;
+    color:white;
+}
+
 .MessageContainer{
     display: flex;
     padding: 5px 10px;

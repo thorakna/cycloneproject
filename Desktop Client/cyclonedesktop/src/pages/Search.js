@@ -3,12 +3,24 @@ import { useHistory, useLocation } from 'react-router-dom';
 import '../style/parallax-star.css';
 import '../style/Search.css';
 import logo from "../images/icon_small.png";
-import { IoExit, IoSend, IoSettings, IoPeople, IoSearch } from "react-icons/io5";
+import { IoSearch, IoPersonAdd } from "react-icons/io5";
 
 
 export default function Search() {
   const history = useHistory();
   const [search, setSearch] = useState("");
+
+  const results = [];
+  for(var c=0; c < 20; c++){
+    results.push(<li style={{animationDelay: c*0.2+"s"}}>
+      <img src="https://onuryasar.online/images/clients/brkcanaltun.jpg"></img>
+      <div>
+        Cyclone User {c}
+        <aside class="descGray">#user{c}</aside>
+      </div>
+      <button onClick={()=>{}} className="AddButton primaryColor"><IoPersonAdd/></button>
+    </li>);
+  }
 
   return (
     <>
@@ -17,13 +29,16 @@ export default function Search() {
             <h4>Search</h4>
             <aside className="descGray">Search friends!</aside>
           </div>
-          <div className="Page">
+          <div className="Page" style={{overflowY:"auto"}}>
             <div className="SearchBack"></div>
             <div className="SearchInput">
               <input type="text" id="SearchInput" placeholder="Search friends!" value={search} autoComplete="off" onChange={(e)=>{setSearch(e.target.value);}}></input>
               <button onClick={()=>{}} className="SendButton primaryColor"><IoSearch/></button>
             </div>
 
+            <ul className="SearchResults">
+              {search && results}
+            </ul>
           </div>
         </div>
     </>
