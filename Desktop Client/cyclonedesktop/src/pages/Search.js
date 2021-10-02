@@ -12,7 +12,7 @@ export default function Search() {
 
   const results = [];
   for(var c=0; c < 20; c++){
-    results.push(<li style={{animationDelay: c*0.2+"s"}}>
+    results.push(<li style={{animationDelay: c*0.1+"s"}}>
       <img src="https://onuryasar.online/images/clients/brkcanaltun.jpg"></img>
       <div>
         Cyclone User {c}
@@ -33,11 +33,10 @@ export default function Search() {
             <div className="SearchBack"></div>
             <div className="SearchInput">
               <input type="text" id="SearchInput" placeholder="Search friends!" value={search} autoComplete="off" onChange={(e)=>{setSearch(e.target.value);}}></input>
-              <button onClick={()=>{}} className="SendButton primaryColor"><IoSearch/></button>
             </div>
 
             <ul className="SearchResults">
-              {search && results}
+              {search.length > 3 && results}
             </ul>
           </div>
         </div>
