@@ -1,7 +1,6 @@
 import logo from '../images/icon_small.png';
 import React, { useEffect, useState } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
-import '../style/parallax-star.css';
 import '../style/Home.css';
 import { IoExit, IoSend, IoSettings, IoPeople, IoSearch } from "react-icons/io5";
 

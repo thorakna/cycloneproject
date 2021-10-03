@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
-import '../style/parallax-star.css';
 import '../style/Search.css';
 import logo from "../images/icon_small.png";
 import { IoSearch, IoPersonAdd } from "react-icons/io5";
@@ -11,12 +10,12 @@ export default function Search() {
   const [search, setSearch] = useState("");
 
   const results = [];
-  for(var c=0; c < 20; c++){
+  for(var c=0; c < 50; c++){
     results.push(<li style={{animationDelay: c*0.1+"s"}}>
       <img src="https://onuryasar.online/images/clients/brkcanaltun.jpg"></img>
       <div>
         Cyclone User {c}
-        <aside class="descGray">#user{c}</aside>
+        <aside class="descGray">@user{c}</aside>
       </div>
       <button onClick={()=>{}} className="AddButton primaryColor"><IoPersonAdd/></button>
     </li>);
