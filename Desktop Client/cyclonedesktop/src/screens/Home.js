@@ -46,7 +46,7 @@ export default function Home({children}) {
             }
         </Modal>
         <div className="Navigator">
-          <img onClick={()=>{history.push("/home/");}} src={logo} className={pageActive === "/home/" ? "App-H-Logo NaviActive" : "App-H-Logo"} alt="App Logo" />
+          <img onClick={()=>{history.push("/home/");}} src={logo} className={pageActive === "/home/" || pageActive === "/home" ? "App-H-Logo NaviActive" : "App-H-Logo"} alt="App Logo" />
           <button onClick={()=>{history.push("/home/friends");}} className={pageActive === "/home/friends" ? "NaviButton NaviActive" : "NaviButton"}><IoPeople/></button>
           <button onClick={()=>{history.push("/home/search");}} className={pageActive === "/home/search" ? "NaviButton NaviActive" : "NaviButton"}><IoSearch/></button>
           <button onClick={()=>{history.push("/home/settings");}} className={pageActive === "/home/settings" ? "NaviButton NaviActive" : "NaviButton"}><IoSettings/></button>
