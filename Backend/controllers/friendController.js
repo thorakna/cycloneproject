@@ -1,14 +1,13 @@
 const User = require('../models/user');
-const tokenDecoder=require('../utils/decodeToken');
+const tokenOperations=require('../utils/tokenOperations');
 exports.postSendFriendReq = async (req, res) => {
-    const { senderUserToken, receiverUserId } = req.body;
-    const senderUserId=tokenDecoder.decodingJWT(senderUserToken)["id"];
+    const { senderUserMail, receiverUserMail } = req.body;
     let senderUser;
     let receiverUser;
     function checkSendable(array) {
         var a = false;
         array.forEach(element => {
-            if (element === receiverUserId) {
+            if (element === receiverUser._id) {
                 a = true;
                 return a;
             }
@@ -16,8 +15,8 @@ exports.postSendFriendReq = async (req, res) => {
         return a
     }
     try {
-        senderUser = await User.findOne({ _id: senderUserId });
-        receiverUser = await User.findOne({ _id: receiverUserId });
+        senderUser = await User.findOne({ mail: senderUserMail });
+        receiverUser = await User.findOne({ mail: receiverUserMail });
         if (senderUser._id.equals(receiverUser._id)) {
             return res.status(400).json({ status: 'success', msg: 'Oh no,you are trying to send request to ownself.' });
         }
@@ -27,35 +26,37 @@ exports.postSendFriendReq = async (req, res) => {
         if (checkSendable(senderUser.friends)) {
             return res.status(400).json({ status: 'fail', msg: 'You cannot send request to your friend.' });
         }
-        var updateForSender = { $push: { sentFriendReqs: receiverUserId } };
-        var updateForReceiver = { $push: { incomingFriendReqs: senderUserId } };
-        await User.findByIdAndUpdate({ _id: senderUserId }, updateForSender).then(async () => {
-            await User.findByIdAndUpdate({ _id: receiverUserId }, updateForReceiver).then(() => {
+        var updateForSender = { $push: { sentFriendReqs: receiverUser._id } };
+        var updateForReceiver = { $push: { incomingFriendReqs: senderUser._id } };
+        await User.findOneAndUpdate({ mail: senderUserMail }, updateForSender).then(async () => {
+            await User.findOneAndUpdate({ mail: receiverUserMail }, updateForReceiver).then(() => {
                 return res.status(200).json({ status: 'success', msg: 'Friend request has been sent.' })
             });
         });
     } catch (error) {
+        console.log(error);
         return res.json({ status: 'fail', msg: 'database error.Try again later. Maybe you are trying to send request to non-exist someone.' })
     }
 
 };
 exports.postAddFriend = async (req, res) => {
     //this route for approving requests
-    const { confirmingUserToken, pendingUserId } = req.body;
-    const confirmingUserId=tokenDecoder.decodingJWT(confirmingUserToken)["id"];
+    const { confirmingUserMail, pendingUserMail } = req.body;
     try {
-        let confirmingUser = await User.findOne({ _id: confirmingUserId });
+        let confirmingUser = await User.findOne({ mail: confirmingUserMail });
+        let pendingUser = await User.findOne({ mail: pendingUserMail });
+
         let isValid = false;
         for (let i = 0; i < confirmingUser.incomingFriendReqs.length; i++) {
-            if (confirmingUser.incomingFriendReqs[i] === pendingUserId) {
+            if (confirmingUser.incomingFriendReqs[i] === pendingUser._id) {
                 isValid = true;
             }
         }
         if (isValid) {
-            let updateForConfirmer = { $push: { friends: pendingUserId }, $pull: { incomingFriendReqs: pendingUserId } };
-            let updateForPending = { $pull: { sentFriendReqs: confirmingUserId }, $push: { friends: confirmingUserId } };
-            await User.findByIdAndUpdate({ _id: confirmingUserId }, updateForConfirmer).then(async () => {
-                await User.findByIdAndUpdate({ _id: pendingUserId }, updateForPending).then(() => {
+            let updateForConfirmer = { $push: { friends: pendingUser._id }, $pull: { incomingFriendReqs: pendingUser._id } };
+            let updateForPending = { $pull: { sentFriendReqs: confirmingUser._id }, $push: { friends: confirmingUser._id } };
+            await User.findByIdAndUpdate({ _id: confirmingUser._id }, updateForConfirmer).then(async () => {
+                await User.findByIdAndUpdate({ _id: pendingUser._id }, updateForPending).then(() => {
                     return res.status(200).json({ status: 'success', msg: 'Request approved.' })
                 })
             })
@@ -67,22 +68,22 @@ exports.postAddFriend = async (req, res) => {
     }
 };
 exports.postIgnoreFriendReq = async (req, res) => {
-    const {ignoringUserToken,pendingUserId}=req.body;
-    const ignoringUserId=tokenDecoder.decodingJWT(ignoringUserToken)["id"];
+    const {ignoringUserMail,pendingUserMail}=req.body;
     try {
-        const ignoringUser=await User.findOne({_id:ignoringUserId});
+        const ignoringUser=await User.findOne({mail:ignoringUserMail});
+        const pendingUser=await User.findOne({mail:pendingUserMail});
         let isValid=false;
         ignoringUser.incomingFriendReqs.forEach(element => {
-            if (element===pendingUserId) {
+            if (element===pendingUser._id) {
                return isValid=true;
             }
         });
 
         if (isValid) {
-            const updateForIgnoring={$pull:{incomingFriendReqs:pendingUserId}}
-            const updateForPending={$pull:{sentFriendReqs:ignoringUserId}}
-            await User.findOneAndUpdate({_id:ignoringUserId},updateForIgnoring).then(async ()=>{
-                await User.findOneAndUpdate({_id:pendingUserId},updateForPending).then(()=>{
+            const updateForIgnoring={$pull:{incomingFriendReqs:pendingUser._id}}
+            const updateForPending={$pull:{sentFriendReqs:ignoringUser._id}}
+            await User.findOneAndUpdate({_id:ignoringUser._id},updateForIgnoring).then(async ()=>{
+                await User.findOneAndUpdate({_id:pendingUser._id},updateForPending).then(()=>{
                     return res.status(200).json({status:'success',msg:'Request ignored.'})
                 })
             })
@@ -95,21 +96,19 @@ exports.postIgnoreFriendReq = async (req, res) => {
     }
 };
 exports.postRemoveFriend=async (req,res)=>{
-    const {removingUserToken,removedUserId}=req.body;
-
-    var removingUserId = tokenDecoder.decodingJWT(removingUserToken)["id"];
-
+    const {removingUserMail,removedUserMail}=req.body;
     try {
-        const removingUser=await User.findOne({_id:removingUserId});
+        const removingUser=await User.findOne({mail:removingUserMail});
+        const removedUser=await User.findOne({mail:removedUserMail});
         var isValid=false;
         removingUser.forEach(element => {
-            if (element===removedUserId) {
+            if (element===removedUser._id) {
                 return isValid=true;
             }
         });
         if (isValid) {
-            await User.findOneAndUpdate({_id:removingUserId},{$pull:{friends:removedUserId}}).then(async()=>{
-                await User.findOneAndUpdate({_id:removedUserId},{$pull:{friends:removingUserId}}).then(()=>{
+            await User.findOneAndUpdate({_id:removingUser._id},{$pull:{friends:removedUser._id}}).then(async()=>{
+                await User.findOneAndUpdate({_id:removedUser._id},{$pull:{friends:removingUser._id}}).then(()=>{
                     res.status(200).json({status:'success',msg:'friend removed'})
                 })
             })
@@ -122,11 +121,10 @@ exports.postRemoveFriend=async (req,res)=>{
     }
 }
 exports.postSearchFriend =async (req, res) => {
-    const {searchingUserToken,entry}=req.body;
-    const searchingUserId=tokenDecoder.decodingJWT(searchingUserToken)["id"];
+    const {searchingUserMail,entry}=req.body;
     var regex=new RegExp(entry,'i');
     try {
-    await User.find({username:regex,_id:{$ne:searchingUserId}}).select('username').then((result)=>{
+    await User.find({username:regex,mail:{$ne:searchingUserMail}}).select('username').then((result)=>{
 
         res.status(200).json({status:'success',data:result});
     });   

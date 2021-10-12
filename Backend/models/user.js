@@ -6,12 +6,11 @@ const userSchema=mongoose.Schema({
     imageUrl:{type:String},
     isEnabled:{type:Boolean},
     uniqueString:{type:String,unique:true},
-    // friends:{type:Array},
-    // sentFriendReqs:{type:Array},
-    // incomingFriendReqs:{type:Array},
-     friends:[String],
+    description:{type:String,default: "👋 Hey there, I am using Cyclone."},
+    friends:[String],
     incomingFriendReqs:[String] ,
-    sentFriendReqs:[String]
+    sentFriendReqs:[String],
+    refreshToken:{type:String}
 },{collection:'users',timestamps:true})
 
 const model=mongoose.model('UserSchema',userSchema);
