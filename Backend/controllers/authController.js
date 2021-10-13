@@ -7,7 +7,7 @@ const User = require('../models/user');
 const bcrypt = require('bcryptjs');
 const tokenOperations = require('../utils/tokenOperations');
 
-
+//burda gariplik var aga
 exports.postRefreshToken = async (req, res) => {
     //take the refresh token from the user
     const refreshToken = req.body.token;

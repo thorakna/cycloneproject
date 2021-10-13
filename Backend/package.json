@@ -19,7 +19,6 @@
     "nodemailer": "^6.6.3",
     "nodemon": "^2.0.12",
     "pug": "^3.0.2",
-    "rand-token": "^1.0.1",
     "socket.io": "^4.2.0"
   }
 }
