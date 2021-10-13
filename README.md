@@ -24,6 +24,10 @@ Node.js, React, React Native, Electron.js, Express.js, Socket.io, MongoDB
 
 #### Umut TÜRK
 - Serverside operations
+  - Authentication API
+  - Friendship operations API
+  - Settings API
+  - Security with jwt
 - Database setup <br>
 [\[Github\]](https://github.com/umuttrk)
 
