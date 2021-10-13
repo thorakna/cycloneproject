@@ -1,14 +1,13 @@
 .App-Home{
-    background: radial-gradient(ellipse at bottom, #001229 0%, #000000 100%);
+    background: radial-gradient(ellipse at bottom, #001229 0%, #000 100%);
     color:white;
     display: flex;
-    height: 100%;
+    height: 100vh;
 }
 
 .App-H-Logo{
     width: 48px;
     height: 48px;
-    background: #001B3D;
     padding: 10px;
     border:0px solid;
     border-radius: 16px;
@@ -144,6 +143,13 @@
     font-size: 14px;
 }
 
+.AddButton{
+    margin:5px 10px;
+    border:0px solid;
+    border-radius: 16px;
+    color:white;
+}
+
 .MessageContainer{
     display: flex;
     padding: 5px 10px;
@@ -164,4 +170,25 @@
     border-radius: 8px;
     padding: 5px 20px;
     flex: 1;
+}
+
+.PageContainer{
+    flex:1;
+    display: flex;
+    flex-direction: column;
+}
+
+.PageHeader{
+    padding: 10px 20px;
+    background: #0012297c;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border-bottom: 2px solid #001B3D;
+}
+
+.Page{
+    flex: 1;
+    border:0px solid;
+    overflow-y: scroll;
 }
