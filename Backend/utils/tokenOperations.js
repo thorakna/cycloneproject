@@ -16,12 +16,10 @@ exports.verify = (req, res, next) => {
     const username=req.body.username;
     const token = req.headers.token;
     const decodedValue=decodingJWT(token);
-
+    
     if (token && decodedValue["username"]===username) {
-                                     
       jwt.verify(token, JWT_SECRET, (err, user) => {
         if (err) {
-          console.log(err.message);
           if (err.message==='jwt expired') {
             return res.status(403).json({msg:"jwt expired"});
           }
@@ -37,7 +35,7 @@ exports.verify = (req, res, next) => {
 
 exports.generateAccessToken = (user) => {
     return jwt.sign({ id: user._id ,username: user.username}, JWT_SECRET, {
-      expiresIn: "10s",
+      expiresIn: "8h",
     });
   };
   
