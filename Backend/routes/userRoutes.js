@@ -18,12 +18,11 @@ router.post('/ignore-friend-req',verify,friendController.postIgnoreFriendReq);
 router.post('/remove-friend',verify,friendController.postRemoveFriend);
 router.post('/search',verify,friendController.postSearchFriend);
 
-router.post('/change-mail',settingsController.postChangeMail);
-router.post('/change-password',settingsController.postChangePassword);
-router.post('/change-username',settingsController.postChangeUsername);
-router.post('/change-description',settingsController.postChangeDescription);
+router.post('/change-credentials',settingsController.postChangeCredentials);
+//router.post('/change-password',settingsController.postChangePassword);
 
 router.post('/log-out',authController.postLogout);
-router.post('/refresh-token',authController.postRefreshToken);//????????
+router.post('/refresh-token',authController.postRefreshToken);
+
 //router.post('/block',friendController.postBlock);
 module.exports=router;

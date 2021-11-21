@@ -6,8 +6,7 @@ const JWT_SECRET = process.env.JWT_SECRET
 const User = require('../models/user');
 const bcrypt = require('bcryptjs');
 const tokenOperations = require('../utils/tokenOperations');
-
-//burda gariplik var aga
+const validateEmail=require('../utils/validateMail');
 exports.postRefreshToken = async (req, res) => {
     //take the refresh token from the user
     const refreshToken = req.body.token;
@@ -82,7 +81,7 @@ exports.postRegister = async (req, res) => {
     } if (password.length < 4) {
         return res.status(400).json({ status: 'fail', message: 'Too small password.Should be greater than 6 character' })
     }
-    if (!validateEmail(mail)) {
+    if (!validateEmail.validateEmail(mail)) {
         return res.status(400).json({ status: 'fail', message: 'Please enter a valid mail' })
     }
     const uniqueString = sendMail.randString();
@@ -109,8 +108,9 @@ exports.postRegister = async (req, res) => {
             console.log("User has been registered succesfully");
             sendMail.sendMail(user.mail, user.uniqueString, 'verify');
             const refreshToken=tokenOperations.generateRefreshToken(user);
+            console.log(refreshToken);
             const accessToken=tokenOperations.generateAccessToken(user);
-            await User.findOneAndUpdate({username:user.username},{refreshToken})
+             await User.findOneAndUpdate({username:user.username},{refreshToken})
             return res.status(200).json({ status: 'success', accessToken,refreshToken })
         })
 
@@ -183,7 +183,7 @@ exports.getVerify = async (req, res) => {
     }
 }
 
-function validateEmail(email) {
-    const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    return re.test(String(email).toLowerCase());
-}
+// function validateEmail(email) {
+//     const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+//     return re.test(String(email).toLowerCase());
+// }
