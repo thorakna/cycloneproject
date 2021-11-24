@@ -32,6 +32,7 @@ exports.sendMail=(email,uniqueString,condition)=>{
    
     Transport.sendMail(mailOptions,function(err,res){
         if (err) {
+            console.log(err);
             console.log("Mail couldn't send cause error");
             
         }else{

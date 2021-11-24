@@ -1,5 +1,6 @@
 const mongoose=require('mongoose');
 const userSchema=mongoose.Schema({
+    fullName:{type:String,default:""},
     username:{type:String,required:true,unique:true},
     mail:{type:String,required:true,unique:true},
     hashedPassword:{type:String,required:true},
@@ -14,4 +15,4 @@ const userSchema=mongoose.Schema({
 },{collection:'users',timestamps:true})
 
 const model=mongoose.model('UserSchema',userSchema);
-module.exports=model
+module.exports=model    
