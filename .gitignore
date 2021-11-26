@@ -3,4 +3,5 @@
 /Backend/*env
 /Backend/env*
 /Backend/node_modules
+/Socket/node_modules
 .env
