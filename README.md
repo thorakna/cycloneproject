@@ -28,7 +28,9 @@ Node.js, React, React Native, Electron.js, Express.js, Socket.io, MongoDB
   - Friendship operations API
   - Settings API
   - Security with jwt
-- Database setup <br>
+  - Chatting API
+- Database setup 
+- Socket.io <br>
 [\[Github\]](https://github.com/umuttrk)
 
 #### Burak Can ALTUNOGLU
