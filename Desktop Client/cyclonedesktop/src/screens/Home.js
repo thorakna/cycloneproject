@@ -33,6 +33,7 @@ export default function Home({children}) {
   
   const logout = () => {
     localStorage.removeItem("accessToken");
+    localStorage.removeItem("username");
     history.replace("/");
   }
 

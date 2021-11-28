@@ -30,6 +30,7 @@ export default function SignIn() {
 
     if(data.status === "success"){
       localStorage.setItem("accessToken", data.token);
+      localStorage.setItem("username", username);
       history.replace("/home");
     }else{
       setModalMessage(data.message);
