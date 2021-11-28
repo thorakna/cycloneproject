@@ -18,8 +18,8 @@ router.post('/ignore-friend-req',verify,friendController.postIgnoreFriendReq);
 router.post('/remove-friend',verify,friendController.postRemoveFriend);
 router.post('/search',verify,friendController.postSearchFriend);
 
-router.post('/change-credentials',settingsController.postChangeCredentials);
-//router.post('/change-password',settingsController.postChangePassword);
+router.post('/change-credentials',verify,settingsController.postChangeCredentials);
+router.post('/get-credentials',settingsController.postGetCredentials);
 
 router.post('/log-out',authController.postLogout);
 router.post('/refresh-token',authController.postRefreshToken);

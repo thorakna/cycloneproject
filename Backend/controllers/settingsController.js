@@ -48,3 +48,22 @@ exports.postChangeCredentials=async (req,res)=>{
         return res.status(403).json({ status: 'fail', message: error.message })
     }
 }   
+
+exports.postGetCredentials=async(req,res)=>{
+    const {username}=req.body;
+    try {
+        const user=await User.findOne({username});
+        if (!user) {
+            return res.json({status:'fail',message:'user could not find in db'})
+        }
+        const credentials=[
+        {fullName:user.fullName},
+        {description:user.description},
+        {mail:user.mail},   
+        ]
+    res.status(200).json({status:'success',credentials:credentials})
+    } catch (error) {
+        res.json({status:'fail',message:error.message})
+    }
+   
+}
