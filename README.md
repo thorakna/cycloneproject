@@ -27,10 +27,10 @@ Node.js, React, React Native, Electron.js, Express.js, Socket.io, MongoDB
   - Authentication API
   - Friendship operations API
   - Settings API
-  - Security with jwt
+  - Security with JWT Tokens
   - Chatting API
 - Database setup 
-- Socket.io <br>
+- Serverside Realtime Operations (Socket.io) <br>
 [\[Github\]](https://github.com/umuttrk)
 
 #### Burak Can ALTUNOGLU
