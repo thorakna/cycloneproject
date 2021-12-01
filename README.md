@@ -37,6 +37,9 @@ Node.js, React, React Native, Electron.js, Express.js, Socket.io, MongoDB
 - Design support <br>
 [\[Github\]](https://github.com/burakcaltun)
 
+#### Furkan ERYILMAZ
+- Settings Client API <br>
+[\[Github\]](https://github.com/furkane-kolta)
 
 
 <br><br>
