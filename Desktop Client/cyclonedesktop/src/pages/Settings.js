@@ -12,6 +12,14 @@ export default function Settings() {
 
   const [password, setPass] = useState("");
   const [passwordc, setPassc] = useState("");
+
+  useEffect(() => {
+    // Settings bilgileri get edilecek
+  });
+  
+  const setCredentials = () => {
+    // Settings api çağırılacak
+  }
   
   return (
     <>
@@ -41,11 +49,11 @@ export default function Settings() {
               <div className="satirfield">
                 <div className="setfield" style={{marginRight: 20, animationDelay: 0.6+"s"}}>
                   Password
-                  <input type="password" id="PassInput" value={password} autoComplete="off" onChange={(e)=>{setPass(e.target.value);}}></input>
+                  <input type="password" id="PassInput" placeholder="•••••••••••••" value={password} autoComplete="off" onChange={(e)=>{setPass(e.target.value);}}></input>
                 </div>
                 <div className="setfield" style={{animationDelay: 0.8+"s"}}>
                   Password Confirm
-                  <input type="password" id="PassCInput" value={passwordc} autoComplete="off" onChange={(e)=>{setPassc(e.target.value);}}></input>
+                  <input type="password" id="PassCInput" placeholder="•••••••••••••" value={passwordc} autoComplete="off" onChange={(e)=>{setPassc(e.target.value);}}></input>
                 </div>
               </div>
 
