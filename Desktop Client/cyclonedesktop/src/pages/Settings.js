@@ -3,23 +3,36 @@ import { useHistory, useLocation } from 'react-router-dom';
 import '../style/Settings.css';
 import { IoPerson, IoInformation } from "react-icons/io5";
 
+import {getCredentials, changeCredentials} from "../api/SettingsAPI";
+
 
 export default function Settings() {
   const history = useHistory();
-  const [fullname, setFullname] = useState("Onur YAŞAR");
-  const [username, setUsername] = useState("Thorakna");
-  const [email, setEmail] = useState("onuryasar@mail.com");
-  const [bio, setBio] = useState("Ben kral bir adamım");
+  const [fullname, setFullname] = useState("Loading...");
+  const [username, setUsername] = useState("Loading...");
+  const [email, setEmail] = useState("Loading...");
+  const [bio, setBio] = useState("Loading...");
 
   const [password, setPass] = useState("");
   const [passwordc, setPassc] = useState("");
 
-  useEffect(() => {
+  useEffect(async () => {
     // Settings bilgileri get edilecek
+    var username = localStorage.getItem("username");
+    var token = localStorage.getItem("token");
+    const data = await getCredentials(username, token);
+    if(data.status == "success"){
+      // Burayı inputlara bağla kral
+      console.log(data.credentials);
+    }else{
+      // Şimdilik alert kardeşim :D
+      alert(data.message);
+    }
   });
   
   const setCredentials = () => {
     // Settings api çağırılacak
+
   }
   
   return (
