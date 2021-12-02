@@ -9,6 +9,7 @@ export default function Settings() {
   const [fullname, setFullname] = useState("Onur YAŞAR");
   const [username, setUsername] = useState("Thorakna");
   const [email, setEmail] = useState("onuryasar@mail.com");
+  const [bio, setBio] = useState("Ben kral bir adamım");
 
   const [password, setPass] = useState("");
   const [passwordc, setPassc] = useState("");
@@ -34,22 +35,27 @@ export default function Settings() {
               </div>
               
               <div className="setfield" style={{animationDelay: 0.4+"s"}}>
+                Biography
+                <input type="text" id="BioInput" value={bio} autoComplete="off" onChange={(e)=>{setBio(e.target.value);}}></input>
+              </div>
+
+              <div className="setfield" style={{animationDelay: 0.6+"s"}}>
                 Email Address
                 <input type="text" id="EmailInput" value={email} autoComplete="off" onChange={(e)=>{setEmail(e.target.value);}}></input>
               </div>
 
               <div className="satirfield">
-                <div className="setfield" style={{marginRight: 20, animationDelay: 0.6+"s"}}>
+                <div className="setfield" style={{marginRight: 20, animationDelay: 0.8+"s"}}>
                   Password
-                  <input type="password" id="PassInput" value={password} autoComplete="off" onChange={(e)=>{setPass(e.target.value);}}></input>
+                  <input type="password" id="PassInput" placeholder="•••••••••" value={password} autoComplete="off" onChange={(e)=>{setPass(e.target.value);}}></input>
                 </div>
-                <div className="setfield" style={{animationDelay: 0.8+"s"}}>
+                <div className="setfield" style={{animationDelay: 1+"s"}}>
                   Password Confirm
-                  <input type="password" id="PassCInput" value={passwordc} autoComplete="off" onChange={(e)=>{setPassc(e.target.value);}}></input>
+                  <input type="password" id="PassCInput" placeholder="•••••••••" value={passwordc} autoComplete="off" onChange={(e)=>{setPassc(e.target.value);}}></input>
                 </div>
               </div>
 
-              <div className="satirfield" style={{float:"right", animation: "slideInSoft 0.2s backwards", animationDelay: "1s"}}>
+              <div className="satirfield" style={{float:"right", animation: "slideInSoft 0.2s backwards", animationDelay: "1.02s"}}>
                 <button onClick={()=>{}} className="SendButton secondaryColor">Discard Changes</button>
                 <button onClick={()=>{}} className="SendButton primaryColor">Save Changes</button>
               </div>
