@@ -13,6 +13,14 @@ export default function Settings() {
 
   const [password, setPass] = useState("");
   const [passwordc, setPassc] = useState("");
+
+  useEffect(() => {
+    // Settings bilgileri get edilecek
+  });
+  
+  const setCredentials = () => {
+    // Settings api çağırılacak
+  }
   
   return (
     <>
