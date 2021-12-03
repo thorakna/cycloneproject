@@ -4,7 +4,8 @@ const JWT_SECRET = process.env.JWT_SECRET
 const jwt=require('jsonwebtoken');
 
 const decodingJWT = (token) => {
-  if(token !== null || token !== undefined){
+  //token !== null ||
+  if(token===null||token === undefined){
    return null;
   }else{
     const base64String = token.split('.')[1];
