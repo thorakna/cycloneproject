@@ -14,11 +14,11 @@ const decodingJWT = (token) => {
 }
 
 exports.verify = (req, res, next) => {
-    const username=req.body.username;
+    const { username } = req.body;
     const token = req.headers.token;
     const decodedValue=decodingJWT(token);
     
-    if (token && decodedValue["username"]===username) {
+    if (token && decodedValue["username"] === username) {
       jwt.verify(token, JWT_SECRET, (err, user) => {
         if (err) {
           if (err.message==='jwt expired') {
