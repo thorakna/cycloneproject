@@ -11,7 +11,6 @@ export async function getCredentials(username, token) {
         body: JSON.stringify({username})
     });
     const content = await rawResponse.json();
-    console.log(content);
     return content;
 }
 
@@ -26,6 +25,5 @@ export async function changeCredentials(username, newFullName, newMail, newUsern
         body: JSON.stringify({username, newFullName, newMail, newUsername, newDescription, currentPassword, newPassword})
     });
     const content = await rawResponse.json();
-    console.log(content);
     return content;
 }

@@ -3,22 +3,38 @@ import { useHistory, useLocation } from 'react-router-dom';
 import '../style/Settings.css';
 import { IoPerson, IoInformation } from "react-icons/io5";
 
+import {getCredentials, changeCredentials} from "../api/SettingsAPI";
+
 
 export default function Settings() {
   const history = useHistory();
-  const [fullname, setFullname] = useState("Onur YAŞAR");
-  const [username, setUsername] = useState("Thorakna");
-  const [email, setEmail] = useState("onuryasar@mail.com");
+  const [fullname, setFullname] = useState("Loading...");
+  const [username, setUsername] = useState("Loading...");
+  const [email, setEmail] = useState("Loading...");
+  const [bio, setBio] = useState("Loading...");
 
   const [password, setPass] = useState("");
   const [passwordc, setPassc] = useState("");
 
-  useEffect(() => {
+  useEffect(async () => {
     // Settings bilgileri get edilecek
-  });
+    var username = localStorage.getItem("username");
+    var token = localStorage.getItem("accessToken");
+    const data = await getCredentials(username, token);
+    if(data.status == "success"){
+      // Burayı inputlara bağla kral
+      setFullname(data.credentials.fullName);
+      setUsername(data.credentials.username);
+      setBio(data.credentials.description);
+      setEmail(data.credentials.mail);
+    }else{
+      alert(data.message);
+    }
+  },[]);
   
   const setCredentials = () => {
     // Settings api çağırılacak
+
   }
   
   return (
@@ -42,22 +58,27 @@ export default function Settings() {
               </div>
               
               <div className="setfield" style={{animationDelay: 0.4+"s"}}>
+                Biography
+                <input type="text" id="BioInput" value={bio} autoComplete="off" onChange={(e)=>{setBio(e.target.value);}}></input>
+              </div>
+
+              <div className="setfield" style={{animationDelay: 0.6+"s"}}>
                 Email Address
                 <input type="text" id="EmailInput" value={email} autoComplete="off" onChange={(e)=>{setEmail(e.target.value);}}></input>
               </div>
 
               <div className="satirfield">
-                <div className="setfield" style={{marginRight: 20, animationDelay: 0.6+"s"}}>
+                <div className="setfield" style={{marginRight: 20, animationDelay: 0.8+"s"}}>
                   Password
-                  <input type="password" id="PassInput" placeholder="•••••••••••••" value={password} autoComplete="off" onChange={(e)=>{setPass(e.target.value);}}></input>
+                  <input type="password" id="PassInput" placeholder="•••••••••" value={password} autoComplete="off" onChange={(e)=>{setPass(e.target.value);}}></input>
                 </div>
-                <div className="setfield" style={{animationDelay: 0.8+"s"}}>
+                <div className="setfield" style={{animationDelay: 1+"s"}}>
                   Password Confirm
-                  <input type="password" id="PassCInput" placeholder="•••••••••••••" value={passwordc} autoComplete="off" onChange={(e)=>{setPassc(e.target.value);}}></input>
+                  <input type="password" id="PassCInput" placeholder="•••••••••" value={passwordc} autoComplete="off" onChange={(e)=>{setPassc(e.target.value);}}></input>
                 </div>
               </div>
 
-              <div className="satirfield" style={{float:"right", animation: "slideInSoft 0.2s backwards", animationDelay: "1s"}}>
+              <div className="satirfield" style={{float:"right", animation: "slideInSoft 0.2s backwards", animationDelay: "1.02s"}}>
                 <button onClick={()=>{}} className="SendButton secondaryColor">Discard Changes</button>
                 <button onClick={()=>{}} className="SendButton primaryColor">Save Changes</button>
               </div>

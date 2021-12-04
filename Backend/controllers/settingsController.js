@@ -56,14 +56,13 @@ exports.postGetCredentials = async (req, res) => {
         if (!user) {
             return res.json({ status: 'fail', message: 'user could not find in db' })
         }
-        const credentials = [
-            { 
-                username:username,
-                fullName: user.fullName, 
-                description: user.description,
-                mail: user.mail },
-        ]
-        res.status(200).json({ status: 'success', credentials: credentials })
+        const credentials = { 
+            username:username,
+            fullName: user.fullName, 
+            description: user.description,
+            mail: user.mail 
+        };
+        res.status(200).json({ status: 'success', credentials: credentials });
     } catch (error) {
         res.json({ status: 'fail', message: error.message })
     }
