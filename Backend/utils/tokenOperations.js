@@ -1,10 +1,11 @@
 const dotenv = require('dotenv');
 dotenv.config({ path: './config.env' });
-const JWT_SECRET = process.env.JWT_SECRET
+const JWT_SECRET = process.env.JWT_SECRET;
 const jwt=require('jsonwebtoken');
 
 const decodingJWT = (token) => {
-  if(token !== null || token !== undefined){
+  //token !== null ||
+  if(token===null||token === undefined){
    return null;
   }else{
     const base64String = token.split('.')[1];
@@ -14,7 +15,7 @@ const decodingJWT = (token) => {
 }
 
 exports.verify = (req, res, next) => {
-    const { username } = req.body;
+    const username = req.body.username;
     const token = req.headers.token;
     const decodedValue=decodingJWT(token);
     

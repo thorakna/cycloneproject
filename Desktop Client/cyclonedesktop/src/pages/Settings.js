@@ -19,16 +19,18 @@ export default function Settings() {
   useEffect(async () => {
     // Settings bilgileri get edilecek
     var username = localStorage.getItem("username");
-    var token = localStorage.getItem("token");
+    var token = localStorage.getItem("accessToken");
     const data = await getCredentials(username, token);
     if(data.status == "success"){
       // Burayı inputlara bağla kral
-      console.log(data.credentials);
+      setFullname(data.credentials.fullName);
+      setUsername(data.credentials.username);
+      setBio(data.credentials.description);
+      setEmail(data.credentials.mail);
     }else{
-      // Şimdilik alert kardeşim :D
       alert(data.message);
     }
-  });
+  },[]);
   
   const setCredentials = () => {
     // Settings api çağırılacak
