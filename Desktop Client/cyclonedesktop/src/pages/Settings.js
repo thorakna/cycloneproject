@@ -2,43 +2,78 @@ import React, { useEffect, useState } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import '../style/Settings.css';
 import { IoPerson, IoInformation } from "react-icons/io5";
+import Modal from '../components/Modal';
 
 import {getCredentials, changeCredentials} from "../api/SettingsAPI";
 
 
-export default function Settings() {
+export default function Settings({ModalHandler}) {
   const history = useHistory();
   const [fullname, setFullname] = useState("Loading...");
   const [username, setUsername] = useState("Loading...");
   const [email, setEmail] = useState("Loading...");
   const [bio, setBio] = useState("Loading...");
+  const [oldData, setoldData] = useState([]);
+  const [areChanged, setAreChanged] = useState(false);
 
   const [password, setPass] = useState("");
   const [passwordc, setPassc] = useState("");
 
+  const [iShow, setiShow] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [modalMessage, setModalMessage] = useState("");
+
   useEffect(async () => {
-    // Settings bilgileri get edilecek
-    var username = localStorage.getItem("username");
+    var lusername = localStorage.getItem("username");
     var token = localStorage.getItem("accessToken");
-    const data = await getCredentials(username, token);
+    const data = await getCredentials(lusername, token);
     if(data.status == "success"){
-      // Burayı inputlara bağla kral
       setFullname(data.credentials.fullName);
       setUsername(data.credentials.username);
       setBio(data.credentials.description);
       setEmail(data.credentials.mail);
+
+      setoldData(data.credentials);
     }else{
-      alert(data.message);
+      setModalMessage(data.message);
+      setiShow(true);
     }
   },[]);
-  
-  const setCredentials = () => {
-    // Settings api çağırılacak
 
+  useEffect(()=>{
+    if(oldData.username === username && oldData.fullName === fullname && oldData.description === bio && oldData.mail === email && password === ""){
+      setAreChanged(false);
+    }else if(oldData !== []){
+      setAreChanged(true);
+    }
+  }, [fullname, username, email, bio, password]);
+  
+  const setCredentials = async () => {
+    var lusername = localStorage.getItem("username");
+    var token = localStorage.getItem("accessToken");
+
+    // Buraya popup açılıp current pass aldırılacak...
+    var currentPass = "deneme";
+    const data = await changeCredentials(lusername, token, fullname, email, username, bio, currentPass, password);
+
+    if(data.status == "success"){
+      setModalMessage(data.message);
+      setiShow(true);
+    }else{
+      setModalMessage(data.message);
+      setiShow(true);
+    }
   }
   
   return (
     <>
+        <Modal mState={{iShow, setiShow}}>
+            {
+              loading ? <p>Loading</p>
+              :
+              modalMessage
+            }
+        </Modal>
         <div className="PageContainer">
           <div className="PageHeader">
             <h4>Settings</h4>
@@ -80,7 +115,7 @@ export default function Settings() {
 
               <div className="satirfield" style={{float:"right", animation: "slideInSoft 0.2s backwards", animationDelay: "1.02s"}}>
                 <button onClick={()=>{}} className="SendButton secondaryColor">Discard Changes</button>
-                <button onClick={()=>{}} className="SendButton primaryColor">Save Changes</button>
+                <button disabled={!areChanged} onClick={setCredentials} className="SendButton primaryColor">Save Changes</button>
               </div>
             </div>
           </div>

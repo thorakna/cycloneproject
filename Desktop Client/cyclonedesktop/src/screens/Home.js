@@ -9,7 +9,6 @@ import {
   Route
 } from "react-router-dom";
 
-import Modal from '../components/Modal';
 import Chat from "../pages/Chat";
 import Friends from "../pages/Friends";
 import Search from "../pages/Search";
@@ -17,9 +16,6 @@ import Settings from '../pages/Settings';
 
 export default function Home({children}) {
   const history = useHistory();
-  const [loading, setLoading] = useState(false);
-  const [iShow, setiShow] = useState(false);
-  const [modalMessage, setModalMessage] = useState("");
 
   const [pageActive, setActivePage] = useState("/home/");
   let location = useLocation();
@@ -39,13 +35,6 @@ export default function Home({children}) {
 
   return (
       <div className="App-Home">
-        <Modal mState={{iShow, setiShow}}>
-            {
-              loading ? <p>Loading</p>
-              :
-              modalMessage
-            }
-        </Modal>
         <div className="Navigator">
           <img onClick={()=>{history.push("/home/");}} src={logo} className={pageActive === "/home/" || pageActive === "/home" ? "App-H-Logo NaviActive" : "App-H-Logo"} alt="App Logo" />
           <button onClick={()=>{history.push("/home/friends");}} className={pageActive === "/home/friends" ? "NaviButton NaviActive" : "NaviButton"}><IoPeople/></button>

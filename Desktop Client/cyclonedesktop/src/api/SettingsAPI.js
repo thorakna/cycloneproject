@@ -14,7 +14,7 @@ export async function getCredentials(username, token) {
     return content;
 }
 
-export async function changeCredentials(username, newFullName, newMail, newUsername, newDescription, currentPassword, newPassword, token) {
+export async function changeCredentials(username, token, newFullName, newMail, newUsername, newDescription, currentPassword, newPassword) {
     const rawResponse = await fetch(server_adress+"api/users/change-credentials", {
         method: 'POST',
         headers: {

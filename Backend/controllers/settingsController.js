@@ -9,11 +9,11 @@ exports.postChangeCredentials = async (req, res) => {
         return res.status(400).json({ status: 'fail', message: 'Please enter a valid mail' })
     }
     if (newUsername.length < 4) {
-        return res.json({ status: 'fail', message: 'username cannot be less than 4' })
+        return res.json({ status: 'fail', message: 'Username cannot be less than 4' })
     }
     try {
         await User.findOne({ username }).then(async (user) => {
-            user === null ? res.json({ status: 'fail', message: 'db error we could not find you' }) : '';
+            user === null ? res.json({ status: 'fail', message: 'Db error we could not find you' }) : '';
             console.log(user.hashedPassword);
             if (await bcrypt.compare(currentPassword, user.hashedPassword)) {
                 if (newPassword && newPassword.length < 6) {
@@ -26,7 +26,7 @@ exports.postChangeCredentials = async (req, res) => {
                     user.mail = newMail;
                     sendMail.sendMail(newMail, user.uniqueString, 'verify');
                 }
-                if (newUsername === '' && newUsername !== user.usernme) {
+                if (newUsername !== '' && newUsername !== user.username) {
                     user.username = newUsername;
                 }
                 user.fullName = newFullName;
@@ -54,7 +54,7 @@ exports.postGetCredentials = async (req, res) => {
     try {
         const user = await User.findOne({ username });
         if (!user) {
-            return res.json({ status: 'fail', message: 'user could not find in db' })
+            return res.json({ status: 'fail', message: 'User could not find in db' })
         }
         const credentials = { 
             username:username,
