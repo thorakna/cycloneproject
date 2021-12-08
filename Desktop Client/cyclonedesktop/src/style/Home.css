@@ -143,6 +143,10 @@
     font-size: 14px;
 }
 
+.SendButton:disabled {
+    background: #3e3e3e;
+}
+
 .AddButton{
     margin:5px 10px;
     border:0px solid;
