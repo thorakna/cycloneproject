@@ -14,7 +14,6 @@ export default function Settings({ModalHandler}) {
   const [email, setEmail] = useState("Loading...");
   const [bio, setBio] = useState("Loading...");
   const [oldData, setoldData] = useState([]);
-  const [areChanged, setAreChanged] = useState(false);
 
   const [password, setPass] = useState("");
   const [passwordc, setPassc] = useState("");
@@ -26,27 +25,20 @@ export default function Settings({ModalHandler}) {
   useEffect(async () => {
     var lusername = localStorage.getItem("username");
     var token = localStorage.getItem("accessToken");
+    setLoading(true);
     const data = await getCredentials(lusername, token);
+    setLoading(false);
     if(data.status == "success"){
       setFullname(data.credentials.fullName);
       setUsername(data.credentials.username);
       setBio(data.credentials.description);
       setEmail(data.credentials.mail);
-
       setoldData(data.credentials);
     }else{
       setModalMessage(data.message);
       setiShow(true);
     }
   },[]);
-
-  useEffect(()=>{
-    if(oldData.username === username && oldData.fullName === fullname && oldData.description === bio && oldData.mail === email && password === ""){
-      setAreChanged(false);
-    }else if(oldData !== []){
-      setAreChanged(true);
-    }
-  }, [fullname, username, email, bio, password]);
   
   const setCredentials = async () => {
     var lusername = localStorage.getItem("username");
@@ -63,6 +55,15 @@ export default function Settings({ModalHandler}) {
       setModalMessage(data.message);
       setiShow(true);
     }
+  }
+
+  const discardChanges = () => {
+    setFullname(oldData.fullName);
+    setEmail(oldData.mail);
+    setBio(oldData.description);
+    setUsername(oldData.username);
+    setPass("");
+    setPassc("");
   }
   
   return (
@@ -109,13 +110,13 @@ export default function Settings({ModalHandler}) {
                 </div>
                 <div className="setfield" style={{animationDelay: 1+"s"}}>
                   Password Confirm
-                  <input type="password" id="PassCInput" placeholder="•••••••••" value={passwordc} autoComplete="off" onChange={(e)=>{setPassc(e.target.value);}}></input>
+                  <input style={{'box-shadow': password !== passwordc && '0px 0px 10px 1px red'}} type="password" id="PassCInput" placeholder="•••••••••" value={passwordc} autoComplete="off" onChange={(e)=>{setPassc(e.target.value);}}></input>
                 </div>
               </div>
 
               <div className="satirfield" style={{float:"right", animation: "slideInSoft 0.2s backwards", animationDelay: "1.02s"}}>
-                <button onClick={()=>{}} className="SendButton secondaryColor">Discard Changes</button>
-                <button disabled={!areChanged} onClick={setCredentials} className="SendButton primaryColor">Save Changes</button>
+                <button onClick={discardChanges} className="SendButton secondaryColor">Discard Changes</button>
+                <button disabled={(oldData.username === username && oldData.fullName === fullname && oldData.description === bio && oldData.mail === email && password === "")} onClick={setCredentials} className="SendButton primaryColor">Save Changes</button>
               </div>
             </div>
           </div>
