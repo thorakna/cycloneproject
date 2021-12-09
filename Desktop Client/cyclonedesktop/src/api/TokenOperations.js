@@ -1,5 +1,10 @@
 import { server_adress } from "./Config";
 
+export async function setTokens(access, refresh){
+    localStorage.setItem("accessToken", access);
+    localStorage.setItem("refreshToken", refresh);
+}
+
 export async function RefreshToken(){
     var refreshToken = localStorage.getItem("refreshToken");
     const rawResponse = await fetch(server_adress+"api/users/refresh-token", {
@@ -13,8 +18,7 @@ export async function RefreshToken(){
     const content = await rawResponse.json();
     console.log(content);
     if(rawResponse.status === 200){
-        localStorage.setItem("accessToken", content.accessToken);
-        localStorage.setItem("refreshToken", content.refreshToken);
+        setTokens(content.accessToken, content.refreshToken);
         return true;
     }else{
         return false;

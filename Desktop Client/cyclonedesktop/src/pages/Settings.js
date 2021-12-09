@@ -5,6 +5,7 @@ import { IoPerson, IoInformation } from "react-icons/io5";
 import Modal from '../components/Modal';
 
 import {getCredentials, changeCredentials} from "../api/SettingsAPI";
+import { setTokens } from '../api/TokenOperations';
 
 
 export default function Settings({ModalHandler}) {
@@ -58,6 +59,10 @@ export default function Settings({ModalHandler}) {
         description: bio,
         mail: email 
       });
+
+      if(data.accessToken && data.refreshToken){
+        setTokens(data.accessToken, data.refreshToken);
+      }
     }else{
       setModalMessage(data.message);
       setiShow(true);
