@@ -2,7 +2,7 @@ const User = require('../models/user');
 const bcrypt = require('bcryptjs');
 const validateEmail = require('../utils/validateMail');
 const sendMail = require('../utils/mail');
-
+const tokenOperations=require('../utils/tokenOperations');
 exports.postChangeCredentials = async (req, res) => {
     let { username, newFullName, newMail, newUsername, newDescription, currentPassword, newPassword } = req.body;
     newFullName = newFullName.trim();
@@ -10,6 +10,7 @@ exports.postChangeCredentials = async (req, res) => {
     newUsername = newUsername.trim();
     newDescription = newDescription.trim();
     newPassword = newPassword.trim();
+  //const imageUrl=req.file.pathName;
     if (!validateEmail.validateEmail(newMail) && newMail.length!==0) {
         return res.status(400).json({ status: 'fail', message: 'Please enter a valid mail.' })
     }
@@ -21,6 +22,8 @@ exports.postChangeCredentials = async (req, res) => {
     }
     try {
         await User.findOne({username}).then(async (user) => {
+            let newAccessToken;
+            let newRefreshToken;
             if (!user) {
                 return res.json({status:'fail',message:'We could not find you.'})
             }
@@ -36,14 +39,17 @@ exports.postChangeCredentials = async (req, res) => {
                     sendMail.sendMail(newMail, user.uniqueString, 'verify');
                 }
                 if (newUsername !== '' && newUsername !== user.username) {
+                    newAccessToken=tokenOperations.generateAccessToken(user._id,newUsername);
+                    newRefreshToken=tokenOperations.generateRefreshToken(user._id,newUsername);
+                    user.refreshToken=newRefreshToken;
                     user.username = newUsername;
-                }
+                }   
                 user.fullName = newFullName;
                 user.description = newDescription;
                 user.save();
-                res.json({ status: 'success', message: 'User credentials has been updated.' })
+                res.json({ status: 'success', message: 'User credentials has been updated.' ,accessToken:newAccessToken,refreshToken:newRefreshToken})
             } else {
-                res.json({ status: 'fail', message: 'You entered wrong password.' })
+                res.json({ status: 'fail', message: 'You entered wrong password.'})
             }
         })
     } catch (error) {

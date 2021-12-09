@@ -35,14 +35,14 @@ exports.verify = (req, res, next) => {
     }
   };
 
-exports.generateAccessToken = (user) => {
-    return jwt.sign({ id: user._id ,username: user.username}, JWT_SECRET, {
+exports.generateAccessToken = (_id,_username) => {
+    return jwt.sign({ id: _id ,username: _username}, JWT_SECRET, {
       expiresIn: "12h",
     });
   };
   
 
-exports.generateRefreshToken = (user) => {
-    return jwt.sign({ id: user._id ,username: user.username}, JWT_SECRET);
+exports.generateRefreshToken = (_id,_username) => {
+    return jwt.sign({ id: _id ,username: _username}, JWT_SECRET);
   };
     
