@@ -37,6 +37,7 @@ export default function Settings({ModalHandler}) {
     }else{
       setModalMessage(data.message);
       setiShow(true);
+      console.log(data);
     }
   },[]);
   
@@ -51,6 +52,12 @@ export default function Settings({ModalHandler}) {
     if(data.status == "success"){
       setModalMessage(data.message);
       setiShow(true);
+      setoldData({
+        username:username,
+        fullName: fullname, 
+        description: bio,
+        mail: email 
+      });
     }else{
       setModalMessage(data.message);
       setiShow(true);
