@@ -11,11 +11,10 @@ export async function getCredentials(username, token) {
         body: JSON.stringify({username})
     });
     const content = await rawResponse.json();
-    console.log(content);
     return content;
 }
 
-export async function changeCredentials(username, newFullName, newMail, newUsername, newDescription, currentPassword, newPassword, token) {
+export async function changeCredentials(username, token, newFullName, newMail, newUsername, newDescription, currentPassword, newPassword) {
     const rawResponse = await fetch(server_adress+"api/users/change-credentials", {
         method: 'POST',
         headers: {
@@ -26,6 +25,5 @@ export async function changeCredentials(username, newFullName, newMail, newUsern
         body: JSON.stringify({username, newFullName, newMail, newUsername, newDescription, currentPassword, newPassword})
     });
     const content = await rawResponse.json();
-    console.log(content);
     return content;
 }

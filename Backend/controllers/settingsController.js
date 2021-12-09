@@ -63,7 +63,7 @@ exports.postGetCredentials = async (req, res) => {
     try {
         const user = await User.findOne({ username });
         if (!user) {
-            return res.json({ status: 'fail', message: 'user could not find in db' })
+            return res.json({ status: 'fail', message: 'User could not find in db' })
         }
         const credentials = {
             username: username,

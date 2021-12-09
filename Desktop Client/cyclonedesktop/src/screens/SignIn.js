@@ -29,7 +29,7 @@ export default function SignIn() {
     setLoading(false);
 
     if(data.status === "success"){
-      localStorage.setItem("accessToken", data.token);
+      localStorage.setItem("accessToken", data.accessToken);
       localStorage.setItem("username", username);
       history.replace("/home");
     }else{
