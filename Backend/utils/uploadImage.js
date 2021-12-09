@@ -1,5 +1,4 @@
 const multer = require('multer');
-//var mime = require('mime-magic');
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
         cb(null, './uploads/')
@@ -10,9 +9,7 @@ const storage = multer.diskStorage({
 });
 
 const fileFilter = (req, file, cb) => {
-    
-//console.log(req);
-    // reject a file
+
     console.log(file.mimetype);
     if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png' || file.mimetype==='image/jpg') {
       cb(null, true);

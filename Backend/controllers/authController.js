@@ -6,7 +6,7 @@ const JWT_SECRET = process.env.JWT_SECRET
 const User = require('../models/user');
 const bcrypt = require('bcryptjs');
 const tokenOperations = require('../utils/tokenOperations');
-const validateEmail=require('../utils/validateMail');
+const validateEmail = require('../utils/validateMail');
 
 exports.postRefreshToken = async (req, res) => {
     //take the refresh token from the user
@@ -14,16 +14,15 @@ exports.postRefreshToken = async (req, res) => {
     //send error if there is no token or it's invalid
     if (!refreshToken) return res.status(401).json("You are not authenticated!");
 
-    const user=await User.findOne({refreshToken});
+    const user = await User.findOne({ refreshToken });
     if (!user) {
         return res.status(403).json("Refresh token is not valid!");
     }
-    jwt.verify(refreshToken,JWT_SECRET,async (err, user) => {
-        err?console.log(err):'';
-        const newAccessToken = tokenOperations.generateAccessToken(user);
-        const newRefreshToken =tokenOperations.generateRefreshToken(user);
-
-        await User.findOneAndUpdate(user,{refreshToken:newRefreshToken})
+    jwt.verify(refreshToken, JWT_SECRET, async (err, user) => {
+        err ? console.log(err) : '';
+        const newAccessToken = tokenOperations.generateAccessToken(user._id,user.username);
+        const newRefreshToken = tokenOperations.generateRefreshToken(user._id,user.username);
+        await User.findOneAndUpdate(user, { refreshToken: newRefreshToken })
         res.status(200).json({
             accessToken: newAccessToken,
             refreshToken: newRefreshToken,
@@ -47,36 +46,34 @@ exports.postLogin = async (req, res) => {
         return res.status(403).json({ status: 'fail', message: 'Wrong username or password' })
     }
     if (await bcrypt.compare(password, user.hashedPassword)) {
-        const accessToken = tokenOperations.generateAccessToken(user);
-        const refreshToken=tokenOperations.generateRefreshToken(user);
-        
-        await User.findOneAndUpdate({_id:user._id},{refreshToken}).then(()=>{
+        console.log(user._id);                                                             
+        console.log(user.username);
+        const accessToken = tokenOperations.generateAccessToken(user._id,user.username);
+        const refreshToken = tokenOperations.generateRefreshToken(user._id,user.username);
+
+        await User.findOneAndUpdate({ _id: user._id }, { refreshToken }).then(() => {
             return res.status(200).json({ status: 'success', username, accessToken, refreshToken });
 
         })
-      
-    }else{
+
+    } else {
         return res.status(403).json({ status: 'fail', message: 'Wrong username or password' });
     }
-    
+
 }
-exports.postLogout=async (req,res)=>{
-    const {refreshToken}=req.body;
+exports.postLogout = async (req, res) => {
+    const { refreshToken } = req.body;
     try {
-        await User.findOneAndUpdate({refreshToken},{refreshToken:''})
+        await User.findOneAndUpdate({ refreshToken }, { refreshToken: '' })
     } catch (error) {
-        res.json('err')
+        res.json({status:'fail',message:'an error occured while exitting.'})
     }
-    
-    res.status(200).json({status:'success',msg:'user logged out'})
+
+    res.status(200).json({ status: 'success', msg: 'user logged out' })
 }
-exports.postRegister = async  (req, res) => {
+exports.postRegister = async (req, res) => {
     let { username, password, mail } = req.body;
-    // let imageUrl;
-    // if (req.file) {
-        //  imageUrl=req.file.filename;
-    // }
-    
+
     if (!username || typeof username !== 'string') {
         return res.status(400).json({ status: 'fail', message: 'Invalid username' })
     }
@@ -90,32 +87,27 @@ exports.postRegister = async  (req, res) => {
     }
     const uniqueString = sendMail.randString();
     const isEnabled = false;
-
-    //Create 
     try {
         username = username.trim();
         mail = mail.trim();
         password = password.trim();
-       
         const hashedPassword = await bcrypt.hash(password, 10);
         await User.create({
             username,
             mail,
             hashedPassword,
-            // imageUrl,
             uniqueString,
             isEnabled
         }).then(async (user) => {
             console.log(user.username);
             console.log("User has been registered succesfully");
             sendMail.sendMail(user.mail, user.uniqueString, 'verify');
-            const refreshToken=tokenOperations.generateRefreshToken(user);
-            console.log(refreshToken);
-            const accessToken=tokenOperations.generateAccessToken(user);
-             await User.findOneAndUpdate({username:user.username},{refreshToken})
-            return res.status(200).json({ status: 'success', accessToken,refreshToken })
+            const refreshToken = tokenOperations.generateRefreshToken(user._id,user.username);
+            //console.log(refreshToken);
+            const accessToken = tokenOperations.generateAccessToken(user._id,user.username);
+            await User.findOneAndUpdate({ username: user.username }, { refreshToken })
+            return res.status(200).json({ status: 'success', accessToken, refreshToken })
         })
-
     } catch (error) {
         if (error.code === 11000 && Object.keys(error.keyPattern)[0] === 'mail') {
             return res.status(403).json({ status: 'fail', message: 'This mail already exist. Please enter different one.' })
@@ -126,9 +118,7 @@ exports.postRegister = async  (req, res) => {
         console.log(error);
         return res.status(403).json({ status: 'fail', message: error.message })
     }
-
 }
-
 exports.postForgottenPassword = async (req, res) => {
     const { mail } = req.body;
     const user = await User.findOne({ mail });
@@ -139,7 +129,6 @@ exports.postForgottenPassword = async (req, res) => {
         res.status(200).json({ status: 'success', message: 'Reset mail has been sent.Please check your mailbox' })
     }
 }
-
 exports.getForgottenPassword = async (req, res) => {
     const { uniqueString } = req.params;
     const user = await User.findOne({ uniqueString });
@@ -152,11 +141,9 @@ exports.getForgottenPassword = async (req, res) => {
         res.send('<h1>404 not found</h1><br><h2>Remember that you can use this url just one time.</h2>');
     }
 }
-
 exports.postResetPassword = async (req, res) => {
     const uniqueString = req.body.uniqueString;
     const newPass = req.body.password;
-
     try {
         await bcrypt.hash(newPass, 10).then(async (hashedPassword) => {
             await User.findOneAndUpdate({ uniqueString }, { hashedPassword }, { new: true }).then(async () => {
@@ -171,7 +158,6 @@ exports.postResetPassword = async (req, res) => {
         console.log(error);
     }
 }
-
 exports.getVerify = async (req, res) => {
     const { uniqueString } = req.params;
     const user = await User.findOne({ uniqueString })
@@ -183,8 +169,3 @@ exports.getVerify = async (req, res) => {
         res.send('user not found')
     }
 }
-
-// function validateEmail(email) {
-//     const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-//     return re.test(String(email).toLowerCase());
-// }
