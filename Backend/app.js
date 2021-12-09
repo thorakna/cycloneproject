@@ -9,7 +9,7 @@ app.use(express.json());
 app.set('view engine', 'pug')
 app.use(express.json());
 app.use(cors());
-
+app.use(express.static('uploads'))
 app.get('/', (req, res) => {
     res.send(`<!DOCTYPE html>
     <html lang="en">

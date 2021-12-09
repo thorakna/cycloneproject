@@ -23,7 +23,7 @@ exports.verify = (req, res, next) => {
       jwt.verify(token, JWT_SECRET, (err, user) => {
         if (err) {
           if (err.message==='jwt expired') {
-            return res.status(403).json({message:"JWT expired"});
+            return res.status(403).json({status:"expired",message:"Your access token has been expired.Please login again."});
           }
           return res.status(403).json({message:"Token is not valid!"});
         }
@@ -37,7 +37,7 @@ exports.verify = (req, res, next) => {
 
 exports.generateAccessToken = (user) => {
     return jwt.sign({ id: user._id ,username: user.username}, JWT_SECRET, {
-      expiresIn: "8h",
+      expiresIn: "12h",
     });
   };
   

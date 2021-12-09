@@ -4,7 +4,7 @@ const userSchema=mongoose.Schema({
     username:{type:String,required:true,unique:true},
     mail:{type:String,required:true,unique:true},
     hashedPassword:{type:String,required:true},
-    imageUrl:{type:String},
+    imageUrl:{type:String,default:"init.png"},
     isEnabled:{type:Boolean},
     uniqueString:{type:String,unique:true},
     description:{type:String,default: "👋 Hey there, I am using Cyclone."},
