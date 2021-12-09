@@ -20,8 +20,10 @@ router.post('/ignore-friend-req', verify, friendController.postIgnoreFriendReq);
 router.post('/remove-friend', verify, friendController.postRemoveFriend);
 router.post('/search', verify, friendController.postSearchFriend);
 
+
 router.post('/change-credentials', verify, settingsController.postChangeCredentials);
 router.post('/get-credentials',  verify, settingsController.postGetCredentials);
+
 
 router.post('/log-out', authController.postLogout);
 router.post('/refresh-token', authController.postRefreshToken);
