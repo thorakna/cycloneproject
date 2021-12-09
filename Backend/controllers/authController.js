@@ -7,6 +7,7 @@ const User = require('../models/user');
 const bcrypt = require('bcryptjs');
 const tokenOperations = require('../utils/tokenOperations');
 const validateEmail=require('../utils/validateMail');
+
 exports.postRefreshToken = async (req, res) => {
     //take the refresh token from the user
     const refreshToken = req.body.token;
@@ -69,16 +70,19 @@ exports.postLogout=async (req,res)=>{
     
     res.status(200).json({status:'success',msg:'user logged out'})
 }
-exports.postRegister = async (req, res) => {
-
-    let { username, password, mail, imageUrl } = req.body;
-
+exports.postRegister = async  (req, res) => {
+    let { username, password, mail } = req.body;
+    // let imageUrl;
+    // if (req.file) {
+        //  imageUrl=req.file.filename;
+    // }
+    
     if (!username || typeof username !== 'string') {
         return res.status(400).json({ status: 'fail', message: 'Invalid username' })
     }
     if (!password || typeof password !== 'string') {
         return res.status(400).json({ status: 'fail', message: 'Invalid password' })
-    } if (password.length < 4) {
+    } if (password.length < 6) {
         return res.status(400).json({ status: 'fail', message: 'Too small password.Should be greater than 6 character' })
     }
     if (!validateEmail.validateEmail(mail)) {
@@ -92,15 +96,13 @@ exports.postRegister = async (req, res) => {
         username = username.trim();
         mail = mail.trim();
         password = password.trim();
-        if (imageUrl) {
-            imageUrl = imageUrl.trim();
-        }
+       
         const hashedPassword = await bcrypt.hash(password, 10);
         await User.create({
             username,
             mail,
             hashedPassword,
-            imageUrl,
+            // imageUrl,
             uniqueString,
             isEnabled
         }).then(async (user) => {
@@ -115,7 +117,6 @@ exports.postRegister = async (req, res) => {
         })
 
     } catch (error) {
-
         if (error.code === 11000 && Object.keys(error.keyPattern)[0] === 'mail') {
             return res.status(403).json({ status: 'fail', message: 'This mail already exist. Please enter different one.' })
         }

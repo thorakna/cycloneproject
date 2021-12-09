@@ -1,6 +1,7 @@
 const User = require('../models/user');
 const tokenOperations=require('../utils/tokenOperations');
 exports.postSendFriendReq = async (req, res) => {
+    console.log(req.user);
     const { senderUserMail, receiverUserMail } = req.body;
     let senderUser;
     let receiverUser;
@@ -17,6 +18,8 @@ exports.postSendFriendReq = async (req, res) => {
     try {
         senderUser = await User.findOne({ mail: senderUserMail });
         receiverUser = await User.findOne({ mail: receiverUserMail });
+        console.log(senderUser);
+        console.log(receiverUser);
         if (senderUser._id.equals(receiverUser._id)) {
             return res.status(400).json({ status: 'success', msg: 'Oh no,you are trying to send request to ownself.' });
         }
@@ -40,6 +43,7 @@ exports.postSendFriendReq = async (req, res) => {
 
 };
 exports.postAddFriend = async (req, res) => {
+  
     //this route for approving requests
     const { confirmingUserMail, pendingUserMail } = req.body;
     try {
