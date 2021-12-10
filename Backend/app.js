@@ -3,6 +3,7 @@ const app = express();
 const userRoutes=require('./routes/userRoutes');
 const chatRoutes=require('./routes/chatRoutes');
 const cors = require('cors');
+
 app.use(express.urlencoded({extended: true})); 
 app.use(express.json());
 app.set('view engine', 'pug')

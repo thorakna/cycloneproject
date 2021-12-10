@@ -3,6 +3,8 @@ const bcrypt = require('bcryptjs');
 const validateEmail = require('../utils/validateMail');
 const sendMail = require('../utils/mail');
 const tokenOperations=require('../utils/tokenOperations');
+const fs=require('fs');
+
 exports.postChangeCredentials = async (req, res) => {
     let { username, newFullName, newMail, newUsername, newDescription, currentPassword, newPassword } = req.body;
     newFullName = newFullName.trim();
@@ -10,7 +12,9 @@ exports.postChangeCredentials = async (req, res) => {
     newUsername = newUsername.trim();
     newDescription = newDescription.trim();
     newPassword = newPassword.trim();
-  //const imageUrl=req.file.pathName;
+    //let imageUrl=req.file.filename;
+    // console.log(req.file.filename);
+    //const imageUrl=req.file.pathName;
     if (!validateEmail.validateEmail(newMail) && newMail.length!==0) {
         return res.status(400).json({ status: 'fail', message: 'Please enter a valid mail.' })
     }
@@ -43,6 +47,8 @@ exports.postChangeCredentials = async (req, res) => {
                     newRefreshToken=tokenOperations.generateRefreshToken(user._id,newUsername);
                     user.refreshToken=newRefreshToken;
                     user.username = newUsername;
+                }if(imageUrl!==user.imageUrl){
+                    
                 }   
                 user.fullName = newFullName;
                 user.description = newDescription;
@@ -59,11 +65,40 @@ exports.postChangeCredentials = async (req, res) => {
         if (error.code === 11000 && Object.keys(error.keyPattern)[0] === 'username') {
             return res.status(403).json({ status: 'fail', message: 'This username already exist. Please enter different one.' })
         }
-       //console.log(error);
         return res.status(403).json({ status: 'fail', message: error.message })
     }
 }
-
+exports.postUpdateImage=async(req,res)=>{
+    const {username}=req.body;
+    let imageUrl=req.file.filename;
+    try {
+        await User.findOne({username}).then((user)=>{
+            if(user.imageUrl!=='init.png'){
+                deleteFile(user.imageUrl);
+            }
+            user.imageUrl=imageUrl;
+            user.save();
+            res.status(200).json({status:'success',message:'Image updated successfuly.'})
+        })
+    } catch (error) {
+        res.status(404).json({status:'fail',message:error.message})
+    }
+}
+exports.postDeleteImage=async(req,res)=>{
+    const {username}=req.body;
+    try {
+        await User.findOne({username}).then((user)=>{
+            if(user.imageUrl!=='init.png'){
+                deleteFile(user.imageUrl);
+            }
+            user.imageUrl='init.png';
+            user.save();
+            res.status(200).json({status:'success',message:'Image deleted successfuly.'})
+        })
+    } catch (error) {
+        res.status(404).json({status:'fail',message:error.message})
+    }
+}
 exports.postGetCredentials = async (req, res) => {
     const { username } = req.body;
     try {
@@ -75,12 +110,21 @@ exports.postGetCredentials = async (req, res) => {
             username: username,
             fullName: user.fullName,
             description: user.description,
-            mail: user.mail
+            mail: user.mail,
+            imageUrl:user.imageUrl
         }
-
         res.status(200).json({ status: 'success', credentials: credentials })
     } catch (error) {
         res.json({ status: 'fail', message: error.message })
     }
+}
 
+const deleteFile=(imageUrl)=>{
+    fs.unlink('uploads/'+imageUrl, (err) => {
+        if (err) {
+          console.error(err)
+          return
+        }
+        console.log('file removed');
+      })
 }

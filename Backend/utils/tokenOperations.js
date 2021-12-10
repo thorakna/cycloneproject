@@ -18,7 +18,7 @@ exports.verify = (req, res, next) => {
     const username = req.body.username;
     const token = req.headers.token;
     const decodedValue=decodingJWT(token);
-    
+    console.log(req.body);
     if (token && decodedValue["username"] === username) {
       jwt.verify(token, JWT_SECRET, (err, user) => {
         if (err) {
