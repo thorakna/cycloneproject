@@ -39,6 +39,7 @@ export default function SignUp() {
 
     if(data.status === "success"){
       localStorage.setItem("accessToken", data.accessToken);
+      localStorage.setItem("refreshToken", data.refreshToken);
       localStorage.setItem("username", username);
       setModalMessage("Your registration is successful. Logging in...");
       setTimeout(()=>{history.replace("/home")}, 4000);
