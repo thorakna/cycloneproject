@@ -2,8 +2,8 @@ const User = require('../models/user');
 const bcrypt = require('bcryptjs');
 const validateEmail = require('../utils/validateMail');
 const sendMail = require('../utils/mail');
-const tokenOperations=require('../utils/tokenOperations');
-const fs=require('fs');
+const tokenOperations = require('../utils/tokenOperations');
+const fs = require('fs');
 
 exports.postChangeCredentials = async (req, res) => {
     let { username, newFullName, newMail, newUsername, newDescription, currentPassword, newPassword } = req.body;
@@ -15,21 +15,21 @@ exports.postChangeCredentials = async (req, res) => {
     //let imageUrl=req.file.filename;
     // console.log(req.file.filename);
     //const imageUrl=req.file.pathName;
-    if (!validateEmail.validateEmail(newMail) && newMail.length!==0) {
+    if (!validateEmail.validateEmail(newMail) && newMail.length !== 0) {
         return res.status(400).json({ status: 'fail', message: 'Please enter a valid mail.' })
     }
-    if (newUsername.length < 4 && newUsername.length!==0) {
+    if (newUsername.length < 4 && newUsername.length !== 0) {
         return res.json({ status: 'fail', message: 'username cannot be less than 4.' })
     }
     if (!currentPassword) {
         return res.json({ status: 'fail', message: 'Write your current password.' })
     }
     try {
-        await User.findOne({username}).then(async (user) => {
+        await User.findOne({ username }).then(async (user) => {
             let newAccessToken;
             let newRefreshToken;
             if (!user) {
-                return res.json({status:'fail',message:'We could not find you.'})
+                return res.json({ status: 'fail', message: 'We could not find you.' })
             }
             if (await bcrypt.compare(currentPassword, user.hashedPassword)) {
                 if (newPassword && newPassword.length > 5) {
@@ -43,19 +43,20 @@ exports.postChangeCredentials = async (req, res) => {
                     sendMail.sendMail(newMail, user.uniqueString, 'verify');
                 }
                 if (newUsername !== '' && newUsername !== user.username) {
-                    newAccessToken=tokenOperations.generateAccessToken(user._id,newUsername);
-                    newRefreshToken=tokenOperations.generateRefreshToken(user._id,newUsername);
-                    user.refreshToken=newRefreshToken;
+                    newAccessToken = tokenOperations.generateAccessToken(user._id, newUsername);
+                    newRefreshToken = tokenOperations.generateRefreshToken(user._id, newUsername);
+                    user.refreshToken = newRefreshToken;
                     user.username = newUsername;
-                }if(imageUrl!==user.imageUrl){
+                }
+                /*if(imageUrl!==user.imageUrl){
                     
-                }   
+                }*/
                 user.fullName = newFullName;
                 user.description = newDescription;
                 user.save();
-                res.json({ status: 'success', message: 'User credentials has been updated.' ,accessToken:newAccessToken,refreshToken:newRefreshToken})
+                res.json({ status: 'success', message: 'User credentials has been updated.', accessToken: newAccessToken, refreshToken: newRefreshToken })
             } else {
-                res.json({ status: 'fail', message: 'You entered wrong password.'})
+                res.json({ status: 'fail', message: 'You entered wrong password.' })
             }
         })
     } catch (error) {
@@ -68,35 +69,35 @@ exports.postChangeCredentials = async (req, res) => {
         return res.status(403).json({ status: 'fail', message: error.message })
     }
 }
-exports.postUpdateImage=async(req,res)=>{
-    const {username}=req.body;
-    let imageUrl=req.file.filename;
+exports.postUpdateImage = async (req, res) => {
+    const { username } = req.body;
+    let imageUrl = req.file.filename;
     try {
-        await User.findOne({username}).then((user)=>{
-            if(user.imageUrl!=='init.png'){
+        await User.findOne({ username }).then((user) => {
+            if (user.imageUrl !== 'init.png') {
                 deleteFile(user.imageUrl);
             }
-            user.imageUrl=imageUrl;
+            user.imageUrl = imageUrl;
             user.save();
-            res.status(200).json({status:'success',message:'Image updated successfuly.'})
+            res.status(200).json({ status: 'success', message: 'Image updated successfuly.', imageUrl: imageUrl })
         })
     } catch (error) {
-        res.status(404).json({status:'fail',message:error.message})
+        res.status(404).json({ status: 'fail', message: error.message })
     }
 }
-exports.postDeleteImage=async(req,res)=>{
-    const {username}=req.body;
+exports.postDeleteImage = async (req, res) => {
+    const { username } = req.body;
     try {
-        await User.findOne({username}).then((user)=>{
-            if(user.imageUrl!=='init.png'){
+        await User.findOne({ username }).then((user) => {
+            if (user.imageUrl !== 'init.png') {
                 deleteFile(user.imageUrl);
             }
-            user.imageUrl='init.png';
+            user.imageUrl = 'init.png';
             user.save();
-            res.status(200).json({status:'success',message:'Image deleted successfuly.'})
+            res.status(200).json({ status: 'success', message: 'Image deleted successfuly.' })
         })
     } catch (error) {
-        res.status(404).json({status:'fail',message:error.message})
+        res.status(404).json({ status: 'fail', message: error.message })
     }
 }
 exports.postGetCredentials = async (req, res) => {
@@ -111,7 +112,7 @@ exports.postGetCredentials = async (req, res) => {
             fullName: user.fullName,
             description: user.description,
             mail: user.mail,
-            imageUrl:user.imageUrl
+            imageUrl: user.imageUrl
         }
         res.status(200).json({ status: 'success', credentials: credentials })
     } catch (error) {
@@ -119,12 +120,12 @@ exports.postGetCredentials = async (req, res) => {
     }
 }
 
-const deleteFile=(imageUrl)=>{
-    fs.unlink('uploads/'+imageUrl, (err) => {
+const deleteFile = (imageUrl) => {
+    fs.unlink('uploads/' + imageUrl, (err) => {
         if (err) {
-          console.error(err)
-          return
+            console.error(err)
+            return
         }
         console.log('file removed');
-      })
+    })
 }
