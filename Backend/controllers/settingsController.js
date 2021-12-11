@@ -12,9 +12,6 @@ exports.postChangeCredentials = async (req, res) => {
     newUsername = newUsername.trim();
     newDescription = newDescription.trim();
     newPassword = newPassword.trim();
-    //let imageUrl=req.file.filename;
-    // console.log(req.file.filename);
-    //const imageUrl=req.file.pathName;
     if (!validateEmail.validateEmail(newMail) && newMail.length !== 0) {
         return res.status(400).json({ status: 'fail', message: 'Please enter a valid mail.' })
     }
@@ -48,9 +45,6 @@ exports.postChangeCredentials = async (req, res) => {
                     user.refreshToken = newRefreshToken;
                     user.username = newUsername;
                 }
-                /*if(imageUrl!==user.imageUrl){
-                    
-                }*/
                 user.fullName = newFullName;
                 user.description = newDescription;
                 user.save();

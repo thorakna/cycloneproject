@@ -7,7 +7,8 @@ const storage = multer.diskStorage({
   filename: async (req, file, cb) => {
     const user = await User.findOne({ username: req.body.username });
     const id = user._id;
-    cb(null, id.toString());
+    const extension=file.mimetype.split("/")
+    cb(null, id.toString()+"."+extension[1]);
 
   }
 });
