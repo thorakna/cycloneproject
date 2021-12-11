@@ -65,6 +65,12 @@ exports.postChangeCredentials = async (req, res) => {
 }
 exports.postUpdateImage = async (req, res) => {
     const { username } = req.body;
+    if (req.fileValidationError) {
+        return res.json({status:'fail',message:req.fileValidationError})
+   }
+   if(!req.file){
+    return res.json({status:'fail',message:'no uploaded file'})
+   }
     let imageUrl = req.file.filename;
     try {
         await User.findOne({ username }).then((user) => {
