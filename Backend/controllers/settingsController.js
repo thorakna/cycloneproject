@@ -31,7 +31,8 @@ exports.postChangeCredentials = async (req, res) => {
             if (await bcrypt.compare(currentPassword, user.hashedPassword)) {
                 if (newPassword && newPassword.length > 5) {
                     await bcrypt.hash(newPassword, 10).then((data) => {
-                        user.password = data;
+                        console.log(data);
+                        user.hashedPassword = data;
                     });
                 }
                 if (newMail && newMail !== user.mail) {
