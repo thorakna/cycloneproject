@@ -1,24 +1,22 @@
 const multer = require('multer');
-const User = require('../models/user');
 const { v4: uuidv4 } = require('uuid');
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, './uploads/')
   },
   filename: async (req, file, cb) => {
-    //TODO: username değişkenini postmanden gelince okuyor frontend gönderince görmüyor!
-   // const user = await User.findOne({ username: req.body.username });
-   // const id = user._id;
     const extension=file.mimetype.split("/")
     cb(null, uuidv4() +"."+extension[1]);
-    //console.log(req.body);
   }
 });
 const fileFilter = (req, file, cb) => {
-  if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png' || file.mimetype === 'image/jpg') {
+
+  if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png' || file.mimetype === 'image/jpg' || file.mimetype==='image/gif') {
     cb(null, true);
   } else {
-    cb(null, false);
+    req.fileValidationError = "Forbidden extension";
+    return cb(null, false, req.fileValidationError);
+   // cb(null, false);
   }
 };
 exports.upload = multer({
