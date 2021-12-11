@@ -68,6 +68,9 @@ exports.postUpdateImage = async (req, res) => {
     let imageUrl = req.file.filename;
     try {
         await User.findOne({ username }).then((user) => {
+            if (user.imageUrl !== 'init.png') {
+                deleteFile(user.imageUrl);
+            }
             user.imageUrl = imageUrl;
             user.save();
             res.status(200).json({ status: 'success', message: 'Image updated successfuly.', imageUrl: imageUrl })
