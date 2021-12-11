@@ -3,7 +3,7 @@ import { useHistory, useLocation } from 'react-router-dom';
 import '../style/Settings.css';
 import { IoCloudUpload, IoTrash } from "react-icons/io5";
 import Modal from '../components/Modal';
-import { server_adress } from "../api/Config";
+import { server_address } from "../api/Config";
 import {getCredentials, changeCredentials, deletePP, changePP} from "../api/SettingsAPI";
 import { setTokens } from '../api/TokenOperations';
 
@@ -144,8 +144,8 @@ export default function Settings() {
           <div className="Page" style={{overflowY:"auto"}}>
             <div className="settingsPlace">
               <div className="setfield">
-                <div className="profilePic" style={{backgroundImage: `url(${server_adress}api/users/avatars/${ppImage})`}}>
-                  <input type="file" name="userImage" ref={inputFileRef} id="PPInput" accept="image/png, image/gif, image/jpeg" onChange={(e)=>{setppImage(URL.createObjectURL(e.target.files[0])); changeImage(e.target.files[0], setProgress)}}></input>
+                <div className="profilePic" style={{backgroundImage: `url(${server_address}api/users/avatars/${ppImage})`}}>
+                  <input type="file" name="userImage" ref={inputFileRef} id="PPInput" accept="image/png, image/gif, image/jpeg" onChange={(e)=>{changeImage(e.target.files[0], setProgress)}}></input>
                   <button onClick={()=>{inputFileRef.current.click();}} className="AddButton primaryColor"><IoCloudUpload/></button><br></br>
                   {ppImage !== "init.png" && <button onClick={deleteImage} className="AddButton secondaryColor"><IoTrash/></button>}
                 </div>

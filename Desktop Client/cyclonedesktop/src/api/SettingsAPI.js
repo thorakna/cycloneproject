@@ -1,8 +1,8 @@
-import { server_adress } from "./Config";
+import { server_address } from "./Config";
 import { RefreshToken } from "./TokenOperations";
 
 export async function getCredentials(username, token) {
-    const rawResponse = await fetch(server_adress + "api/users/get-credentials", {
+    const rawResponse = await fetch(server_address + "api/users/get-credentials", {
         method: 'POST',
         headers: {
             'Accept': 'application/json',
@@ -22,7 +22,7 @@ export async function getCredentials(username, token) {
 }
 
 export async function changeCredentials(username, token, newFullName, newMail, newUsername, newDescription, currentPassword, newPassword) {
-    const rawResponse = await fetch(server_adress + "api/users/change-credentials", {
+    const rawResponse = await fetch(server_address + "api/users/change-credentials", {
         method: 'POST',
         headers: {
             'Accept': 'application/json',
@@ -43,16 +43,17 @@ export async function changeCredentials(username, token, newFullName, newMail, n
 
 export async function changePP(username, token, file, setProgress) {
     var fd = new FormData();
-    fd.append("userImage", file);
     fd.append("username", username);
+    fd.append("userImage", file);
     //TODO: formdata düzgün gitmiyor olabilir? Postman düzgün gönderebiliyor burada bir sıkıntı var.
     //fd.enctype = "multipart/form-data";
     //fd.set("username", username);
 
     var xhr = new XMLHttpRequest();
-    xhr.open("POST", server_adress+"api/users/change-image", true);
-    xhr.setRequestHeader('token', token);
+    xhr.open("POST", server_address+"api/users/change-image", false);
     xhr.setRequestHeader('Access-Control-Allow-Origin', '*');
+    xhr.setRequestHeader("Content-Type", "multipart/form-data");
+    xhr.setRequestHeader('token', token);
     xhr.upload.onprogress = function(e) {
       var percentComplete = Math.ceil((e.loaded / e.total) * 100);
       setProgress(percentComplete);
@@ -93,7 +94,7 @@ export async function changePP(username, token, file, setProgress) {
 }
 
 export async function deletePP(username, token) {
-    const rawResponse = await fetch(server_adress + "api/users/delete-image", {
+    const rawResponse = await fetch(server_address + "api/users/delete-image", {
         method: 'POST',
         headers: {
             'Accept': 'application/json',
