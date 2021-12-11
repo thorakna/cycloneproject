@@ -1,1 +1,1 @@
-export const server_adress = 'http://localhost:3000/'//'https://cyclone-api.raas.onuryasar.online/';
+export const server_address = 'https://cyclone-api.raas.onuryasar.online/';

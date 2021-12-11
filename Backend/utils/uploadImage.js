@@ -7,8 +7,6 @@ const storage = multer.diskStorage({
   },
   filename: async (req, file, cb) => {
     //TODO: username değişkenini postmanden gelince okuyor frontend gönderince görmüyor!
-   // const user = await User.findOne({ username: req.body.username });
-   // const id = user._id;
     const extension=file.mimetype.split("/")
     cb(null, uuidv4() +"."+extension[1]);
     //console.log(req.body);
