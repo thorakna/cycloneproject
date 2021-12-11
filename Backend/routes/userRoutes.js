@@ -5,10 +5,10 @@ const router = express.Router();
 const authController = require('../controllers/authController');
 const friendController = require('../controllers/friendController');
 const settingsController = require('../controllers/settingsController');
-const upload=require('../utils/uploadImage').upload;
+const upload = require('../utils/uploadImage').upload;
 
 router.post('/login', authController.postLogin);
-router.post('/register',authController.postRegister);
+router.post('/register', authController.postRegister);
 router.post('/forgotten-password', authController.postForgottenPassword);
 router.get('/forgotten-password/:uniqueString', authController.getForgottenPassword);
 router.post('/reset-password', authController.postResetPassword);
@@ -18,11 +18,11 @@ router.post('/add-friend', verify, friendController.postAddFriend);
 router.post('/ignore-friend-req', verify, friendController.postIgnoreFriendReq);
 router.post('/remove-friend', verify, friendController.postRemoveFriend);
 router.post('/search', verify, friendController.postSearchFriend);
-router.post('/change-credentials',verify,settingsController.postChangeCredentials);
+router.post('/change-credentials', verify, settingsController.postChangeCredentials);
 
-router.post('/get-credentials',  verify, settingsController.postGetCredentials);
-router.post('/change-image',upload.single('userImage'), verify, settingsController.postUpdateImage);
-router.post('/delete-image',verify, settingsController.postDeleteImage);
+router.post('/get-credentials', verify, settingsController.postGetCredentials);
+router.post('/change-image', upload.single('userImage'), settingsController.postUpdateImage);
+router.post('/delete-image', verify, settingsController.postDeleteImage);
 
 
 router.post('/log-out', authController.postLogout);

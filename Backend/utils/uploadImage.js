@@ -1,14 +1,15 @@
 const multer = require('multer');
 const User = require('../models/user');
+const path = require('path');
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, './uploads/')
   },
   filename: async (req, file, cb) => {
+    //TODO: username değişkenini postmanden gelince okuyor frontend gönderince görmüyor!
     const user = await User.findOne({ username: req.body.username });
     const id = user._id;
-    cb(null, id.toString());
-
+    cb(null, id.toString() + path.extname(file.originalname));
   }
 });
 const fileFilter = (req, file, cb) => {
