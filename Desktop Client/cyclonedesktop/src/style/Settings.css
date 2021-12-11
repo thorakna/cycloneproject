@@ -62,6 +62,9 @@
 .profilePic{
     width: 120px;
     height: 120px;
+    display: flex;
+    align-items: flex-end;
+    position: relative;
     margin-left: calc(50% - 60px);
     border:2px solid #001B3D;
     border-radius: 16px;
@@ -86,4 +89,16 @@
     width: 0;
     height: 0;
     position: absolute;
+}
+
+.ppProgress{
+    background: #001b3dcf;
+    position: absolute;
+    width: 120px;
+    border: 0px solid;
+    border-radius: 16px;
+    bottom: 0;
+    margin-left: -2px;
+    z-index: 0;
+    transition: 0.2s all;
 }
