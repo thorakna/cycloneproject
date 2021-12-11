@@ -9,7 +9,8 @@ const storage = multer.diskStorage({
     //TODO: username değişkenini postmanden gelince okuyor frontend gönderince görmüyor!
     const user = await User.findOne({ username: req.body.username });
     const id = user._id;
-    cb(null, id.toString() + path.extname(file.originalname));
+    const extension=file.mimetype.split("/")
+    cb(null, id.toString()+"."+extension[1]);
   }
 });
 const fileFilter = (req, file, cb) => {
