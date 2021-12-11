@@ -1,15 +1,18 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import '../style/Settings.css';
-import { IoPerson, IoInformation } from "react-icons/io5";
+import { IoCloudUpload, IoTrash } from "react-icons/io5";
 import Modal from '../components/Modal';
 
-import {getCredentials, changeCredentials} from "../api/SettingsAPI";
+import {getCredentials, changeCredentials, deletePP, changePP} from "../api/SettingsAPI";
 import { setTokens } from '../api/TokenOperations';
 
 
-export default function Settings({ModalHandler}) {
+export default function Settings() {
   const history = useHistory();
+  const inputFileRef = useRef(null);
+  
+  const [ppImage, setppImage] = useState("init.png");
   const [fullname, setFullname] = useState("Loading...");
   const [username, setUsername] = useState("Loading...");
   const [email, setEmail] = useState("Loading...");
@@ -18,9 +21,11 @@ export default function Settings({ModalHandler}) {
 
   const [password, setPass] = useState("");
   const [passwordc, setPassc] = useState("");
+  const [currPass, setcurrPass] = useState("");
 
   const [iShow, setiShow] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [progress, setProgress] = useState(0);
   const [modalMessage, setModalMessage] = useState("");
 
   useEffect(async () => {
@@ -35,6 +40,7 @@ export default function Settings({ModalHandler}) {
       setBio(data.credentials.description);
       setEmail(data.credentials.mail);
       setoldData(data.credentials);
+      console.log(data);
     }else{
       setModalMessage(data.message);
       setiShow(true);
@@ -46,9 +52,7 @@ export default function Settings({ModalHandler}) {
     var lusername = localStorage.getItem("username");
     var token = localStorage.getItem("accessToken");
 
-    // Buraya popup açılıp current pass aldırılacak...
-    var currentPass = "deneme";
-    const data = await changeCredentials(lusername, token, fullname, email, username, bio, currentPass, password);
+    const data = await changeCredentials(lusername, token, fullname, email, username, bio, currPass, password);
 
     if(data.status == "success"){
       setModalMessage(data.message);
@@ -77,13 +81,57 @@ export default function Settings({ModalHandler}) {
     setPass("");
     setPassc("");
   }
+
+  const passPopup = () => {
+    setcurrPass("");
+    setModalMessage("currentpass-send");
+    setiShow(true);
+  }
+
+  const changeImage = async (file, setProgress) => {
+    var lusername = localStorage.getItem("username");
+    var token = localStorage.getItem("accessToken");
+    const data = await changePP(lusername, token, file, setProgress);
+    console.log(data);
+    // if(data.status == "success"){
+    //   //setppImage(data);
+    //   console.log(data);
+    // }else{
+    //   setModalMessage(data.message);
+    //   setiShow(true);
+    // }
+  }
+
+  const deleteImage = async () => {
+    var lusername = localStorage.getItem("username");
+    var token = localStorage.getItem("accessToken");
+    const data = await deletePP(lusername, token);
+    if(data.status == "success"){
+      setppImage("init.png");
+    }else{
+      setModalMessage(data.message);
+      setiShow(true);
+    }
+  }
   
   return (
     <>
-        <Modal mState={{iShow, setiShow}}>
+        <Modal mState={{iShow, setiShow}} buttonShow={modalMessage === "currentpass-send" && "yes"}>
             {
               loading ? <p>Loading</p>
               :
+              modalMessage === "currentpass-send" ? 
+              <>
+                <div className="setfield" style={{animationDelay: 0.2+"s"}}>
+                  Current Password
+                  <input type="password" id="CurrentPass" placeholder="•••••••••" value={currPass} autoComplete="off" onChange={(e)=>{setcurrPass(e.target.value);}}></input>
+                </div>
+                <div className="satirfield" style={{float:"left", animation: "slideInSoft 0.2s backwards", animationDelay: "0.4s"}}>
+                  <button onClick={setCredentials} className="SendButton primaryColor">Save</button>
+                  <button onClick={()=>{setiShow(false)}} className="SendButton secondaryColor">Cancel</button>
+                </div>
+              </>
+               : 
               modalMessage
             }
         </Modal>
@@ -94,6 +142,13 @@ export default function Settings({ModalHandler}) {
           </div>
           <div className="Page" style={{overflowY:"auto"}}>
             <div className="settingsPlace">
+              <div className="setfield">
+                <div className="profilePic" style={ppImage !== "init.png" ? {backgroundImage: "url("+ppImage+")"} : {backgroundImage: "url(https://cyclone-api.raas.onuryasar.online/api/users/avatars/"+ppImage+")"}}>
+                  <input type="file" name="userImage" ref={inputFileRef} id="PPInput" accept="image/png, image/gif, image/jpeg" onChange={(e)=>{setppImage(URL.createObjectURL(e.target.files[0])); changeImage(e.target.files[0], setProgress)}}></input>
+                  <button onClick={()=>{inputFileRef.current.click();}} className="AddButton primaryColor"><IoCloudUpload/></button><br></br>
+                  {ppImage !== "init.png" && <button onClick={deleteImage} className="AddButton secondaryColor"><IoTrash/></button>}
+                </div>
+              </div>
               <div className="satirfield">
                 <div className="setfield" style={{marginRight: 20}}>
                   Fullname
@@ -122,13 +177,13 @@ export default function Settings({ModalHandler}) {
                 </div>
                 <div className="setfield" style={{animationDelay: 1+"s"}}>
                   Password Confirm
-                  <input style={{'box-shadow': password !== passwordc && '0px 0px 10px 1px red'}} type="password" id="PassCInput" placeholder="•••••••••" value={passwordc} autoComplete="off" onChange={(e)=>{setPassc(e.target.value);}}></input>
+                  <input style={{'boxShadow': password !== passwordc && '0px 0px 10px 1px red'}} type="password" id="PassCInput" placeholder="•••••••••" value={passwordc} autoComplete="off" onChange={(e)=>{setPassc(e.target.value);}}></input>
                 </div>
               </div>
 
               <div className="satirfield" style={{float:"right", animation: "slideInSoft 0.2s backwards", animationDelay: "1.02s"}}>
                 <button onClick={discardChanges} className="SendButton secondaryColor">Discard Changes</button>
-                <button disabled={(oldData.username === username && oldData.fullName === fullname && oldData.description === bio && oldData.mail === email && password === "")} onClick={setCredentials} className="SendButton primaryColor">Save Changes</button>
+                <button disabled={(oldData.username === username && oldData.fullName === fullname && oldData.description === bio && oldData.mail === email && password === "")} onClick={passPopup} className="SendButton primaryColor">Save Changes</button>
               </div>
             </div>
           </div>

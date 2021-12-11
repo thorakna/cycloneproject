@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-export default function Modal({mState, children}) {
+export default function Modal({mState, buttonShow, children}) {
     const [show, setShow] = useState(mState.iShow);
 
     useEffect(()=>{
@@ -23,7 +23,7 @@ export default function Modal({mState, children}) {
             onAnimationEnd={onAnimationEnd}
         >
             {children}
-            <button onClick={closeModal} className="cycloButton primaryColor">OK</button>
+            {!buttonShow && <button onClick={closeModal} className="cycloButton primaryColor">OK</button>}
         </div>)
     );
 }
