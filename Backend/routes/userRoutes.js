@@ -21,7 +21,7 @@ router.post('/search', verify, friendController.postSearchFriend);
 router.post('/change-credentials',verify,settingsController.postChangeCredentials);
 
 router.post('/get-credentials',  verify, settingsController.postGetCredentials);
-router.post('/change-image',upload.single('userImage'),verify, settingsController.postUpdateImage);
+router.post('/change-image',upload.single('userImage'), verify, settingsController.postUpdateImage);
 router.post('/delete-image',verify, settingsController.postDeleteImage);
 
 
