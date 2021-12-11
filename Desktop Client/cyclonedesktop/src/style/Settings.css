@@ -58,3 +58,32 @@
     position: absolute;
     margin: 10px 10px;
 }
+
+.profilePic{
+    width: 120px;
+    height: 120px;
+    margin-left: calc(50% - 60px);
+    border:2px solid #001B3D;
+    border-radius: 16px;
+    margin-bottom: 10px;
+    background-repeat: no-repeat;
+    background-size: cover;
+    animation: slideInSoft 0.5s backwards;
+}
+
+.profilePic svg{
+    margin:0px !important;
+    position: relative;
+    vertical-align: baseline;
+}
+
+.profilePic button{
+    padding: 4px 8px;
+}
+
+#PPInput {
+    visibility: hidden;
+    width: 0;
+    height: 0;
+    position: absolute;
+}
