@@ -74,6 +74,24 @@
     animation: slideInSoft 0.5s backwards;
 }
 
+.ppButtons{
+    display: flex;
+    width: 120px;
+    margin-left: calc(50% - 60px);
+    align-items: center;
+}
+
+.ppButtons button{
+    padding: 4px 0px;
+    margin: 5px;
+}
+
+.ppButtons svg{
+    position:inherit;
+    padding: 0;
+    margin: 0;
+}
+
 .profilePic svg{
     margin:0px !important;
     position: relative;

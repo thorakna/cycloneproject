@@ -66,6 +66,7 @@ export default function Settings() {
       });
 
       if(data.accessToken && data.refreshToken){
+        localStorage.setItem("username", username);
         setTokens(data.accessToken, data.refreshToken);
       }
     }else{
@@ -147,8 +148,10 @@ export default function Settings() {
                 <div className="profilePic" style={{backgroundImage: `url(${server_address}api/users/avatars/${ppImage})`}}>
                   <div className='ppProgress' style={{height: 0 + (progress / 100) * 120 +"px", animation: `${progress != 100 ? "fadeIn" : "fadeOut"} 1s forwards`}}></div>
                   <input type="file" name="userImage" ref={inputFileRef} id="PPInput" accept="image/png, image/gif, image/jpeg, image/jpg" onChange={(e)=>{changeImage(e.target.files[0], setProgress)}}></input>
-                  <button onClick={()=>{inputFileRef.current.click();}} className="AddButton primaryColor"><IoCloudUpload/></button><br></br>
-                  {ppImage !== "init.png" && <button onClick={deleteImage} className="AddButton secondaryColor"><IoTrash/></button>}
+                </div>
+                <div className='ppButtons'>
+                  <button onClick={()=>{inputFileRef.current.click();}} className="SendButton primaryColor"><IoCloudUpload/></button>
+                  {ppImage !== "init.png" && <button onClick={deleteImage} className="SendButton cancelColor"><IoTrash/></button>}
                 </div>
               </div>
               <div className="satirfield">
@@ -185,7 +188,7 @@ export default function Settings() {
 
               <div className="satirfield" style={{float:"right", animation: "slideInSoft 0.2s backwards", animationDelay: "1.02s"}}>
                 <button onClick={discardChanges} className="SendButton secondaryColor">Discard Changes</button>
-                <button disabled={(oldData.username === username && oldData.fullName === fullname && oldData.description === bio && oldData.mail === email && password === "")} onClick={passPopup} className="SendButton primaryColor">Save Changes</button>
+                <button disabled={(oldData.username === username && oldData.fullName === fullname && oldData.description === bio && oldData.mail === email && password === "" || password !== passwordc)} onClick={passPopup} className="SendButton primaryColor">Save Changes</button>
               </div>
             </div>
           </div>

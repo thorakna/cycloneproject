@@ -132,6 +132,10 @@ button:focus {outline:0;}
 .secondaryColor:hover{ background-color: #131313;}
 .secondaryColor:active{ background-color: #000;}
 
+.cancelColor{ background-color: #d11a2a;}
+.cancelColor:hover{ background-color: #e43644;}
+.cancelColor:active{ background-color: #ac0d1a;}
+
 .Online{
   -webkit-box-shadow: 0px 0px 5px 0px rgba(0,255,0);
   -moz-box-shadow: 0px 0px 5px 0px rgba(0,255,0);
