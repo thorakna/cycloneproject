@@ -22,38 +22,40 @@ exports.postChangeCredentials = async (req, res) => {
         return res.json({ status: 'fail', message: 'Write your current password.' })
     }
     try {
-        await User.findOne({ username }).then(async (user) => {
-            let newAccessToken;
-            let newRefreshToken;
-            if (!user) {
-                return res.json({ status: 'fail', message: 'We could not find you.' })
-            }
-            if (await bcrypt.compare(currentPassword, user.hashedPassword)) {
-                if (newPassword && newPassword.length > 5) {
-                    await bcrypt.hash(newPassword, 10).then((data) => {
-                        console.log(data);
-                        user.hashedPassword = data;
-                    });
+        await User.findOne({ username })
+            .then(async (user) => {
+                let newAccessToken;
+                let newRefreshToken;
+                let updatedCredentials={};
+                if (!user) {
+                    return res.json({ status: 'fail', message: 'We could not find you.' })
                 }
-                if (newMail && newMail !== user.mail) {
-                    user.isEnabled = false;
-                    user.mail = newMail;
-                    sendMail.sendMail(newMail, user.uniqueString, 'verify');
+                if (await bcrypt.compare(currentPassword, user.hashedPassword)) {
+                    if (newPassword && newPassword.length > 5) {
+                        await bcrypt.hash(newPassword, 10).then((data) => {
+                            updatedCredentials.hashedPassword=data;
+                        });
+                    }
+                    if (newMail && newMail !== user.mail) {
+                        updatedCredentials.mail=newMail;
+                        updatedCredentials.isEnabled=false
+                        sendMail.sendMail(newMail, user.uniqueString, 'verify');
+                    }
+                    if (newUsername !== '' && newUsername !== user.username) {
+                        newAccessToken = tokenOperations.generateAccessToken(user._id, newUsername);
+                        newRefreshToken = tokenOperations.generateRefreshToken(user._id, newUsername);
+                        updatedCredentials.username=newUsername;
+                        updatedCredentials.refreshToken=newRefreshToken;
+                    }
+                    updatedCredentials.fullName=newFullName;
+                    updatedCredentials.description=newDescription;
+                    await User.findOneAndUpdate({username},updatedCredentials).then(()=>{
+                        res.json({ status: 'success', message: 'User credentials has been updated.', accessToken: newAccessToken, refreshToken: newRefreshToken })
+                    })
+                } else {
+                    res.json({ status: 'fail', message: 'You entered wrong password.' })
                 }
-                if (newUsername !== '' && newUsername !== user.username) {
-                    newAccessToken = tokenOperations.generateAccessToken(user._id, newUsername);
-                    newRefreshToken = tokenOperations.generateRefreshToken(user._id, newUsername);
-                    user.refreshToken = newRefreshToken;
-                    user.username = newUsername;
-                }
-                user.fullName = newFullName;
-                user.description = newDescription;
-                user.save();
-                res.json({ status: 'success', message: 'User credentials has been updated.', accessToken: newAccessToken, refreshToken: newRefreshToken })
-            } else {
-                res.json({ status: 'fail', message: 'You entered wrong password.' })
-            }
-        })
+            })
     } catch (error) {
         if (error.code === 11000 && Object.keys(error.keyPattern)[0] === 'mail') {
             return res.status(403).json({ status: 'fail', message: 'This mail already exist. Please enter different one.' })
@@ -67,11 +69,11 @@ exports.postChangeCredentials = async (req, res) => {
 exports.postUpdateImage = async (req, res) => {
     const { username } = req.body;
     if (req.fileValidationError) {
-        return res.json({status:'fail',message:req.fileValidationError})
-   }
-   if(!req.file){
-    return res.json({status:'fail',message:'no uploaded file'})
-   }
+        return res.json({ status: 'fail', message: req.fileValidationError })
+    }
+    if (!req.file) {
+        return res.json({ status: 'fail', message: 'no uploaded file' })
+    }
     let imageUrl = req.file.filename;
     try {
         await User.findOne({ username }).then((user) => {
