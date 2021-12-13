@@ -166,7 +166,7 @@ export default function Settings() {
               </div>
               
               <div className="setfield" style={{animationDelay: 0.4+"s"}}>
-                Biography
+                Status
                 <input type="text" id="BioInput" value={bio} autoComplete="off" onChange={(e)=>{setBio(e.target.value);}}></input>
               </div>
 
