@@ -36,11 +36,11 @@ export default function Home({children}) {
   return (
       <div className="App-Home">
         <div className="Navigator">
-          <img onClick={()=>{history.push("/home/");}} src={logo} className={pageActive === "/home/" || pageActive === "/home" ? "App-H-Logo NaviActive" : "App-H-Logo"} alt="App Logo" />
-          <button onClick={()=>{history.push("/home/friends");}} className={pageActive === "/home/friends" ? "NaviButton NaviActive" : "NaviButton"}><IoPeople/></button>
-          <button onClick={()=>{history.push("/home/search");}} className={pageActive === "/home/search" ? "NaviButton NaviActive" : "NaviButton"}><IoSearch/></button>
-          <button onClick={()=>{history.push("/home/settings");}} className={pageActive === "/home/settings" ? "NaviButton NaviActive" : "NaviButton"}><IoSettings/></button>
-          <button onClick={logout} className="NaviButton"><IoExit/></button>
+          <img style={{animation: "slideInSoft 0.3s backwards"}} onClick={()=>{history.push("/home/");}} src={logo} className={pageActive === "/home/" || pageActive === "/home" ? "App-H-Logo NaviActive" : "App-H-Logo"} alt="App Logo" />
+          <button style={{animation: "slideInSoft 0.3s backwards", animationDelay: "0.1s"}}  onClick={()=>{history.push("/home/friends");}} className={pageActive === "/home/friends" ? "NaviButton NaviActive" : "NaviButton"}><IoPeople/></button>
+          <button style={{animation: "slideInSoft 0.3s backwards", animationDelay: "0.2s"}} onClick={()=>{history.push("/home/search");}} className={pageActive === "/home/search" ? "NaviButton NaviActive" : "NaviButton"}><IoSearch/></button>
+          <button style={{animation: "slideInSoft 0.3s backwards", animationDelay: "0.3s"}} onClick={()=>{history.push("/home/settings");}} className={pageActive === "/home/settings" ? "NaviButton NaviActive" : "NaviButton"}><IoSettings/></button>
+          <button style={{animation: "slideInSoft 0.3s backwards", animationDelay: "0.4s"}} onClick={logout} className="NaviButton"><IoExit/></button>
         </div>
         <Route exact path={"/home/"} component={Chat} />
         <Route path={"/home/friends"} component={Friends} />
