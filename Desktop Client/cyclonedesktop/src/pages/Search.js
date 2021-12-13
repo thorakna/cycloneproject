@@ -4,6 +4,9 @@ import '../style/Search.css';
 import logo from "../images/icon_small.png";
 import { IoSearch, IoPersonAdd } from "react-icons/io5";
 
+import { server_address } from "../api/Config";
+
+
 
 export default function Search() {
   const history = useHistory();
@@ -11,11 +14,11 @@ export default function Search() {
 
   const results = [];
   for(var c=0; c < 50; c++){
-    results.push(<li style={{animationDelay: c*0.1+"s"}}>
-      <img src="https://onuryasar.online/images/clients/brkcanaltun.jpg"></img>
+    results.push(<li key={c} style={{animationDelay: c*0.1+"s"}}>
+      <img src={`${server_address}api/users/avatars/init.png`}></img>
       <div>
         Cyclone User {c}
-        <aside class="descGray">@user{c}</aside>
+        <aside className="descGray">@user{c}</aside>
       </div>
       <button onClick={()=>{}} className="AddButton primaryColor"><IoPersonAdd/></button>
     </li>);
