@@ -186,7 +186,7 @@ export default function Settings() {
                 </div>
               </div>
 
-              <div className="satirfield" style={{float:"right", animation: "slideInSoft 0.2s backwards", animationDelay: "1.02s"}}>
+              <div className="satirfield" style={{float:"right", animation: "slideInSoft 0.2s backwards", animationDelay: "1.2s"}}>
                 <button onClick={discardChanges} className="SendButton secondaryColor">Discard Changes</button>
                 <button disabled={(oldData.username === username && oldData.fullName === fullname && oldData.description === bio && oldData.mail === email && password === "" || password !== passwordc)} onClick={passPopup} className="SendButton primaryColor">Save Changes</button>
               </div>

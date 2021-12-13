@@ -7,17 +7,15 @@ export async function setTokens(access, refresh){
 
 export async function RefreshToken(){
     var refreshToken = localStorage.getItem("refreshToken");
-    var username = localStorage.getItem("refreshToken");
     const rawResponse = await fetch(server_address+"api/users/refresh-token", {
         method: 'POST',
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({username, token: refreshToken})
+        body: JSON.stringify({token: refreshToken})
     });
     const content = await rawResponse.json();
-    console.log(content);
     if(rawResponse.status === 200){
         setTokens(content.accessToken, content.refreshToken);
         return true;
