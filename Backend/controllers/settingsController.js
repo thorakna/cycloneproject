@@ -16,7 +16,7 @@ exports.postChangeCredentials = async (req, res) => {
         return res.status(400).json({ status: 'fail', message: 'Please enter a valid mail.' })
     }
     if (newUsername.length < 4 && newUsername.length !== 0) {
-        return res.json({ status: 'fail', message: 'username cannot be less than 4.' })
+        return res.json({ status: 'fail', message: 'Username cannot be less than 4.' })
     }
     if (!currentPassword) {
         return res.json({ status: 'fail', message: 'Write your current password.' })
