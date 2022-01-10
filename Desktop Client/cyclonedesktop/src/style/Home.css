@@ -154,6 +154,10 @@
     color:white;
 }
 
+.AddButton:disabled {
+    background: #3e3e3e;
+}
+
 .MessageContainer{
     display: flex;
     padding: 5px 10px;

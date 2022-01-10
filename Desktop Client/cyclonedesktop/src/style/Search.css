@@ -52,6 +52,6 @@
 }
 
 .SearchResults li button{
-    position: absolute;
+    position: relative;
     right: 0;
 }

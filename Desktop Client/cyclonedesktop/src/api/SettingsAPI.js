@@ -41,7 +41,7 @@ export async function changeCredentials(username, token, newFullName, newMail, n
     }
 }
 
-export async function changePP(username, token, file, setProgress) {
+export async function changePFP(username, token, file, setProgress) {
     return new Promise((resolve, reject)=>{
         var fd = new FormData();
         fd.append("username", username);
@@ -67,7 +67,7 @@ export async function changePP(username, token, file, setProgress) {
             if(content.status === "expired"){
                 const RefreshStatus = await RefreshToken();
                 var accessToken = localStorage.getItem("accessToken");
-                resolve(RefreshStatus ? await changePP(username, accessToken, file, setProgress) : {status:"fail", message: "The token couldn't be refreshed."});
+                resolve(RefreshStatus ? await changePFP(username, accessToken, file, setProgress) : {status:"fail", message: "The token couldn't be refreshed."});
             }else{
                 resolve(content);
             }

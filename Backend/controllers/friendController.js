@@ -87,22 +87,22 @@ exports.postRemoveFriend = async (req, res) => {
         if (isValid) {
             await User.findOneAndUpdate({ _id: removingUser._id }, { $pull: { friends: removedUser._id } }).then(async () => {
                 await User.findOneAndUpdate({ _id: removedUser._id }, { $pull: { friends: removingUser._id } }).then(() => {
-                    res.status(200).json({ status: 'success', msg: 'friend removed' })
+                    res.status(200).json({ status: 'success', message: 'friend removed' })
                 })
             })
         } else {
-            return res.status(400).json({ status: 'fail', msg: 'sth is wrong' })
+            return res.status(400).json({ status: 'fail', message: 'sth is wrong' })
         }
 
     } catch (error) {
-        res.status(404).json({ status: 'fail', msg: 'database error' })
+        res.status(404).json({ status: 'fail', message: 'database error' })
     }
 }
 exports.postSearchFriend = async (req, res) => {
     const { username, entry } = req.body;
     var regex = new RegExp(entry, 'i');
     if (entry.length < 3) {
-        return res.status(400).json({ status: 'fail', msg: 'Entry should be greater than 2' });
+        return res.status(400).json({ status: 'fail', message: 'Entry should be greater than 2' });
     }
     try {
         const data = await User
@@ -111,7 +111,7 @@ exports.postSearchFriend = async (req, res) => {
         const result = await generateResult(data, username);
         res.status(200).json({ status: 'success', data: result });
     } catch (error) {
-        res.json({ status: 'fail', msg: error.message })
+        res.json({ status: 'fail', message: error.message })
     }
 };
 

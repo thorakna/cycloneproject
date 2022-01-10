@@ -4,7 +4,7 @@ import '../style/Settings.css';
 import { IoCloudUpload, IoTrash } from "react-icons/io5";
 import Modal from '../components/Modal';
 import { server_address } from "../api/Config";
-import {getCredentials, changeCredentials, deletePP, changePP} from "../api/SettingsAPI";
+import {getCredentials, changeCredentials, deletePP, changePFP} from "../api/SettingsAPI";
 import { setTokens } from '../api/TokenOperations';
 
 
@@ -93,7 +93,7 @@ export default function Settings() {
   const changeImage = async (file, setProgress) => {
     var lusername = localStorage.getItem("username");
     var token = localStorage.getItem("accessToken");
-    changePP(lusername, token, file, setProgress).then((data)=>{
+    changePFP(lusername, token, file, setProgress).then((data)=>{
       if(data.status == "success"){
         setppImage(data.imageUrl);
       }else{
