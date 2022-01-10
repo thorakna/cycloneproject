@@ -14,7 +14,7 @@ router.get('/forgotten-password/:uniqueString', authController.getForgottenPassw
 router.post('/reset-password', authController.postResetPassword);
 router.get('/verify/:uniqueString', authController.getVerify);
 router.post('/send-friend-req', verify, friendController.postSendFriendReq);
-router.post('/add-friend', verify, friendController.postAddFriend);
+router.post('/confirm-req', verify, friendController.postConfirmReq);
 router.post('/ignore-friend-req', verify, friendController.postIgnoreFriendReq);
 router.post('/remove-friend', verify, friendController.postRemoveFriend);
 router.post('/search', verify, friendController.postSearchFriend);
