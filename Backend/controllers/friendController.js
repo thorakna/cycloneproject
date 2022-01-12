@@ -99,15 +99,26 @@ exports.postRemoveFriend = async (req, res) => {
     }
 }
 exports.postSearchFriend = async (req, res) => {
-    const { username, entry } = req.body;
+    const { page, username, entry } = req.body;
     var regex = new RegExp(entry, 'i');
     if (entry.length < 3) {
         return res.status(400).json({ status: 'fail', message: 'Entry should be greater than 2' });
     }
+    const conditions = {
+        $or: [
+            { username: regex },
+            { fullName: regex }
+        ],
+        _id: { $ne: req.user.id }
+    }
     try {
         const data = await User
-            .find({ username: regex, _id: { $ne: req.user.id } })
-            .select('username friends sentFriendReqs incomingFriendReqs imageUrl');
+            .find(conditions)
+            .select('username friends sentFriendReqs incomingFriendReqs imageUrl fullName')
+            .collation({ locale: 'en', strength: 2 })
+            .sort({ username: 1 })
+            .skip((page * 20) - 20)
+            .limit(20)
         const result = await generateResult(data, username);
         res.status(200).json({ status: 'success', data: result });
     } catch (error) {
@@ -115,8 +126,8 @@ exports.postSearchFriend = async (req, res) => {
     }
 };
 
-exports.cancelRequest=async (req,res)=>{
-    
+exports.cancelRequest = async (req, res) => {
+
 }
 const generateResult = async (userArray, username) => {
     const searchingUser = await User.findOne({ username }).select('_id');
@@ -125,6 +136,7 @@ const generateResult = async (userArray, username) => {
     userArray.forEach(user => {
         const value = {
             username: user.username,
+            fullName: user.fullName,
             imageUrl: user.imageUrl,
             isFriend: false,
             isSentReq: false,
@@ -151,6 +163,7 @@ const generateResult = async (userArray, username) => {
         result.push(value);
     });
     return result;
+
 }
 
 exports.postBlock = (req, res) => {
