@@ -2,9 +2,12 @@ const User = require('../models/user');
 
 function checkConformity(array, id) {
     let a = false;
+    console.log(array);
     array.forEach(element => {
-        if (id.equals(element))
-            return true;
+        if (id.equals(element)){
+            a=true;
+            return;
+        }
     });
     return a
 }
@@ -44,7 +47,7 @@ exports.postConfirmReq = async (req, res) => {
         let confirmingUser = await User.findOne({ username });
         let pendingUser = await User.findOne({ username: pendingUsername });
         if (!checkConformity(confirmingUser.incomingFriendReqs, pendingUser._id)) {
-            return res.status(400).json({ status: 'fail', message: 'Something is wrong' })
+            return res.status(400).json({ status: 'fail', message: 'Something went wrong' })
         }
         let updateForConfirmer = { $push: { friends: pendingUser._id }, $pull: { incomingFriendReqs: pendingUser._id } };
         let updateForPending = { $pull: { sentFriendReqs: confirmingUser._id }, $push: { friends: confirmingUser._id } };
@@ -74,40 +77,41 @@ exports.postIgnoreFriendReq = async (req, res) => {
     }
 };
 exports.postRemoveFriend = async (req, res) => {
-    const { removingUserMail, removedUserMail } = req.body;
+    const { username, removedUsername } = req.body;
     try {
-        const removingUser = await User.findOne({ mail: removingUserMail });
-        const removedUser = await User.findOne({ mail: removedUserMail });
-        var isValid = false;
-        removingUser.forEach(element => {
-            if (element === removedUser._id) {
-                return isValid = true;
-            }
-        });
-        if (isValid) {
-            await User.findOneAndUpdate({ _id: removingUser._id }, { $pull: { friends: removedUser._id } }).then(async () => {
-                await User.findOneAndUpdate({ _id: removedUser._id }, { $pull: { friends: removingUser._id } }).then(() => {
-                    res.status(200).json({ status: 'success', message: 'friend removed' })
-                })
-            })
-        } else {
-            return res.status(400).json({ status: 'fail', message: 'sth is wrong' })
+        const removingUser = await User.findOne({ username });
+        const removedUser = await User.findOne({ username: removedUsername });
+        if (!checkConformity(removingUser.friends, removedUser._id) | !checkConformity(removedUser.friends, removingUser._id)) {
+            return res.status(400).json({ status: 'fail', message: 'Something went wrong' })
         }
-
+        await User.findOneAndUpdate({ _id: removingUser._id }, { $pull: { friends: removedUser._id } });
+        await User.findOneAndUpdate({ _id: removedUser._id }, { $pull: { friends: removingUser._id } });
+        res.status(200).json({ status: 'success', message: 'friend removed' });
     } catch (error) {
         res.status(404).json({ status: 'fail', message: 'database error' })
     }
 }
 exports.postSearchFriend = async (req, res) => {
-    const { username, entry } = req.body;
+    const { page, username, entry } = req.body;
     var regex = new RegExp(entry, 'i');
     if (entry.length < 3) {
         return res.status(400).json({ status: 'fail', message: 'Entry should be greater than 2' });
     }
+    const conditions = {
+        $or: [
+            { username: regex },
+            { fullName: regex }
+        ],
+        _id: { $ne: req.user.id }
+    }
     try {
         const data = await User
-            .find({ username: regex, _id: { $ne: req.user.id } })
-            .select('username friends sentFriendReqs incomingFriendReqs imageUrl');
+            .find(conditions)
+            .select('username friends sentFriendReqs incomingFriendReqs imageUrl fullName')
+            .collation({ locale: 'en', strength: 2 })
+            .sort({ username: 1 })
+            .skip((page * 20) - 20)
+            .limit(20)
         const result = await generateResult(data, username);
         res.status(200).json({ status: 'success', data: result });
     } catch (error) {
@@ -115,8 +119,25 @@ exports.postSearchFriend = async (req, res) => {
     }
 };
 
-exports.cancelRequest=async (req,res)=>{
-    
+exports.postCancelReq = async (req, res) => {
+    const {username,pendingUsername}=req.body;
+    try {
+        let cancellerUser= await User.findOne({username});
+        let pendingUser= await User.findOne({username:pendingUsername});
+        if (!checkConformity(cancellerUser.sentFriendReqs,pendingUser._id) | !checkConformity(pendingUser.incomingFriendReqs,cancellerUser._id)) {
+            return res.status(400).json({status:'fail',message:'Something went wrong'});
+        }
+        const cancellerId=cancellerUser._id.toString();
+        const pendingId=pendingUser._id.toString();
+        cancellerUser.sentFriendReqs=cancellerUser.sentFriendReqs.filter(e=>e!=pendingId);
+        pendingUser.incomingFriendReqs=pendingUser.incomingFriendReqs.filter(e=>e!=cancellerId);
+        cancellerUser.save();
+        pendingUser.save();
+        res.status(200).json({status:'success',message:'Request cancelled.'})
+    } catch (error) {
+        console.log(error);
+        res.status(400).json({status:'fail',message:'database error'})
+    }
 }
 const generateResult = async (userArray, username) => {
     const searchingUser = await User.findOne({ username }).select('_id');
@@ -125,6 +146,7 @@ const generateResult = async (userArray, username) => {
     userArray.forEach(user => {
         const value = {
             username: user.username,
+            fullName: user.fullName,
             imageUrl: user.imageUrl,
             isFriend: false,
             isSentReq: false,
@@ -151,6 +173,7 @@ const generateResult = async (userArray, username) => {
         result.push(value);
     });
     return result;
+
 }
 
 exports.postBlock = (req, res) => {
