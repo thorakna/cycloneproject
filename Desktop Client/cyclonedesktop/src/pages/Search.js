@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { useHistory, useLocation } from 'react-router-dom';
+// Belki daha sonra kullanırız :: import { useHistory, useLocation } from 'react-router-dom';
 import '../style/Search.css';
-import logo from "../images/icon_small.png";
+import swImage from "../images/sw_image.png";
 import { IoSearch, IoPersonAdd, IoCheckmarkSharp, IoCloseSharp, IoChatbubbleEllipses } from "react-icons/io5";
 import Modal from '../components/Modal';
 
@@ -9,11 +9,11 @@ import { server_address } from "../api/Config";
 import { getSearchData } from '../api/SearchAPI';
 
 
-
 export default function Search() {
-  const history = useHistory();
+  // Belki daha sonra kullanırız :: const history = useHistory();
   const [search, setSearch] = useState("");
   const [results, setResults] = useState([]);
+  const [Sloading, setSLoading] = useState(false);
 
   const [iShow, setiShow] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
@@ -23,7 +23,8 @@ export default function Search() {
 
     var username = localStorage.getItem("username");
     var token = localStorage.getItem("accessToken");
-    const data = await getSearchData(username, token, val);
+    const data = await getSearchData(username, token, val, 1);
+    setSLoading(false);
     if(data.status == "success"){
       setResults(data.data);
       console.log(data.data);
@@ -34,22 +35,27 @@ export default function Search() {
   }
 
   const setTimeLimit = (val) => {
+    setResults([]);
+    setSLoading(true);
     if(window.timeInterval){
       console.log("Timeout silindi");
       clearTimeout(window.timeInterval);
     }
-    window.timeInterval = setTimeout(()=>{renderSearchData(val);}, 2500);
+    window.timeInterval = setTimeout(()=>{renderSearchData(val);}, 2000);
+  }
+
+  const onKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      e.stopPropagation();
+      renderSearchData(search);
+    }
   }
 
   return (
     <>
-        <Modal mState={{iShow, setiShow}} buttonShow={modalMessage === "currentpass-send" && "yes"}>
+        <Modal mState={{iShow, setiShow}}>
             {
-              modalMessage === "currentpass-send" ? 
-              <>
-
-              </>
-               : 
               modalMessage
             }
         </Modal>
@@ -61,10 +67,29 @@ export default function Search() {
           <div className="Page" style={{overflowY:"auto"}}>
             <div className="SearchBack"></div>
             <div className="SearchInput">
-              <input type="text" id="SearchInput" placeholder="Search friends!" value={search} autoComplete="off" onChange={(e)=>{setTimeLimit(e.target.value); setSearch(e.target.value);}}></input>
+              <input type="text" id="SearchInput" onKeyDown={onKeyDown} placeholder="Search friends!" value={search} autoComplete="off" onChange={(e)=>{setTimeLimit(e.target.value); setSearch(e.target.value);}}></input>
             </div>
 
             <ul className="SearchResults">
+
+              {search.length > 2 && !Sloading && results.length === 0 && 
+                <div className="SearchInfo">
+                  <img src={swImage}></img>
+                  <h4>No results found</h4>
+                  It seems we can't find any user based on your search.
+                </div>
+              }
+
+              {Sloading && 
+                <div className="SearchInfo">
+                  <div className="CustomLoading">
+                    <div className="Le1"></div>
+                    <div className="Le2"></div>
+                    <div className="Le3"></div>
+                  </div>
+                </div>
+              }
+
               {search.length > 2 && results.map((e, i) => <li key={i} style={{animationDelay: i*0.1+"s"}}>
                  <img src={`${server_address}api/users/avatars/${e.imageUrl}`}></img>
                  <div>

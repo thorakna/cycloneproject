@@ -15,7 +15,7 @@
 }
 
 .SearchInput input{
-    width: calc(100% - 75px);
+    width: 100%;
     background: transparent;
     padding: 10px 10px;
     border:0px solid;
@@ -27,6 +27,15 @@
     overflow-y: scroll;
     padding: 0;
     margin: 0 15vw;
+}
+
+.SearchInfo{
+    text-align: center;
+}
+
+.SearchInfo img{
+    width: 200px;
+    opacity: .5;
 }
 
 .SearchResults li{

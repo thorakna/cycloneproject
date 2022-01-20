@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { useHistory, useLocation } from 'react-router-dom';
+// Belki daha sonra kullanılır :: import { useHistory, useLocation } from 'react-router-dom';
 import '../style/Settings.css';
 import { IoCloudUpload, IoTrash } from "react-icons/io5";
 import Modal from '../components/Modal';
@@ -9,7 +9,7 @@ import { setTokens } from '../api/TokenOperations';
 
 
 export default function Settings() {
-  const history = useHistory();
+  // Belki daha sonra kullanırız :: const history = useHistory();
   const inputFileRef = useRef(null);
   
   const [ppImage, setppImage] = useState("init.png");
