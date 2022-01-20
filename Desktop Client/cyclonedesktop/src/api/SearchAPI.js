@@ -1,7 +1,7 @@
 import { server_address } from "./Config";
 import { RefreshToken } from "./TokenOperations";
 
-export async function getSearchData(username, token, entry) {
+export async function getSearchData(username, token, entry, page) {
     const rawResponse = await fetch(server_address + "api/users/search", {
         method: 'POST',
         headers: {
@@ -9,7 +9,7 @@ export async function getSearchData(username, token, entry) {
             'Content-Type': 'application/json',
             'token': token
         },
-        body: JSON.stringify({ username, entry })
+        body: JSON.stringify({ username, entry, page })
     });
     const content = await rawResponse.json();
     if (content.status === "expired") {
