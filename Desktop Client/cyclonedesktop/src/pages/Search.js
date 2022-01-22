@@ -7,7 +7,7 @@ import Modal from '../components/Modal';
 
 import { server_address } from "../api/Config";
 import { getSearchData } from '../api/SearchAPI';
-import { sendFriendRequest, cancelRequest } from '../api/FriendsAPI';
+import { sendFriendRequest, cancelRequest, confirmRequest, ignoreFriendRequest } from '../api/FriendsAPI';
 
 let currentPageNumber = 1;
 
@@ -28,8 +28,8 @@ export default function Search() {
     const data = await getSearchData(username, token, val, currentPageNumber);
     setSLoading(false);
     if(data.status == "success"){
-      setResults([...results, ...data.data]);
-      console.log(data.data);
+      if(currentPageNumber == 1) setResults(data.data);
+      else setResults([...results, ...data.data]);
     }else{
       setModalMessage(data.message);
       setiShow(true);
@@ -46,6 +46,7 @@ export default function Search() {
   }
 
   const setTimeLimit = (val) => {
+    // Search data sıfırlanıyor...
     setResults([]);
     setSLoading(true);
     currentPageNumber = 1;
@@ -61,6 +62,11 @@ export default function Search() {
       e.preventDefault();
       e.stopPropagation();
 
+      // Search data sıfırlanıyor...
+      setResults([]);
+      setSLoading(true);
+      currentPageNumber = 1;
+
       // Enter eventinde timeout'a gerek yok
       if(window.timeInterval){
         clearTimeout(window.timeInterval);
@@ -69,27 +75,80 @@ export default function Search() {
     }
   }
 
-  const sendFR = async (receiverUsername, rIndex) => {
+  const sendFR = async (receiverUsername) => {
     var username = localStorage.getItem("username");
     var token = localStorage.getItem("accessToken");
     const data = await sendFriendRequest(username, token, receiverUsername);
 
     if(data.status == "success"){
-      // Şu aptal şeyin çalışması lazımdı ya
-      setResults([{...results[rIndex], isSentReq: false}]);
+      const newResults = results.map((e)=>{
+        if(e.username == receiverUsername){
+          return {...e, isSentReq: true};
+        }
+        
+        return e;
+      });
+      setResults(newResults);
     }else{
       setModalMessage(data.message);
       setiShow(true);
     }
   }
 
-  const cancelFR = async (pendingUsername, rIndex) => {
+  const cancelFR = async (pendingUsername) => {
     var username = localStorage.getItem("username");
     var token = localStorage.getItem("accessToken");
     const data = await cancelRequest(username, token, pendingUsername);
 
     if(data.status == "success"){
-      console.log(data);
+      const newResults = results.map((e)=>{
+        if(e.username == pendingUsername){
+          return {...e, isSentReq: false};
+        }
+        
+        return e;
+      });
+      setResults(newResults);
+    }else{
+      setModalMessage(data.message);
+      setiShow(true);
+    }
+  }
+
+  const confirmFR = async (pendingUsername) => {
+    var username = localStorage.getItem("username");
+    var token = localStorage.getItem("accessToken");
+    const data = await confirmRequest(username, token, pendingUsername);
+
+    if(data.status == "success"){
+      const newResults = results.map((e)=>{
+        if(e.username == pendingUsername){
+          return {...e, isFriend: true};
+        }
+        
+        return e;
+      });
+      setResults(newResults);
+    }else{
+      setModalMessage(data.message);
+      setiShow(true);
+    }
+  }
+
+  const ignoreFR = async (pendingUsername) => {
+    var username = localStorage.getItem("username");
+    var token = localStorage.getItem("accessToken");
+    const data = await ignoreFriendRequest(username, token, pendingUsername);
+
+    if(data.status == "success"){
+      const newResults = results.map((e)=>{
+        if(e.username == pendingUsername){
+          return {...e, isPendingReq: false};
+        }
+        
+        return e;
+      });
+      setResults(newResults);
     }else{
       setModalMessage(data.message);
       setiShow(true);
@@ -142,14 +201,14 @@ export default function Search() {
                  </div>
                  {e.isFriend ? <button onClick={()=>{}} className="AddButton primaryColor"><IoChatbubbleEllipses/></button>
                   : 
-                  e.isSentReq ? <button title={"Cancel Friend Request"} onClick={()=>{cancelFR(e.username, i);}} className="AddButton primaryColor"><IoCloseSharp/></button>
-                  : <button onClick={()=>{sendFR(e.username, i);}} className="AddButton primaryColor"><IoPersonAdd/></button>
+                  e.isSentReq ? <button title={"Cancel Friend Request"} onClick={()=>{cancelFR(e.username);}} className="AddButton primaryColor"><IoCloseSharp/></button>
+                  : !e.isPendingReq && <button onClick={()=>{sendFR(e.username);}} className="AddButton primaryColor"><IoPersonAdd/></button>
                 }
                 {
-                  e.isPendingReq &&
+                  e.isPendingReq && !e.isFriend &&
                   <>
-                    <button onClick={()=>{}} className="AddButton primaryColor"><IoCheckmarkSharp/></button>
-                    <button onClick={()=>{}} className="AddButton cancelColor"><IoCloseSharp/></button>
+                    <button onClick={()=>{confirmFR(e.username);}} className="AddButton primaryColor"><IoCheckmarkSharp/></button>
+                    <button onClick={()=>{ignoreFR(e.username);}} className="AddButton cancelColor"><IoCloseSharp/></button>
                   </>
                 }
                  
