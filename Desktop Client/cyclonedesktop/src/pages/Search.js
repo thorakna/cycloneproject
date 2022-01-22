@@ -7,6 +7,7 @@ import Modal from '../components/Modal';
 
 import { server_address } from "../api/Config";
 import { getSearchData } from '../api/SearchAPI';
+import { sendFriendRequest, cancelRequest } from '../api/FriendsAPI';
 
 let currentPageNumber = 1;
 
@@ -15,7 +16,6 @@ export default function Search() {
   const [search, setSearch] = useState("");
   const [results, setResults] = useState([]);
   const [Sloading, setSLoading] = useState(false);
-  //const [currentPageNumber, setCurrentPageNumber] = useState(1);
 
   const [iShow, setiShow] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
@@ -25,7 +25,6 @@ export default function Search() {
 
     var username = localStorage.getItem("username");
     var token = localStorage.getItem("accessToken");
-    console.log(currentPageNumber+".sayfa çekiliyor");
     const data = await getSearchData(username, token, val, currentPageNumber);
     setSLoading(false);
     if(data.status == "success"){
@@ -41,10 +40,7 @@ export default function Search() {
     var offHeight = e.target.offsetHeight;
     var scrollingHeight = e.target.scrollHeight - e.target.scrollTop;
     if(offHeight >= scrollingHeight){
-      console.log("Şu sayfa gelecek: "+(currentPageNumber+1));
-      //setCurrentPageNumber(currentPageNumber+1);
       currentPageNumber++;
-      console.log("Ayarlanmış current page: "+currentPageNumber);
       renderSearchData(search);
     }
   }
@@ -52,7 +48,6 @@ export default function Search() {
   const setTimeLimit = (val) => {
     setResults([]);
     setSLoading(true);
-    //setCurrentPageNumber(1);
     currentPageNumber = 1;
 
     if(window.timeInterval){
@@ -71,6 +66,33 @@ export default function Search() {
         clearTimeout(window.timeInterval);
       }
       renderSearchData(search);
+    }
+  }
+
+  const sendFR = async (receiverUsername, rIndex) => {
+    var username = localStorage.getItem("username");
+    var token = localStorage.getItem("accessToken");
+    const data = await sendFriendRequest(username, token, receiverUsername);
+
+    if(data.status == "success"){
+      // Şu aptal şeyin çalışması lazımdı ya
+      setResults([{...results[rIndex], isSentReq: false}]);
+    }else{
+      setModalMessage(data.message);
+      setiShow(true);
+    }
+  }
+
+  const cancelFR = async (pendingUsername, rIndex) => {
+    var username = localStorage.getItem("username");
+    var token = localStorage.getItem("accessToken");
+    const data = await cancelRequest(username, token, pendingUsername);
+
+    if(data.status == "success"){
+      console.log(data);
+    }else{
+      setModalMessage(data.message);
+      setiShow(true);
     }
   }
 
@@ -120,8 +142,8 @@ export default function Search() {
                  </div>
                  {e.isFriend ? <button onClick={()=>{}} className="AddButton primaryColor"><IoChatbubbleEllipses/></button>
                   : 
-                  e.isSentReq ? <button onClick={()=>{}} disabled={true} className="AddButton primaryColor"><IoPersonAdd/></button>
-                  : <button onClick={()=>{}} className="AddButton primaryColor"><IoPersonAdd/></button>
+                  e.isSentReq ? <button title={"Cancel Friend Request"} onClick={()=>{cancelFR(e.username, i);}} className="AddButton primaryColor"><IoCloseSharp/></button>
+                  : <button onClick={()=>{sendFR(e.username, i);}} className="AddButton primaryColor"><IoPersonAdd/></button>
                 }
                 {
                   e.isPendingReq &&

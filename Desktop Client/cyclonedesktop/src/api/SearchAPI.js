@@ -15,7 +15,7 @@ export async function getSearchData(username, token, entry, page) {
     if (content.status === "expired") {
         const RefreshStatus = await RefreshToken();
         var accessToken = localStorage.getItem("accessToken");
-        return RefreshStatus ? await getSearchData(username, accessToken, entry) : { status: "fail", message: "The token couldn't be refreshed." };
+        return RefreshStatus ? await getSearchData(username, accessToken, entry, page) : { status: "fail", message: "The token couldn't be refreshed." };
     } else {
         return content;
     }
