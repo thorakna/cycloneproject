@@ -79,6 +79,21 @@ body{
   }
 }
 
+@keyframes LoadingElAnim {
+  0% {
+    opacity: 1;
+    margin-top: 0px;
+  }
+  50% {
+    opacity: 0;
+    margin-top: 15px;
+  }
+  100% {
+    opacity: 1;
+    margin-top: 0px;
+  }
+}
+
 .App {
   text-align: center;
   color:white;
@@ -262,14 +277,14 @@ svg{
   z-index: 25;
 }
 
-.CustomLoading{
+.TLoading{
   display: flex;
   justify-content: center;
   align-items: center;
   height: 20vh;
 }
 
-.CustomLoading div{
+.TLoading div{
   background: #0064ff;
   width: 25px;
   height: 25px;
@@ -277,31 +292,16 @@ svg{
   border-radius: 50%;
 }
 
-@keyframes LoadingElAnim {
-  0% {
-    opacity: 1;
-    margin-top: 0px;
-  }
-  50% {
-    opacity: 0;
-    margin-top: 15px;
-  }
-  100% {
-    opacity: 1;
-    margin-top: 0px;
-  }
-}
-
-.CustomLoading .Le1{
+.TLoading .Le1{
   transform: translate(0px, 40px);
   animation: LoadingElAnim .8s ease infinite;
 }
 
-.CustomLoading .Le2{
+.TLoading .Le2{
   transform: translate(0px, 0px);
   animation: LoadingElAnim .8s .2s ease infinite;
 }
-.CustomLoading .Le3{
+.TLoading .Le3{
   transform: translate(0px, 40px);
   animation: LoadingElAnim .8s .4s ease infinite;
 }
