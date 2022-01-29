@@ -4,8 +4,8 @@ function checkConformity(array, id) {
     let a = false;
     console.log(array);
     array.forEach(element => {
-        if (id.equals(element)){
-            a=true;
+        if (id.equals(element)) {
+            a = true;
             return;
         }
     });
@@ -120,25 +120,47 @@ exports.postSearchFriend = async (req, res) => {
 };
 
 exports.postCancelReq = async (req, res) => {
-    const {username,pendingUsername}=req.body;
+    const { username, pendingUsername } = req.body;
     try {
-        let cancellerUser= await User.findOne({username});
-        let pendingUser= await User.findOne({username:pendingUsername});
-        if (!checkConformity(cancellerUser.sentFriendReqs,pendingUser._id) | !checkConformity(pendingUser.incomingFriendReqs,cancellerUser._id)) {
-            return res.status(400).json({status:'fail',message:'Something went wrong'});
+        let cancellerUser = await User.findOne({ username });
+        let pendingUser = await User.findOne({ username: pendingUsername });
+        if (!checkConformity(cancellerUser.sentFriendReqs, pendingUser._id) | !checkConformity(pendingUser.incomingFriendReqs, cancellerUser._id)) {
+            return res.status(400).json({ status: 'fail', message: 'Something went wrong' });
         }
-        const cancellerId=cancellerUser._id.toString();
-        const pendingId=pendingUser._id.toString();
-        cancellerUser.sentFriendReqs=cancellerUser.sentFriendReqs.filter(e=>e!=pendingId);
-        pendingUser.incomingFriendReqs=pendingUser.incomingFriendReqs.filter(e=>e!=cancellerId);
+        const cancellerId = cancellerUser._id.toString();
+        const pendingId = pendingUser._id.toString();
+        cancellerUser.sentFriendReqs = cancellerUser.sentFriendReqs.filter(e => e != pendingId);
+        pendingUser.incomingFriendReqs = pendingUser.incomingFriendReqs.filter(e => e != cancellerId);
         cancellerUser.save();
         pendingUser.save();
-        res.status(200).json({status:'success',message:'Request cancelled.'})
+        res.status(200).json({ status: 'success', message: 'Request cancelled.' })
     } catch (error) {
         console.log(error);
-        res.status(400).json({status:'fail',message:'database error'})
+        res.status(400).json({ status: 'fail', message: 'database error' })
     }
 }
+
+exports.postGetFriends = async (req, res) => {
+    const { username } = req.body;
+    const user = await User.findOne({ username }).select('friends')
+    let friends = [];
+    try {
+        await Promise.all(
+            user.friends
+                .map((id) => pusher(id))
+        ).then(() => {
+            return res.json({ status: 'success', data: friends })
+        })
+        async function pusher(id) {
+            const friend = await User.findOne({ _id: id }).select('fullName imageUrl username')
+            friends.push(friend);
+        }
+    } catch (error) {
+        console.log("hataaa");
+        return res.json({ status: 'fail', message: error.message })
+    }
+}
+
 const generateResult = async (userArray, username) => {
     const searchingUser = await User.findOne({ username }).select('_id');
     const searchinUserId = searchingUser._id;
