@@ -152,7 +152,7 @@ exports.postGetFriends = async (req, res) => {
             return res.json({ status: 'success', data: friends })
         })
         async function pusher(id) {
-            const friend = await User.findOne({ _id: id }).select('fullName imageUrl username')
+            const friend = await User.findOne({ _id: id }).select('fullName imageUrl username -_id')
             friends.push(friend);
         }
     } catch (error) {
