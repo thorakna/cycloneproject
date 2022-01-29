@@ -73,7 +73,7 @@ exports.postLogout = async (req, res) => {
 }
 exports.postRegister = async (req, res) => {
     let { username, password, mail } = req.body;
-
+    console.log(req.headers.accept)
     if (!username || typeof username !== 'string') {
         return res.status(400).json({ status: 'fail', message: 'Invalid username' })
     }
@@ -101,7 +101,7 @@ exports.postRegister = async (req, res) => {
         }).then(async (user) => {
             console.log(user.username);
             console.log("User has been registered succesfully");
-            sendMail.sendMail(user.mail, user.uniqueString, 'verify');
+          //  sendMail.sendMail(user.mail, user.uniqueString, 'verify');
             const refreshToken = tokenOperations.generateRefreshToken(user._id,user.username);
             //console.log(refreshToken);
             const accessToken = tokenOperations.generateAccessToken(user._id,user.username);

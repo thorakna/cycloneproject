@@ -19,6 +19,7 @@ router.post('/ignore-friend-req', verify, friendController.postIgnoreFriendReq);
 router.post('/remove-friend', verify, friendController.postRemoveFriend);
 router.post('/cancel-req', verify, friendController.postCancelReq);
 router.post('/search', verify, friendController.postSearchFriend);
+router.post('/get-friends', verify, friendController.postGetFriends);
 router.post('/change-credentials', verify, settingsController.postChangeCredentials);
 
 router.post('/get-credentials', verify, settingsController.postGetCredentials);
